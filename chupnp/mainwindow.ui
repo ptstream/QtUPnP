@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CMainWindow</class>
+ <widget class="QMainWindow" name="CMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>594</width>
+    <height>717</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>chupnp</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>2</number>
+    </property>
+    <property name="topMargin">
+     <number>2</number>
+    </property>
+    <property name="rightMargin">
+     <number>2</number>
+    </property>
+    <property name="bottomMargin">
+     <number>2</number>
+    </property>
+    <property name="spacing">
+     <number>2</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="m_tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_1">
+       <attribute name="title">
+        <string>Devices</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="m_devices">
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="uniformRowHeights">
+           <bool>true</bool>
+          </property>
+          <property name="animated">
+           <bool>true</bool>
+          </property>
+          <property name="headerHidden">
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string/>
+           </property>
+          </column>
+          <item>
+           <property name="text">
+            <string>Servers</string>
+           </property>
+           <property name="icon">
+            <iconset resource="chupnp.qrc">
+             <normaloff>:/resources/server.png</normaloff>:/resources/server.png</iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Renderers</string>
+           </property>
+           <property name="icon">
+            <iconset resource="chupnp.qrc">
+             <normaloff>:/resources/renderer.png</normaloff>:/resources/renderer.png</iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Others</string>
+           </property>
+           <property name="icon">
+            <iconset resource="chupnp.qrc">
+             <normaloff>:/resources/otherdevices.png</normaloff>:/resources/otherdevices.png</iconset>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Services</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="m_services">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="uniformRowHeights">
+           <bool>true</bool>
+          </property>
+          <property name="animated">
+           <bool>true</bool>
+          </property>
+          <property name="expandsOnDoubleClick">
+           <bool>false</bool>
+          </property>
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Events</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="m_events">
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>594</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuNetwork">
+    <property name="title">
+     <string>Network</string>
+    </property>
+    <addaction name="m_rescan"/>
+   </widget>
+   <widget class="QMenu" name="menuAction">
+    <property name="title">
+     <string>Services</string>
+    </property>
+    <addaction name="m_update"/>
+    <addaction name="m_export"/>
+    <addaction name="separator"/>
+    <addaction name="m_copyURI"/>
+    <addaction name="m_playlist"/>
+    <addaction name="separator"/>
+    <addaction name="m_search"/>
+   </widget>
+   <addaction name="menuNetwork"/>
+   <addaction name="menuAction"/>
+  </widget>
+  <widget class="QToolBar" name="m_mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="m_statusBar"/>
+  <action name="m_rescan">
+   <property name="text">
+    <string>Rescan the network</string>
+   </property>
+  </action>
+  <action name="m_update">
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
+  <action name="m_export">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="m_playlist">
+   <property name="text">
+    <string>Save for playlist</string>
+   </property>
+  </action>
+  <action name="m_copyURI">
+   <property name="text">
+    <string>Copy URI to clipboard</string>
+   </property>
+  </action>
+  <action name="m_search">
+   <property name="text">
+    <string>Search</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="chupnp.qrc"/>
+ </resources>
+ <connections/>
+</ui>
