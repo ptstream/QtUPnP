@@ -1,0 +1,208 @@
+/**
+\mainpage A framework to build easily an UPnP control point.
+
+<h1>Introduction</h1>
+
+First. Huge thanks to the fantastic QT team. It is really a great framework. It is stable, powerful and easy to use.
+
+Secondly. English is not my natural language. Sorry for gibberish. 
+
+QtUPnP framework is a framework to build easily an UPnP control point.
+It <b>focuses</b> on the <b>UPnP/AV</b> standard. For this, a set of classes are created to handle easily media servers and media renderers.
+
+QtUPnp is based on QT5 framework. It has been tested on systems:
+\li Windows. Windows 10 32 or 64 bits from Vista (32 bits) and Windows 10 (32 & 64 bits).
+The binaries are created from "qt-opensource-windows-x86-mingw492-5.6.0.exe" installer.
+
+\li Linux 64 bits distrubution Kubuntu and Ubuntu.
+The binaries are created from "qt-opensource-linux-x64-5.8.0.run" installer.
+
+<h1>Base documentation</h1>
+To use QtUPnP, it is necessary to know a minimum of the UPnP protocol. For this, the site http://www.upnp.org may be use.
+It offers a complete documentation of the protocol UPnP. This organization publishes a lot of pdf files.
+For example:
+\li http://upnp.org/resources/documents/UPnP_AV_tutorial_July2014.pdf
+\li http://upnp.org/specs/av/UPnP-av-ConnectionManager-v1-Service.pdf for media server and renderer.
+\li http://upnp.org/specs/av/UPnP-av-ContentDirectory-Service.pdf for media server.
+\li http://upnp.org/specs/av/UPnP-av-AVTransport-v1-Service.pd for media renderer.
+\li http://upnp.org/specs/av/UPnP-av-RenderingControl-v1-Service.pdf for media renderer.
+
+Other documentations.
+\li https://en.wikipedia.org/wiki/Universal_Plug_and_Play
+\li https://www.dlna.org
+\li 
+
+<h1>UPnP/AV schema of a control point</h1>
+To explain the working of a control point, see http://upnp.org/specs/av/UPnP-av-AVArchitecture-v1.pdf.
+
+A very simple representation can be:
+\image html upnp-av-schema.jpg
+
+\li The control point invokes UPnP actions with "in" arguments and the device update the "out" arguments. For QtUPnP/AV
+the out arguments are returned in standard C++ class containing standard Qt and C++ data type.
+
+\li The UPnP events are also handled. E.g. the user changes the volume with a button on the device
+
+<h1>Start an UPnP/AV control point</h1>
+To start an UPnP control point, it is necessary to:
+\li Create one object. The CControlPoint, one by application.
+\li Create some slots.
+\li invokes UPnP actions.
+\li Display actions results.
+
+Very easy isn't it!!!!!!!!!!!!!!!!!
+
+The framework handles all logistics related to the UPnP protocol.
+
+The control point draft can be resumed at :
+\code
+class MainWindow : public QMainWindow
+{
+  ....
+  
+protected :
+  virtual void closeEvent (QCloseEvent*); // Mandatory
+ 
+procted slots :
+  void discover (); // Mandatory if you use a timer to launch the discovery.
+  void newDevice (QString const & uuid); // Mandatory. To browse the new device detected.
+  void lostDevice (QString const & uuid); // Mandatory. To remove the lost device.
+  void discoveryLaunched (char const * nt, int index, int count); // Not mandatory just to show the discovery progress.
+  void eventReady (QStringList const & emitter);  // Not mandatory but useful to minimize the network traffic.
+  void upnpError (int errorCode, QString const & errorString);  // Not mandatory.
+  void networkError (QString const & deviceUUID, QNetworkReply::NetworkError errorCode, QString const & errorString);  // Not mandatory.
+
+  // Example to invoke actions
+  void on_play_clicked (); // Assume exist a button "play".
+  void on_browse_clicked (); // Assume exist a button "browse".
+  ....
+  
+private :
+  QTimer timer;  // Not mandatory.
+  QtUPnP::CControlPoint* cp; // Mandatory.
+  QString rendererUUID; // The current renderer uuid.
+  QString serverUUID; // The current server uuid.
+  ...
+}
+
+Mainwindow::MainWindow
+{
+  ....
+
+  cp = new CControlPoint (this); // Create the control point.
+
+  connect (&timer, SIGNAL(timeout()),
+           this, SLOT(discover())); // To launch discovery.
+
+  connect (cp, SIGNAL(newDevice()),
+           this, SLOT(newDevice())); // To browse the new detected device.
+
+  connect (cp, SIGNAL(lostDevice()),
+           this, SLOT(lostDevice())); // To remove the lost devices.
+
+  connect (cp, SIGNAL(eventReady(QStringList const &)),
+           this, SLOT(eventReady(QStringList const &))); // To handle the UPnP events.
+
+  connect (cp, SIGNAL(upnpError(int, QString const &)),
+           this, SLOT(upnpError(int, QString const &))); // To handle the UPnP errors.
+
+  connect (cp, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),
+           this, SLOT(networkError(QString const &, QNetworkReply::NetworkError, QString const &)));  // To handle the network errors.
+ 
+  connect (cp, SIGNAL(searched(const char*,int,int)), this, SLOT(discoveryLaunched(const char*,int,int))); // To show the discovery progress.. 
+
+  m_timer.setSingleShot (true);
+  m_timer.start (250); // Launch discovery when all widgets are polished.
+
+  ...
+}
+
+void CMainWindow::closeEvent (QCloseEvent*)
+{
+  m_cp->close (); // Close the control point.
+}
+
+void Mainwindow::discover ()
+{
+  cp->discover (); // Launch the discovery.
+}
+
+void Mainwindow::newDevice (QString const & uuid)
+{
+  // Add new detected device to your browser.
+}
+
+void Mainwindow::lostDevice (QString const & uuid)
+{
+  // Remove the lost device of your browser.
+}
+
+void Mainwindow::eventReady (QStringList const & emitter)
+{
+  // A device emitted UPnP events.
+  // emitter[0] is the device uuid.
+  // emitter[1] is the service identifier.
+  // Emitter[...] the others are the names of updated variables
+}
+
+void Mainwindow::upnpError (int errorCode, QString const & errorString)
+{
+  // UPnP error manager.
+}
+
+void Mainwindow::networkError (QString const & deviceUUID, QNetworkReply::NetworkError errorCode, QString const & errorString)
+{
+  // Network error manager.
+}
+
+void Mainwindow::on_play_clicked ()
+{
+  CAVTransport avt (m_cp); // Create a CAVTransport to easily use AVTransport service actions.
+  avt.play (rendererUUID); // Invoke the Play action for a renderer.
+}
+
+void Mainwindow::on_browse_clicked ()
+{
+  CRenderingControl rc (m_cp); // Create a CRenderingControl to easily use RenderingControl service actions..
+  rc.browse (serverUUID, "0"); // Browse the root of the server.
+}
+
+\endcode
+
+<h1>Actions manager</h1>
+The general action manager is the member function:
+\code
+CActionInfo invokeAction (QString const & deviceUUID, QString const & serviceID, QString const & actionName,
+                          QList<TArgValue>& args = noArgs,
+                          int timeout = CActionManager::Timeout);
+\endcode
+
+The action takes in argument, a device uuid, a service identifier, the action name, a set of arguments.
+
+In case of UPnP/AV, the action name is uniq for a device and the arguments are defined in terms of name, type and value.
+To help the action invokecation, the following objects was created:
+\li CAVTransport
+\li CRenderingControl
+\li CDirectoryContent
+\li CConnectionManager
+
+Also a super object CAVControl creates for you these objects.
+With these objects, the arguments and the return values are standard C++ classes and types.
+
+Others functinalities cah help the QtUPnP user.
+\li Sorting. Somes servers have no sort capabilities. QtUPnP provide these functionalities. See CBrowseReply::sort. 
+\li Searching. Somes servers have no seacrch capabilities. QtUPnP provide these functionalities. See CBrowseReply:search. 
+
+<h1>Some remarks</h1>
+\li QtUPnP is limited at the HTTP protocol. RTSP is not implemented.
+\li All ports, exept multicast port, are dynamically choosed.
+\li UPnP/AV protocol defines a lot of capabilities. Most of the time, devices implement a subset of these capabilities.
+\li Generally, the servers UPnP implementation have a good and have little bugs. It is not the case with the renderers because
+renderers are sold with their IOS/Android applications. The manufacturers use their own APIs and they not accord equal importance at l'UPnP.
+\li For users of VirtualBox, it is important to select Mode Bridge not NAT. In NAT mode, VirtualBox changes the IP local address. You can also select   
+promiscuous at refused. Sometimes the default card type must be changed.
+
+<h1>For finished</h1>
+An example, <b>chupnp</b>, is providing with the source of the framework.
+This example shows devices, services, actions and event results (see the chupnp docs folder).
+*/
