@@ -14,6 +14,7 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
 
 The framework use only QT API, no other system dependent API.
 
+chupnp is the program to test the framework.
 
 
 
