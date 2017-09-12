@@ -2,7 +2,6 @@
 #include "upnpsocket.hpp"
 #include "httpparser.hpp"
 #include "helper.hpp"
-#include <waitingloop.hpp>
 #include <QNetworkInterface>
 #include <QNetworkProxy>
 #include <QTcpSocket>

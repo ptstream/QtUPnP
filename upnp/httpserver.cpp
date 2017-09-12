@@ -1,11 +1,7 @@
 
 #include "httpserver.hpp"
-#include "eventingmanager.hpp"
 #include "waitingloop.hpp"
 #include "xmlhevent.hpp"
-#include "helper.hpp"
-#include <QUuid>
-#include <QDir>
 #include <QTcpSocket>
 #include <QDate>
 

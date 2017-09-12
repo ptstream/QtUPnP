@@ -1,8 +1,6 @@
 #include "browsereply.hpp"
 #include "helper.hpp"
-#include <QTime>
 #include <QDebug>
-#include <functional>
 
 START_DEFINE_UPNP_NAMESPACE
 

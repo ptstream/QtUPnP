@@ -1,7 +1,4 @@
 #include "datacaller.hpp"
-#include "helper.hpp"
-#include <QTimerEvent>
-#include <QFileInfo>
 
 USING_UPNP_NAMESPACE
 

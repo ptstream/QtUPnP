@@ -1,8 +1,6 @@
 
 #include "actionmanager.hpp"
 #include "actioninfo.hpp"
-#include "helper.hpp"
-#include <QTimerEvent>
 
 USING_UPNP_NAMESPACE
 

@@ -30,13 +30,6 @@ public :
    */
   bool initialize6 (QHostAddress multicastAddress, quint16 multicastPort);
 
-  /*! Joins the multicast group using posix code. This function is not use.
-   * It was coded due to an unidentified problem with QT4.
-   * \param multicastAddress: The multicast group.
-   * \remark This function is not use.
-   */
-  bool joinMulticastAddress (QHostAddress const & multicastAddress);
-
 private :
   QHostAddress m_joinAddress; //!< Save the join address.
 };

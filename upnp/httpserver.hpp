@@ -4,7 +4,6 @@
 #include "httpparser.hpp"
 #include "didlitem.hpp"
 #include <QTcpServer>
-#include <QTimer>
 
 START_DEFINE_UPNP_NAMESPACE
 

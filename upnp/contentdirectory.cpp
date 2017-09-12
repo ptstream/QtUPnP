@@ -1,5 +1,4 @@
 #include "contentdirectory.hpp"
-#include "controlpoint.hpp"
 #include "actioninfo.hpp"
 #include "xmlhdidllite.hpp"
 
