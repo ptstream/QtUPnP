@@ -174,7 +174,7 @@ public :
    * \param args: The action parameters.
    * \param timeout: The time out to wait responds in ms.
    * \return The action information.
-   * \remark This function assume that all device actions have a diffrent name.
+   * \remark This function assumes that all device actions have a different name.
    */
   CActionInfo invokeAction (QString const & deviceUUID, QString const & actionName,
                             QList<TArgValue>& args = noArgs,
@@ -275,7 +275,7 @@ public :
   static QList<CControlPoint::TArgValue> noArgs;
 
 protected slots :
-  /*! Receipts  unicast & multicast datagrams. */
+  /*! Receipts unicast & multicast datagrams. */
   void readDatagrams ();
 
   /*! Renewal subscribe timeout is emitted. */
