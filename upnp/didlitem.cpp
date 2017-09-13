@@ -319,7 +319,7 @@ QString CDidlItem::uri (int index) const
 
 QStringList CDidlItem::albumArtURIs () const
 {
-  return stringValues ("albumArtURI");
+  return stringValues ("upnp:albumArtURI");
 }
 
 QString CDidlItem::albumArtURI (int index) const
