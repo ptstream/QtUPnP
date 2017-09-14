@@ -1,10 +1,6 @@
 #include "mainwindow.hpp"
-#include "item.hpp"
 #include "helper.hpp"
 #include "ui_mainwindow.h"
-#include "../upnp/controlpoint.hpp"
-#include "../upnp/contentdirectory.hpp"
-#include "../upnp/actionmanager.hpp"
 #include <QProgressBar>
 
 USING_UPNP_NAMESPACE
@@ -110,7 +106,7 @@ void CMainWindow::clearError (QTreeWidgetItem* item)
 }
 
 // Insert DIDL-Lite elements.
-static void insertDidlElems (CItem* item)
+void CMainWindow::insertDidlElems (CItem* item)
 {
   QMapIterator<QString, CDidlElem> ite (item->didl ().elems ());
   while (ite.hasNext ())
@@ -141,30 +137,11 @@ static void insertDidlElems (CItem* item)
   }
 }
 
-static void updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItemType type)
+void CMainWindow::updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItemType type)
 {
   QList<CDidlItem> const & didlItems = reply.items ();
   for (CDidlItem const & didlItem : didlItems)
   {
-    /*
-    qDebug () << "Title:" << didlItem.title ();
-    qDebug () << "Artist:" << didlItem.artist ();
-    qDebug () << "actor:" << didlItem.actor ();
-    qDebug () << "album:" << didlItem.album ();
-    qDebug () << "albumArtist:" << didlItem.albumArtist ();
-    qDebug () << "creator:" << didlItem.creator ();
-    qDebug () << "genre:" << didlItem.genre ();
-    qDebug () << "date:" << didlItem.date ();
-    qDebug () << "duration:" << didlItem.duration ();
-    qDebug () << "protocolInfo:" << didlItem.protocolInfo ();
-    qDebug () << "composer:" << didlItem.composer ();
-    qDebug () << "originalTrackNumber:" << didlItem.originalTrackNumber ();
-    qDebug () << "bitrate:" << didlItem.bitrate ();
-    qDebug () << "nrAudioChannels:" << didlItem.nrAudioChannels ();
-    qDebug () << "sampleFrequency:" << didlItem.sampleFrequency ();
-    qDebug () << '\n';
-    */
-
     CItem* itemChild = new CItem (item, didlItem, type);
 
     CDidlElem                      didlElem = didlItem.value ("container");
@@ -174,60 +151,80 @@ static void updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItem
       didlElem = didlItem.value ("item");
     }
 
-    QPixmap          pxm;
-    char const *     pxmName;
-    CDidlItem::EType type = didlItem.type ();
-    if (!CDidlItem::isContainer (type))
+    // Try to retreive pixmap from cache.
+    QPixmap         pxm;
+    QString const & albumArtURI = didlItem.albumArtURI (0);
+    if (!albumArtURI.isEmpty ())
     {
-      switch (type)
-      {
-        case CDidlItem::ImageItem :
-        case CDidlItem::Photo :
-          pxmName = "image";
-          break;
-
-        case CDidlItem::AudioItem :
-        case CDidlItem::MusicTrack :
-        case CDidlItem::AudioBroadcast :
-        case CDidlItem::AudioBook :
-        case CDidlItem::AudioProgram :
-          pxmName = "audio";
-          break;
-
-        case CDidlItem::VideoItem :
-        case CDidlItem::Movie :
-        case CDidlItem::VideoBroadcast :
-        case CDidlItem::MusicVideoClip :
-        case CDidlItem::VideoProgram :
-          pxmName = "video";
-          break;
-
-        default :
-          pxmName = "unknown";
-          break;
-      }
-    }
-    else
-    {
-      switch (type)
-      {
-        case CDidlItem::Container :
-          pxmName = "container";
-          break;
-
-        case CDidlItem::MusicAlbum :
-          pxmName = "music_album";
-          break;
-
-        default :
-          pxmName = "folder";
-          break;
+      pxm = m_pxmCache.search (albumArtURI);
+      if (pxm.isNull())
+      { // Not find in the cache. Get from server.
+        CDataCaller dc;
+        QByteArray  pxmBytes = dc.callData (albumArtURI);
+        if (!pxmBytes.isEmpty ())
+        { // Add to the cache.
+          pxm = m_pxmCache.add (albumArtURI, pxmBytes, QSize (16, 16));
+        }
       }
     }
 
-    if (pxmName != nullptr)
-    {
+    if (pxm.isNull ())
+    { // No pixmap avalaible use generic pixmap.
+      char const *     pxmName;
+      CDidlItem::EType type = didlItem.type ();
+      if (!CDidlItem::isContainer (type))
+      {
+        switch (type)
+        {
+          case CDidlItem::ImageItem :
+          case CDidlItem::Photo :
+            pxmName = "image";
+            break;
+
+          case CDidlItem::AudioItem :
+          case CDidlItem::MusicTrack :
+          case CDidlItem::AudioBroadcast :
+          case CDidlItem::AudioBook :
+          case CDidlItem::AudioProgram :
+            pxmName = "audio";
+            break;
+
+          case CDidlItem::VideoItem :
+          case CDidlItem::Movie :
+          case CDidlItem::VideoBroadcast :
+          case CDidlItem::MusicVideoClip :
+          case CDidlItem::VideoProgram :
+            pxmName = "video";
+            break;
+
+          default :
+            pxmName = "unknown";
+            break;
+        }
+      }
+      else
+      {
+        switch (type)
+        {
+          case CDidlItem::Container :
+            pxmName = "container";
+            break;
+
+          case CDidlItem::MusicAlbum :
+            pxmName = "music_album";
+            break;
+
+          default :
+            pxmName = "folder";
+            break;
+        }
+      }
+
       pxm = QPixmap (QString (":/resources/%1.png").arg (pxmName));
+    }
+
+    if (!pxm.isNull ())
+    {
       itemChild->setIcon (0, pxm);
     }
 

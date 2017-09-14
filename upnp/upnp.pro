@@ -60,7 +60,8 @@ SOURCES += \
     xmlhaction.cpp \
     control.cpp \
     didlitem_playlist.cpp \
-    httpserver.cpp
+    httpserver.cpp \
+    pixmapcache.cpp
 
 HEADERS +=\
         upnp_global.hpp \
@@ -105,7 +106,8 @@ HEADERS +=\
     xmlhevent.hpp \
     actioninfo.hpp \
     xmlhaction.hpp \
-    httpserver.hpp
+    httpserver.hpp \
+    pixmapcache.hpp
 
 unix {
     CONFIG += staticlib

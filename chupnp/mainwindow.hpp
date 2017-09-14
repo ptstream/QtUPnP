@@ -1,8 +1,10 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "item.hpp"
 #include "../upnp/avcontrol.hpp"
 #include "../upnp/httpserver.hpp"
+#include "../upnp/pixmapcache.hpp"
 
 #include <QMainWindow>
 #include <QTimer>
@@ -29,6 +31,7 @@ class CMainWindow : public QMainWindow
   Q_OBJECT
 
 public:
+  // To store some cuttent values.
   struct SCurrent
   {
     void reset ()
@@ -83,7 +86,7 @@ public:
   ~CMainWindow ();
 
 protected :
-  virtual void closeEvent (QCloseEvent*);
+  virtual void closeEvent (QCloseEvent*); // See Detailed Description of CControlPoint
 
 protected slots :
   void newDevice (QString const & uuid);
@@ -117,6 +120,8 @@ private :
   void clearError (QTreeWidgetItem* item);
   void browse (QTreeWidgetItem* item);
   void search (QTreeWidgetItem* item, QString const & criteria);
+  void updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItemType type);
+  void insertDidlElems (CItem* item);
 
 private:
   Ui::CMainWindow* ui;
@@ -131,6 +136,7 @@ private:
   QList<CDidlItem> m_selectedTracks; //!< Use to create playlist.
   QBrush m_itemBrush; //!< Default QTreeWidgetItem color
   int  m_version = 100; //!< Version of this code.
+  CPixmapCache m_pxmCache; //!< Cache of pixmaps.
 };
 
 #endif // MAINWINDOW_HPP
