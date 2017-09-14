@@ -2,6 +2,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal structure of CDevicePixmap. */
 struct SDevicePixmapData : public QSharedData
 {
   SDevicePixmapData () {}

@@ -8,7 +8,8 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! CHTTPParser is a very simple HTTP parser used by eventing.
+/*! \brief A very simple HTTP parser used by eventing.
+ *
  * All member functions must are called after having called parseMessage function.
  */
 class UPNP_API CHTTPParser

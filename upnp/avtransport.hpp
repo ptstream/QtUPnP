@@ -14,7 +14,7 @@ class CControlPoint;
 class CDidlItem;
 class CActionInfo;
 
-/*! \brief The class CAVTransport is a wrapper that manages the urn:schemas-upnp-org:service:AVTransport:1
+/*! \brief A wrapper that manages the urn:schemas-upnp-org:service:AVTransport:1
  * service actions.
  */
 class UPNP_API CAVTransport : public CControl

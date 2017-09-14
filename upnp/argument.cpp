@@ -2,6 +2,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal structure of CArgument. */
 struct SArgumentData : public QSharedData
 {
   SArgumentData () {}

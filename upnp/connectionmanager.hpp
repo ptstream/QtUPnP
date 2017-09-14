@@ -10,8 +10,8 @@ START_DEFINE_UPNP_NAMESPACE
 class CControlPoint;
 class CActionInfo;
 
-/*! \brief The class CConnectionManager is a wrapper that manages the
- * urn:schemas-upnp-org:service:ConnectionManager:1 service actions.
+/*! \brief A wrapper that manages the urn:schemas-upnp-org:service:ConnectionManager:1
+ *  service actions.
  */
 class CConnectionManager : public CControl
 {

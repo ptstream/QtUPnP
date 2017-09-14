@@ -7,13 +7,11 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-struct SDeviceCapsData; //!< Data
+struct SDeviceCapsData;
 
-/*! \brief The CDeviceCaps class holds information about GetDeviceCapabilities action.
+/*! \brief Holds information about GetDeviceCapabilities action.
  *
  * See http://upnp.org/specs/av/UPnP-av-AVTransport-Service.pdf.
- *
- * \remark Use implicit Sharing QT technology.
  */
 class UPNP_API CDeviceCaps
 {

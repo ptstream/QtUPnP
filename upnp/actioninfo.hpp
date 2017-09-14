@@ -8,7 +8,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 class SActionInfoData;
 
-/*! \brief Class CActionInfo holds information about send and retrieve data for an action.
+/*! \brief Holds information about send and retrieve data for an action.
  *
  * It contains some data used by the action caller to invoke the action and the response.
  *

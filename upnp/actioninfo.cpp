@@ -18,6 +18,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 #define DEndBodyEnvelope "</SOAP-ENV:Body></SOAP-ENV:Envelope>"
 
+/*! \brief Internal structure of CActionInfo. */
 struct SActionInfoData : public QSharedData
 {
   SActionInfoData () {}

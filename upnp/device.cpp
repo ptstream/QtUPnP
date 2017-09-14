@@ -4,6 +4,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal structure of CDevice. */
 struct SDeviceData : public QSharedData
 {
   SDeviceData () {}

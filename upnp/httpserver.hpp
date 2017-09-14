@@ -19,7 +19,11 @@ typedef QPair<QString, TEventCsts> TEventValue; // Variable value & constraint l
 /*! Defines the type of evented variable (variable name and value). */
 typedef QMap<QString, TEventValue> TMEventVars; // Variables and all values. e.g <Volume Channel="Master" val="30"/>
 
-/*! The class CHTTPServer is a partial HTTP server used by UPnP events and playlist manager. */
+/*! \brief A partial HTTP server used by UPnP events and playlist manager.
+ *
+ * This class manages only HTTP header verb "NOTIFY" of UPnP events and "HEAD" and "GET" to send the plalists
+ * content.
+ */
 class UPNP_API CHTTPServer : public QTcpServer
 {
   Q_OBJECT

@@ -6,7 +6,10 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! The class CStatus holds information to simulate a set of 32 bits. */
+/*! \brief Holds information to simulate a set of 32 bits.
+ *
+ * It exists to simulate 2 states: exist or not.
+ */
 class UPNP_API CStatus
 {
 public:
@@ -97,11 +100,13 @@ bool CStatus::operator != (CStatus const & other)
   return m_status != other.m_status;
 }
 
+/*! \brief Related non-members equal operator. */
 inline bool operator == (CStatus const & s1, CStatus const & s2)
 {
   return s1 == s2;
 }
 
+/*! \brief Related non-members not equal operator. */
 inline bool operator != (CStatus const & s1, CStatus const & s2)
 {
   return s1 != s2;

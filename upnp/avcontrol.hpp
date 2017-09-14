@@ -8,7 +8,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief The class CAVControl encapsulates the action managers requisite to build an
+/*! \brief Encapsulates the action managers requisite to build an
  * UPnP/AV control point.
  *
  * You can use UPnP/AV action managers individually.

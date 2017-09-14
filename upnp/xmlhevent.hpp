@@ -6,7 +6,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! This class provides the implementation of the event parser. */
+/*! \brief Provides the implementation of the event parser. */
 class CXmlHEvent : public CXmlH
 {
 public:

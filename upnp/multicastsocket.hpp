@@ -5,7 +5,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief CMulticastSocket provides the mechanism to manage multicast sockets. */
+/*! \brief Provides the mechanism to manage multicast sockets. */
 class CMulticastSocket : public CUpnpSocket
 {
 public :

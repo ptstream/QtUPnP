@@ -9,7 +9,7 @@ START_DEFINE_UPNP_NAMESPACE
 class CControlPoint;
 class CActionInfo;
 
-/*! \brief The class CRenderingControl is a wrapper that manages the urn:schemas-upnp-org:service:RenderingControl:1
+/*! \brief A wrapper that manages the urn:schemas-upnp-org:service:RenderingControl:1
  * service actions.
  */
 class UPNP_API CRenderingControl : public CControl

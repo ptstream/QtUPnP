@@ -2,6 +2,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal strucure for CDeviceCaps. */
 struct SDeviceCapsData : public QSharedData
 {
   SDeviceCapsData () {}

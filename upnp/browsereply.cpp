@@ -4,6 +4,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal strucure for CBrowse. */
 struct SBrowseReplyData : public QSharedData
 {
   SBrowseReplyData () {}

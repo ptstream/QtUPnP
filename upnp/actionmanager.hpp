@@ -10,7 +10,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 class CActionInfo;
 
-/*! \brief CActionManager provides the mechanism to sent action to the device.
+/*! \brief Provides the mechanism to sent action to the device.
  *
  * The action message is sent using a QNetworkManager.
  */

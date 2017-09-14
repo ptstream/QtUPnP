@@ -7,7 +7,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 class CDevice;
 
-/*! This class provides the implementation of the device response parser. */
+/*! \brief Provides the implementation of the device response parser. */
 class CXmlHDevice : public CXmlH
 {
 public:

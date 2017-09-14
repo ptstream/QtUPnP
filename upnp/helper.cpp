@@ -179,6 +179,7 @@ long long QtUPnP::timeToMS (QString const & time)
   return duration;
 }
 
+/*! \brief Internal structure used by determineMatchesAndTransposes static function. */
 struct SMatchResults
 {
    int numberOfMatches = 0;

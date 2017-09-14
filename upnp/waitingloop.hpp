@@ -7,7 +7,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief This class defines a waiting loop stop the current thread without
+/*! \brief Defines a waiting loop to stop the current thread without
  * freeze the UI during certain operations.
  */
 class UPNP_API CWaitingLoop : public QEventLoop

@@ -7,7 +7,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief The class CContentDirectory is a wrapper that manages the
+/*! \brief A wrapper that manages the
  * urn:schemas-upnp-org:service:ContentDirectory:1 service actions.
  */
 class UPNP_API CContentDirectory : public CControl

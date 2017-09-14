@@ -11,7 +11,7 @@ START_DEFINE_UPNP_NAMESPACE
 class CUnicastSocket;
 class CMulticastSocket;
 
-/*! The CControlPoint class implements the base functionalities of an UPnP ControlPoint.
+/*! \brief The CControlPoint class implements the base functionalities of an UPnP ControlPoint.
  *
  * It can search and inspect devices, invoke actions of services and subscribes to events.
  * Probably, You will only need one control point for the application.

@@ -6,7 +6,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! This class provides the implementation of the DIDL-Lite server response parser.
+/*! \brief Provides the implementation of the DIDL-Lite server response parser.
  * At the end of the parsing, this class contains the item list and their elements.
  */
 class CXmlHDidlLite : public CXmlH

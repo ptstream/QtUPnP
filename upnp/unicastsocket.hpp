@@ -5,7 +5,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief CUnicastSocket provides the mechanism to manage unicast sockets. */
+/*! \brief Provides the mechanism to manage unicast sockets. */
 class CUnicastSocket : public CUpnpSocket
 {
 public :

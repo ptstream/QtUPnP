@@ -2,6 +2,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal structure of CAction. */
 struct SActionData : public QSharedData
 {
   SActionData () {}

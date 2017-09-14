@@ -15,7 +15,7 @@ typedef QMap<QString, QString> TMProps;
 struct SDidlElemData;
 struct SDidlItemData;
 
-/*! \brief This class holds information about the xml item tag for the Browse or Search action.
+/*! \brief Holds information about the xml item tag for the Browse or Search action.
  *
  * The element is a set of properties and a value.
  * For example, the xml res element contains a set of properties (bitrate=19200, frequency=44100) and
@@ -81,7 +81,7 @@ private :
   QSharedDataPointer<SDidlElemData> m_d; //!< Shared data pointer.
 };
 
-/*! \brief This class holds information about the xml item tag of the xml DIDL-Lite tag server response
+/*! \brief Holds information about the xml item tag of the xml DIDL-Lite tag server response
  * for the Browse or Search action.
  *
  * The elements of the item tag component are stored in a multimap.

@@ -3,6 +3,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal structure of CPositionInfo. */
 struct SPositionInfoData : public QSharedData
 {
   SPositionInfoData () {}

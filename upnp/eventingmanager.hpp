@@ -8,7 +8,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief CEventingManager provides the mechanism to handle UPnP events. */
+/*! \brief Provides the mechanism to handle UPnP events. */
 class CEventingManager : public QEventLoop
 {
   Q_OBJECT

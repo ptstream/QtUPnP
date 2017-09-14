@@ -11,7 +11,7 @@ class QUrl;
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief CDataCaller provides the mechanism to ask data from the device.
+/*! \brief Provides the mechanism to ask data from the device.
  *
  * The data are asked using a QNetworkManager.
  */

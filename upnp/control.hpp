@@ -10,10 +10,12 @@ START_DEFINE_UPNP_NAMESPACE
 class CControlPoint;
 class CActionInfo;
 
-/*! The CControl class is the base class for
+/*! \brief The base class for UPnP/AV specific objects (CConnectionManager, CAVTransport...).
+ *
+ * The CControl class is the base class for
  * \li CConnectionManager
  * \li CContentDirectory
- * \li CAVTransport
+ * \li
  * \li CRenderingContro
  */
 class UPNP_API CControl

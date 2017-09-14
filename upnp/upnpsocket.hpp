@@ -8,11 +8,11 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! \brief The class CUpnpSocket is the base class of CUnicastSocket and CMulticastSocket. */
+/*! \brief The base class of CUnicastSocket and CMulticastSocket. */
 class UPNP_API CUpnpSocket : public QUdpSocket
 {
 public :
-  /*! The structure Device holds information about the device that issued datagram using UDP sockets.*/
+  /*! \brief The structure holds information about the device that extracted from datagram using UDP sockets.*/
   struct SNDevice
   {
     /*! The device message type. */

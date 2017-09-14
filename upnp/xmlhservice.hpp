@@ -9,7 +9,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 class CService;
 
-/*! This class provides the implementation of the service response parser. */
+/*! \brief Provides the implementation of the service response parser. */
 class CXmlHService : public CXmlH
 {
 public:

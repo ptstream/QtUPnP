@@ -6,7 +6,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! This class provides the implementation of the action response parser. */
+/*! \brief Provides the implementation of the action response parser. */
 class CXmlHAction : public CXmlH
 {
 public:

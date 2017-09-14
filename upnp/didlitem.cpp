@@ -6,6 +6,7 @@ START_DEFINE_UPNP_NAMESPACE
 
 CStatus CDidlItem::m_status = CDidlItem::SortAlbumArt;
 
+/*! \brief Internal structure of CDidlElem. */
 struct SDidlElemData  : public QSharedData
 {
   /*! Default constructor. */
@@ -23,6 +24,7 @@ SDidlElemData::SDidlElemData (SDidlElemData const & other) : QSharedData (other)
 {
 }
 
+/*! \brief Internal structure of CDidlItem. */
 struct SDidlItemData : public QSharedData
 {
   /*! Default constructor. */

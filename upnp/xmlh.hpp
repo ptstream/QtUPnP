@@ -8,7 +8,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! This class is the base class of XML parsers. */
+/*! \brief The base class of XML parsers. */
 class CXmlH : public QXmlDefaultHandler
 {
 public:

@@ -2,6 +2,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! \brief Internal strucure for CConnectionInfo. */
 struct SConnectionInfoData : public QSharedData
 {
   SConnectionInfoData () {}
