@@ -3,7 +3,7 @@
 
 <h1>Introduction</h1>
 
-First. Huge thanks to the fantastic QT team. It is really a great framework. It is stable, powerful and easy to use.
+First. Huge Thanks to the fantastic QT team. It is really a great framework. It is stable, powerful and easy to use.
 
 Secondly. English is not my natural language. Sorry for gibberish. 
 
@@ -94,11 +94,11 @@ Mainwindow::MainWindow
   connect (&timer, SIGNAL(timeout()),
            this, SLOT(discover())); // To launch discovery.
 
-  connect (cp, SIGNAL(newDevice()),
-           this, SLOT(newDevice())); // To browse the new detected device.
+  connect (cp, SIGNAL(newDevice(QString const &)),
+           this, SLOT(newDevice(QString const &))); // To browse the new detected device.
 
-  connect (cp, SIGNAL(lostDevice()),
-           this, SLOT(lostDevice())); // To remove the lost devices.
+  connect (cp, SIGNAL(lostDevice(QString const &)),
+           this, SLOT(lostDevice(QString const &))); // To remove the lost devices.
 
   connect (cp, SIGNAL(eventReady(QStringList const &)),
            this, SLOT(eventReady(QStringList const &))); // To handle the UPnP events.
@@ -173,11 +173,8 @@ void Mainwindow::on_browse_clicked ()
 The general action manager is the member function:
 \code
 CActionInfo invokeAction (QString const & deviceUUID, QString const & serviceID, QString const & actionName,
-                          QList<TArgValue>& args = noArgs,
-                          int timeout = CActionManager::Timeout);
+                          QList<TArgValue>& args = noArgs,s int timeout = CActionManager::Timeout);
 \endcode
-
-The action takes in argument, a device uuid, a service identifier, the action name, a set of arguments.
 
 In case of UPnP/AV, the action name is uniq for a device and the arguments are defined in terms of name, type and value.
 To help the action invokecation, the following objects was created:
@@ -189,18 +186,21 @@ To help the action invokecation, the following objects was created:
 Also a super object CAVControl creates for you these objects.
 With these objects, the arguments and the return values are standard C++ classes and types.
 
-Others functinalities cah help the QtUPnP user.
-\li Sorting. Somes servers have no sort capabilities. QtUPnP provide these functionalities. See CBrowseReply::sort. 
-\li Searching. Somes servers have no seacrch capabilities. QtUPnP provide these functionalities. See CBrowseReply:search. 
+Others functinalities can help the QtUPnP user.
+\li Sorting. Somes servers have no sort capabilities. QtUPnP provides a similar functionality. See CBrowseReply::sort. 
+\li Searching. Somes servers have no seacrch capabilities. QtUPnP provides a similar functionality for the current browse directory.
+See CBrowseReply:search. 
 
 <h1>Some remarks</h1>
 \li QtUPnP is limited at the HTTP protocol. RTSP is not implemented.
-\li All ports, exept multicast port, are dynamically choosed.
+\li All ports, exept multicast port, are dynamically selected.
 \li UPnP/AV protocol defines a lot of capabilities. Most of the time, devices implement a subset of these capabilities.
-\li Generally, the servers UPnP implementation have a good and have little bugs. It is not the case with the renderers because
-renderers are sold with their IOS/Android applications. The manufacturers use their own APIs and they not accord equal importance at l'UPnP.
-\li For users of VirtualBox, it is important to select Mode Bridge not NAT. In NAT mode, VirtualBox changes the IP local address. You can also select   
-promiscuous at refused. Sometimes the default card type must be changed.
+\li Generally, the UPnP servers implementation seems good. It is not the case with the renderers because
+renderers are sold with their IOS/Android applications. The manufacturers can be used their own APIs and they not accord equal importance
+at the UPnP implementation.
+\li For users of VirtualBox, it is important to select Mode Bridge not NAT.
+In NAT mode, VirtualBox can changed the IP local address.
+You can also select promiscuous at refused. Sometimes the default card type must be changed.
 
 <h1>For finished</h1>
 An example, <b>chupnp</b>, is providing with the source of the framework.
