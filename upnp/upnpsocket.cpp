@@ -10,6 +10,7 @@
 USING_UPNP_NAMESPACE
 
 QHostAddress CUpnpSocket::m_localHostAddress;
+QList<QByteArray> CUpnpSocket::m_skippedAddresses;
 
 CUpnpSocket::SNDevice::SNDevice (EType type) : m_type (type)
 {
@@ -219,11 +220,30 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
     {
       type = SNDevice::Unknown;
     }
+    else
+    {
+      QString path = qUrl.path ();
+      if (path.isEmpty ())
+      {
+        type = SNDevice::Unknown;
+      }
+    }
   }
 
   if (type != SNDevice::Unknown && uuid.isEmpty ())
   {
     type = SNDevice::Unknown;
+  }
+  else
+  {
+    for (QList<QByteArray>::const_iterator it = m_skippedAddresses.cbegin (), end = m_skippedAddresses.cend (); it != end; ++it)
+    {
+      if (url.contains (*it))
+      {
+        type = SNDevice::Unknown;
+        break;
+      }
+    }
   }
 
   return SNDevice (type, qUrl, uuid);
@@ -231,7 +251,7 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
 
 void CUpnpSocket::addDevice (SNDevice const & device)
 {
-  if (device.m_type != SNDevice::Unknown /* && !device.m_uuid.toLower ().contains ("upnp-internetgatewaydevice")*/)
+  if (device.m_type != SNDevice::Unknown)
   {
     m_devices.push_back (device);
   }
@@ -262,4 +282,18 @@ bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, 
   }
 
   return success;
+}
+
+void CUpnpSocket::setSkippedAddresses (QList<QByteArray> const & addresses)
+{
+  for (QByteArray const & address : addresses)
+  {
+    QByteArray addr = address;
+    if (!addr.endsWith (':'))
+    {
+      addr.append (':');
+    }
+
+    m_skippedAddresses << addr;
+  }
 }

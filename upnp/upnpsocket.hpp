@@ -83,11 +83,23 @@ public :
    */
   static QHostAddress localHostAddressFromRouter ();
 
+  /*! Sets IPV4 addresses to ignore.
+   * For several router, some addresses are for internal used. e.g. 192.168.0.10.
+   * But the router indicates it is a root device and fails when QtUPnP asks the device caracteristics.
+   * Moreover, the device is long to respond. The discovery becomes very slow.
+   * You can add somes addresses to ignore during the discovery or for "NOTIFY" upd messages.
+   */
+  static void setSkippedAddresses (QList<QByteArray> const & addresses);
+
+  /*! Returns IPV4 addresses to ignore (see above). */
+  static QList<QByteArray> const & skippedAddresses () { return m_skippedAddresses; }
+
   /*! Returns the local host address.
    * This function returns the local host address of the first interface and different of 127.0.0.1.
    */
   static QHostAddress localHostAddress (bool ipv6 = false);
 
+  /*! Reset the wait for Linux see readDatagrams (). */
   void resetWait () { m_wait = StartingWait; }
 
 private :
@@ -109,6 +121,7 @@ private :
   QByteArray m_datagram; //!< The current datagram.
   QList<SNDevice> m_devices; //!< The list of devices.
   int m_wait = StartingWait; //!< Current wait for linux system (2s). Reduce by 400ms at each call.
+  static QList<QByteArray> m_skippedAddresses; //!< IPV4 addresses to ignore.
 };
 
 } // End namespace
