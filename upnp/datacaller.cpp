@@ -55,8 +55,9 @@ void CDataCaller::finished ()
 
 void CDataCaller::error (QNetworkReply::NetworkError err)
 {
-  QNetworkReply* replySender = dynamic_cast<QNetworkReply*>(sender ());
-  QString        error       = QString ("Slot finish network reply error:%1->%2").arg (err).arg (replySender->errorString ());
+  QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender ());
+  QString        error = QString ("Network reply error:%1->%2->%3")
+                       .arg (err).arg (reply->url ().toString ()).arg (reply->errorString ());
   qDebug () << "CDataCaller::error: " << err << " (" << error << ")";
   exit (err);
 }
