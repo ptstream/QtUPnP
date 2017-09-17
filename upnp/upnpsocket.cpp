@@ -220,14 +220,6 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
     {
       type = SNDevice::Unknown;
     }
-    else
-    {
-      QString path = qUrl.path ();
-      if (path.isEmpty ())
-      {
-        type = SNDevice::Unknown;
-      }
-    }
   }
 
   if (type != SNDevice::Unknown && uuid.isEmpty ())
