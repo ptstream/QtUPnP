@@ -139,9 +139,15 @@ void CMainWindow::insertDidlElems (CItem* item)
 
 void CMainWindow::updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItemType type)
 {
+  QTime ti;
+  ti.start ();
+
   QList<CDidlItem> const & didlItems = reply.items ();
+  int                      cItems    = didlItems.size ();
+  int                      iItem     = 0;
   for (CDidlItem const & didlItem : didlItems)
   {
+    ++iItem;
     CItem* itemChild = new CItem (item, didlItem, type);
 
     CDidlElem                      didlElem = didlItem.value ("container");
@@ -159,8 +165,11 @@ void CMainWindow::updateTree (QTreeWidgetItem* item, CBrowseReply const & reply,
       pxm = m_pxmCache.search (albumArtURI);
       if (pxm.isNull())
       { // Not find in the cache. Get from server.
+        float t1 = ti.elapsed () / 1000.0f;
         CDataCaller dc;
         QByteArray  pxmBytes = dc.callData (albumArtURI);
+        float t2 = ti.elapsed () / 1000.0f;
+        qDebug () << "Get thumbnail " << "size:" << pxmBytes.size () << ' ' << t2 - t1 << "total time: "<< t2 << 's' << "Item: " << iItem << " of " << cItems;
         if (!pxmBytes.isEmpty ())
         { // Add to the cache.
           pxm = m_pxmCache.add (albumArtURI, pxmBytes, QSize (16, 16));
@@ -228,6 +237,7 @@ void CMainWindow::updateTree (QTreeWidgetItem* item, CBrowseReply const & reply,
       itemChild->setIcon (0, pxm);
     }
 
+    ui->m_services->scrollToItem (itemChild);
     insertDidlElems (itemChild);
   }
 
@@ -246,11 +256,7 @@ void CMainWindow::browse (QTreeWidgetItem* item)
 
     CContentDirectory cd (m_cp);
     CBrowseReply      reply = cd.browse (m_deviceUUID, id);
-    QStringList       caps  = reply.sortCapabilities ();
-    reply.sort ("res@duration", CBrowseReply::ascending);
-
     updateTree (item, reply, BrowseType);
-    addElapsedTime (item);
   }
 }
 
