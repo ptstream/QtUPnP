@@ -640,6 +640,11 @@ void CControlPoint::unknownDevice (QString const & uuid)
   m_lastActionError.setString (ErrorActionString, QString ("Wrong device uuid: %1").arg (uuid));
 }
 
+QNetworkAccessManager* CControlPoint::networkAccessManager () const
+{
+  return m_devices.networkAccessManager ();
+}
+
 void CControlPoint::close ()
 {
   m_closing         = true;

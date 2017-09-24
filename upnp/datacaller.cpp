@@ -2,7 +2,11 @@
 
 USING_UPNP_NAMESPACE
 
-CDataCaller::CDataCaller (QObject* parent) : QEventLoop (parent)
+CDataCaller::CDataCaller (QObject* parent) : QEventLoop (parent), m_naMgr (new QNetworkAccessManager (parent))
+{
+}
+
+CDataCaller::CDataCaller (QNetworkAccessManager* naMgr, QObject* parent) : QEventLoop (parent), m_naMgr (naMgr)
 {
 }
 
@@ -19,9 +23,8 @@ QByteArray CDataCaller::callData (QUrl const & url, int timeout)
     QString scheme = url.scheme ();
     if (scheme == "http" || scheme == "https")
     { // http or https request
-      QNetworkAccessManager naMgr;
-      QNetworkRequest       nreq (m_request); // Build the network request
-      QNetworkReply*        reply = naMgr.get (nreq); // Send the get request and store the reply
+      QNetworkRequest nreq (m_request); // Build the network request
+      QNetworkReply*  reply = m_naMgr->get (nreq); // Send the get request and store the reply
 
       connect (reply, SIGNAL (error (QNetworkReply::NetworkError)), this, SLOT (error (QNetworkReply::NetworkError)));
       connect (reply, SIGNAL (finished ()), this, SLOT (finished ()));

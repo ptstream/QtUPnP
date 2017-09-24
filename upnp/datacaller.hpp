@@ -7,7 +7,6 @@
 #include <QNetworkReply>
 
 class QNetworkAccessManager;
-class QUrl;
 
 START_DEFINE_UPNP_NAMESPACE
 
@@ -22,8 +21,19 @@ class UPNP_API CDataCaller : public QEventLoop
 public :
   enum ETime { Timeout = 10000 }; //!< HTTP request timeout in ms (10s).
 
-  /*! Default contructor. */
+  /*! Default contructor.
+   *
+   * The QNetworkAccessManager is created internaly.
+   */
   CDataCaller (QObject* parent = nullptr);
+
+  /*! Constructor with network access manager.
+   *
+   * The internal QNetworkAccessManager is not created. The object use naMgr.
+   * It is sometimes useful because create and destroy the network access manager
+   * consumes time. Use this contructor when you want call callData function many times.
+   */
+  CDataCaller (QNetworkAccessManager* naMgr, QObject* parent = nullptr);
 
   /*! Destructor. */
   ~CDataCaller ();
@@ -54,6 +64,7 @@ private slots:
 
 private :
   QString m_request; //!< The request.
+  QNetworkAccessManager* m_naMgr = nullptr;
 };
 
 } // End namespace

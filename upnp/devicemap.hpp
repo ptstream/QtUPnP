@@ -6,6 +6,8 @@
 #include "upnpsocket.hpp"
 #include <QTimer>
 
+class QNetworkAccessManager;
+
 START_DEFINE_UPNP_NAMESPACE
 
 /*! Defines the map of devices. */
@@ -76,6 +78,9 @@ public :
   /*! Returns the lost device list as a const reference. */
   QStringList const & lostDevices () const { return m_lostDevices; }
 
+  /*! Returns the netwok access manager created to speed up retreive data. */
+  QNetworkAccessManager* networkAccessManager () const { return m_naMgr; }
+
 protected :
   /*! Inserts a new device. */
   void insertDevice (CDevice& device);
@@ -91,6 +96,7 @@ protected :
 
 private :
   CHTTPServer* m_httpServer = nullptr; //!< The http server for eventing.
+  QNetworkAccessManager* m_naMgr = nullptr;  //!< The network access manager for dataCaller.
   QStringList m_newDevices; //!< List of new devices.
   QStringList m_lostDevices; //!< List of lost devices.
 };

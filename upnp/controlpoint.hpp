@@ -268,8 +268,14 @@ public :
   /*! Returns the last action error as a human-readable description. */
   QString const & lastActionErrorString () const { return m_lastActionError.m_strings[ErrorActionString]; }
 
+  /*! Returns the netwok access manager created to speed up retreive data. */
+  QNetworkAccessManager* networkAccessManager () const;
+
   /*! Close the control point. This function must be call before the destructor. */
   void close ();
+
+  /*! Returns true if the control point is closing. */
+  bool isClosing () const { return m_closing; }
 
   /*! Constant to define a empty list of argument. */
   static QList<CControlPoint::TArgValue> noArgs;
