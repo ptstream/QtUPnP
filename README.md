@@ -7,10 +7,13 @@ For a better description, unzip /upnp/docs/html.zip and choose index.html.
 
 Build the framework and the test program need to install QT5. QtUPnP has been coded from:
   - Windows "qt-opensource-windows-x86-mingw492-5.6.0.exe" installer download from "https://download.qt.io/official_releases/qt/5.6/5.6.0/".
-    The built version is a 32 bits. It runs from Windows Vista to Windows 10 32 or 64 bits. It has been tested on Vista 32 bits and Windows 10 32 and 64 bits.
+    The built version is a 32 bits. It runs from Windows Vista to Windows 10 32 or 64 bits. 
+    It has been tested on Vista 32 bits and Windows 10 32 and 64 bits.
+    Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
     The built version is a 64 bits. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
+    The actual pro file creates a static library.
 
 The framework use only QT API, no other system dependent API.
 
