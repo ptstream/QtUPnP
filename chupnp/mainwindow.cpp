@@ -157,30 +157,40 @@ void CMainWindow::updateTree (QTreeWidgetItem* item, CBrowseReply const & reply,
       didlElem = didlItem.value ("item");
     }
 
-    // Try to retreive pixmap from cache.
-    QPixmap         pxm;
-    QString const & albumArtURI = didlItem.albumArtURI (0);
-    if (!albumArtURI.isEmpty ())
+    QStringList      uris = didlItem.albumArtURIs ();
+    QString          thumbnail;
+    CDidlItem::EType type = didlItem.type ();
+    if (uris.isEmpty () && (type == CDidlItem::ImageItem || type == CDidlItem::Photo))
     {
-      pxm = m_pxmCache.search (albumArtURI);
+      uris = didlItem.uris ();
+    }
+
+    if (!uris.isEmpty ())
+    {
+      thumbnail = uris.last ();
+    }
+
+    QPixmap pxm;
+    if (!thumbnail.isEmpty ())
+    {
+      pxm = m_pxmCache.search (thumbnail);
       if (pxm.isNull())
       { // Not find in the cache. Get from server.
         float t1 = ti.elapsed () / 1000.0f;
-        CDataCaller dc;
-        QByteArray  pxmBytes = dc.callData (albumArtURI);
+        CDataCaller dc (m_cp->networkAccessManager ());
+        QByteArray  pxmBytes = dc.callData (thumbnail);
         float t2 = ti.elapsed () / 1000.0f;
         qDebug () << "Get thumbnail " << "size:" << pxmBytes.size () << ' ' << t2 - t1 << "total time: "<< t2 << 's' << "Item: " << iItem << " of " << cItems;
         if (!pxmBytes.isEmpty ())
         { // Add to the cache.
-          pxm = m_pxmCache.add (albumArtURI, pxmBytes, QSize (16, 16));
+          pxm = m_pxmCache.add (thumbnail, pxmBytes, QSize (16, 16));
         }
       }
     }
 
     if (pxm.isNull ())
     { // No pixmap avalaible use generic pixmap.
-      char const *     pxmName;
-      CDidlItem::EType type = didlItem.type ();
+      char const * pxmName;
       if (!CDidlItem::isContainer (type))
       {
         switch (type)
