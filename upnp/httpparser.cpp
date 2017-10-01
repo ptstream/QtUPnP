@@ -31,6 +31,14 @@ void CHTTPParser::parseMessage ()
 {
   if (!m_message.isEmpty ())
   {
+    // Some router (Netgear) start sometimes the message by '\0' and blank. Remove it.
+    int k = 0;
+    for (int end = m_message.length (); k < end && (m_message[k] == '\0' || m_message[k] == ' '); ++k);
+    if (k != 0)
+    {
+      m_message = m_message.mid (k);
+    }
+
     int headerLength = this->headerLength ();
     if (headerLength > 0)
     {
