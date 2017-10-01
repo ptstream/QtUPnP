@@ -39,7 +39,7 @@ public:
   /*! Returns a boolean value corresponding at a string.
    * True is returned if entryString doesn't start by '0' or 'f' or 'F';
   */
-  bool toBool (QString const & entryString);
+  static bool toBool (QString const & entryString);
 
 protected :
   CControlPoint* m_cp = nullptr; //<! The control point of the application.
