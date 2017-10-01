@@ -27,8 +27,14 @@ class CStateVariable
 public:
   /*! Variable type. */
   enum EType { Unknown, //!< Unknwon
+               I1, //!< 8  bits integer
+               Ui1, //!< 8 bits unsigned integer
+               I2, //!< 16  bits integer
+               Ui2, //!< 16 bits unsigned integer
                I4, //!< 32 bits integer
                Ui4, //!< 32 bits unsigned integer
+               I8, //!< 64 bits integer
+               Ui8, //!< 64 bits unsigned integer
                Real, //!< double
                String, //!< QString
                Boolean, //!< bool
@@ -71,7 +77,7 @@ public:
   void setStep (double step);
 
   /*! Sets the value. */
-  void setValue (QVariant const & v);
+  void setValue (QString const & value);
 
   /*! Sets the variable constraints. */
   void setConstraints (QList<TConstraint> const & csts);
@@ -102,7 +108,6 @@ public:
 
   /*! Returns the variable constraints as a reference. */
   QList<TConstraint> & constraints ();
-
 
   /*! Returns true if the variable has not the type Unknown. */
   bool isValid () const;

@@ -89,9 +89,126 @@ void CStateVariable::setStep (double step)
   m_d->m_step = step;
 }
 
-void CStateVariable::setValue (QVariant const & v)
+void CStateVariable::setValue (QString const & value)
 {
-  m_d->m_value = v;
+  bool ok;
+  switch (m_d->m_type)
+  {
+    case I1 :
+    {
+      short i1 = value.toShort (&ok);
+      if (ok)
+      {
+        m_d->m_value = static_cast<qint8>(i1);
+      }
+      break;
+    }
+
+    case Ui1 :
+    {
+      unsigned short ui1 = value.toUShort (&ok);
+      if (ok)
+      {
+        m_d->m_value = static_cast<quint8>(ui1);
+      }
+      break;
+    }
+
+    case I2 :
+    {
+      short i2 = value.toShort (&ok);
+      if (ok)
+      {
+        m_d->m_value = i2;
+      }
+      break;
+    }
+
+    case Ui2 :
+    {
+      unsigned short ui2 = value.toUShort (&ok);
+      if (ok)
+      {
+        m_d->m_value = ui2;
+      }
+      break;
+    }
+
+    case I4 :
+    {
+      int i4 = value.toInt (&ok);
+      if (ok)
+      {
+        m_d->m_value = i4;
+      }
+      break;
+    }
+
+    case Ui4 :
+    {
+      unsigned ui4 = value.toUInt (&ok);
+      if (ok)
+      {
+        m_d->m_value = ui4;
+      }
+      break;
+    }
+
+    case I8 :
+    {
+      long long i8 = value.toLongLong (&ok);
+      if (ok)
+      {
+        m_d->m_value = i8;
+      }
+      break;
+    }
+
+    case Ui8 :
+    {
+      unsigned long long ui8 = value.toULongLong (&ok);
+      if (ok)
+      {
+        m_d->m_value = ui8;
+      }
+      break;
+    }
+
+    case Real :
+    {
+      double real = value.toDouble (&ok);
+      if (ok)
+      {
+        m_d->m_value = real;
+      }
+      break;
+    }
+
+    case String :
+      m_d->m_value = value;
+      break;
+
+    case Boolean :
+    {
+      bool boolean = false;
+      if (!value.isEmpty ())
+      {
+        char c  = value[0].toLatin1 ();
+        boolean = c == '0' || c == 'f' || c == 'F' || c == 'n' || c == 'N';
+        if (!boolean)
+        {
+          boolean = c == '1' || c == 't' || c == 'T' || c == 'y' || c == 'Y';
+        }
+        else
+        {
+          boolean = !boolean;
+        }
+      }
+
+      m_d->m_value = boolean;
+      break;
+    }
+  }
 }
 
 void CStateVariable::setConstraints (QList<TConstraint> const & csts)
@@ -156,6 +273,22 @@ CStateVariable::EType CStateVariable::typeFromString (QString const & stype)
   {
     t = CStateVariable::String;
   }
+  else if (stype == "i1")
+  {
+    t = CStateVariable::I1;
+  }
+  else if (stype == "ui1")
+  {
+    t = CStateVariable::Ui1;
+  }
+  else if (stype == "i2")
+  {
+    t = CStateVariable::I2;
+  }
+  else if (stype == "ui2")
+  {
+    t = CStateVariable::Ui4;
+  }
   else if (stype == "i4")
   {
     t = CStateVariable::I4;
@@ -163,6 +296,14 @@ CStateVariable::EType CStateVariable::typeFromString (QString const & stype)
   else if (stype == "ui4")
   {
     t = CStateVariable::Ui4;
+  }
+  else if (stype == "i8")
+  {
+    t = CStateVariable::I8;
+  }
+  else if (stype == "ui8")
+  {
+    t = CStateVariable::Ui8;
   }
   else if (stype == "real")
   {
