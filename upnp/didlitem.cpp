@@ -326,11 +326,19 @@ QStringList CDidlItem::albumArtURIs () const
 
 QString CDidlItem::albumArtURI (int index) const
 {
-  QStringList uris = this->albumArtURIs ();
   QString     uri;
-  if (index >= 0 && index < uris.size ())
+  QStringList uris = this->albumArtURIs ();
+  if (!uris.isEmpty ())
   {
-    uri = uris[index];
+    if (index == -1)
+    {
+      index = uris.size () - 1;
+    }
+
+    if (index >= 0 && index < uris.size ())
+    {
+      uri = uris[index];
+    }
   }
 
   return uri;
@@ -571,6 +579,13 @@ QString CDidlItem::protocolInfo (int index) const
   QList<CDidlElem> elems = m_d->m_elems.values ("res");
   int              size  = elems.size ();
   return index >= 0 && index < size ? elems[index].props ().value ("protocolInfo") : QString::null;
+}
+
+QString CDidlItem::resolution (int index) const
+{
+  QList<CDidlElem> elems = m_d->m_elems.values ("res");
+  int              size  = elems.size ();
+  return index >= 0 && index < size ? elems[index].props ().value ("resolution") : QString::null;
 }
 
 unsigned CDidlItem::originalTrackNumber () const

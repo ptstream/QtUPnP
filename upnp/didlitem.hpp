@@ -276,7 +276,7 @@ public:
   QStringList albumArtURIs () const;
 
   /*! Returns AlbumArtURI uri element.
-   * \param index: The index of albumArtURI element.
+   * \param index: The index of albumArtURI element. Index=-1 returns the last uri.
   */
   QString albumArtURI (int index) const;
 
@@ -325,6 +325,9 @@ public:
 
   /*! Returns the protocol information. */
   QString protocolInfo (int index = 0) const;
+
+  /*! Returns the resolution. */
+  QString resolution (int index = 0) const;
 
   /*! Returns the composer. */
   QString composer () const;
