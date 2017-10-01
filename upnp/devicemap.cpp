@@ -154,7 +154,7 @@ int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & n
           }
         }
       }
-      else if (!contains (nDevice.m_uuid))
+      else if (!contains (nDevice.m_uuid) && m_invalidDevices.value (nDevice.m_uuid) < 2)
       {
         bool        success      = false;
         char const * failMessage = nullptr;
@@ -185,12 +185,13 @@ int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & n
           }
           else
           {
-            failMessage = "Bad service:";
+            failMessage = "Invalid service:";
           }
         }
         else
         {
-          failMessage = "Bad device:";
+          ++m_invalidDevices[nDevice.m_uuid];
+          failMessage = "Invalid device:";
         }
 
         if (!success)
