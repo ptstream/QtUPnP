@@ -46,6 +46,17 @@ public :
    */
   QString playlistURI (QString const & name) const;
 
+  /*! Sets the current playlist name.
+   * \param name: The playlist name.
+   */
+  void setPlaylistName (QString const & name) { m_playlistName = name; }
+
+  /*! Returns the current playlist name. */
+  QString const & playlistName () const { return m_playlistName; }
+
+  /*! Clears the current playlist of the http server. */
+  void clearPlaylist () { m_playlistName.clear (); }
+
   /*! Builds an audio file uri from a name.
    * Not use actually.
    */
@@ -58,6 +69,11 @@ public :
   TMEventVars const & vars () const { return m_vars; }
 
  /*! Returns the playlist base name.
+  *
+  * The playlist base name is the name where ':' is replaced by '_'.
+  *
+  * A good way is the name the playlist with the renderer uuid. Normally the uuid
+  * start bt "uuid:". The a file name this function simply replace ':' by '_'.
   * \param name: The playlist name.
   * \return The base name.
   */
@@ -159,7 +175,8 @@ private :
   bool m_done = false; //<! The TCP server has well finished its initialization.
   QMap<QTcpSocket*, TMessageData> m_eventMessage;
   TMEventVars m_vars; //!< The map of variables modified by the UPnP event.
-  mutable QByteArray m_playlistContent; //!< The formated playlist.
+  mutable QByteArray m_playlistContent; //!< The formatted playlist.
+  QString m_playlistName; //!< The current playlist name.
 };
 
 } // End namespace
