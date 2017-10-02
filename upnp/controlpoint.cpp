@@ -53,10 +53,11 @@ bool CControlPoint::initialize ()
       connect (m_unicastSockets[k], SIGNAL(readyRead()), this, SLOT(readDatagrams()));
       int iAddr = k % (sizeof (addresses) / sizeof (QHostAddress));
       done     &= m_unicastSockets[k]->bind (addresses[iAddr]) != 0;
-      if (done)
-      {
-        connect (m_devices.httpServer (), SIGNAL(eventReady(QString const &)), this, SLOT(eventReady(QString const &)));
-      }
+    }
+
+    if (done)
+    {
+      connect (m_devices.httpServer (), SIGNAL(eventReady(QString const &)), this, SLOT(updateEventVars(QString const &)));
     }
   }
 
@@ -170,33 +171,36 @@ void CControlPoint::renewalTimeout ()
   }
 }
 
-void CControlPoint::eventReady (QString const & sid)
+void CControlPoint::updateEventVars (QString const & sid)
 {
-  QStringList emitter;
-  QPair<QString, QString> ds = m_devices.eventSender (sid);
-  if (!ds.first.isEmpty () && this->contains (ds.first))
+  if (!m_closing)
   {
-    CDevice&          device         = m_devices[ds.first];
-    CService&         service        = device.services ()[ds.second];
-    TMStateVariables& stateVariables = service.stateVariables ();
-    TMEventVars       eventVars      = m_devices.httpServer ()->vars ();
-    emitter.reserve (eventVars.size () + 2);
-    emitter << ds.first << ds.second;
-    for (TMEventVars::const_iterator it = eventVars.cbegin (), end = eventVars.cend (); it != end; ++it)
+    QStringList emitter;
+    QPair<QString, QString> ds = m_devices.eventSender (sid);
+    if (!ds.first.isEmpty () && this->contains (ds.first))
     {
-      QString const & name = it.key ();
-      if (stateVariables.contains (name))
+      CDevice&          device         = m_devices[ds.first];
+      CService&         service        = device.services ()[ds.second];
+      TMStateVariables& stateVariables = service.stateVariables ();
+      TMEventVars       eventVars      = m_devices.httpServer ()->vars ();
+      emitter.reserve (eventVars.size () + 2);
+      emitter << ds.first << ds.second;
+      for (TMEventVars::const_iterator it = eventVars.cbegin (), end = eventVars.cend (); it != end; ++it)
       {
-        CStateVariable&     var   = stateVariables[name];
-        TEventValue const & value = it.value ();
-        var.setValue (value.first);
-        var.setConstraints (value.second);
-        emitter << name;
+        QString const & name = it.key ();
+        if (stateVariables.contains (name))
+        {
+          CStateVariable&     var   = stateVariables[name];
+          TEventValue const & value = it.value ();
+          var.setValue (value.first);
+          var.setConstraints (value.second);
+          emitter << name;
+        }
       }
     }
-  }
 
-  emit eventReady (emitter);
+    emit eventReady (emitter);
+  }
 }
 
 void CControlPoint::networkAccessManager (QString const & deviceUUID, QNetworkReply::NetworkError errorCode, QString const & errorDesc)
@@ -564,6 +568,36 @@ int CControlPoint::setPlaylistContent (QList<CDidlItem::TPlaylistElem> const & i
   }
 
   return size;
+}
+
+void CControlPoint::setPlaylistName (QString const & name)
+{
+  CHTTPServer* server = httpServer ();
+  if (server != nullptr)
+  {
+    server->setPlaylistName (name);
+  }
+}
+
+QString CControlPoint::playlistName () const
+{
+  QString             name;
+  CHTTPServer const * server = httpServer ();
+  if (server != nullptr)
+  {
+    name = server->playlistName ();
+  }
+
+  return name;
+}
+
+void CControlPoint::clearPlaylist ()
+{
+  CHTTPServer* server = httpServer ();
+  if (server != nullptr)
+  {
+    server->clearPlaylist ();
+  }
 }
 
 QList<QString> CControlPoint::subscribedDevices () const

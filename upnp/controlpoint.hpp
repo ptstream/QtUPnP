@@ -237,6 +237,17 @@ public :
    */
   int setPlaylistContent (QList<CDidlItem::TPlaylistElem> const & items, CDidlItem::EPlaylistFormat format);
 
+  /*! Sets the current playlist name of the http server.
+   * \return the name of the playlist.
+  */
+  void setPlaylistName (QString const & name);
+
+  /*! Returns the current playlist name of the http server. */
+  QString playlistName() const;
+
+  /*! Clears the current playlist of the http server. */
+  void clearPlaylist ();
+
   /*! Sets renew subscription gard.
    * \param s: Gard in seconds. Default 2mn.
    */
@@ -290,7 +301,7 @@ protected slots :
   /*! An UPnP event was emitted.
    * \param sid: The subscripted sid.
    */
-  void eventReady (QString const & sid);
+  void updateEventVars (QString const & sid);
 
   /*! A network error was emitted.
    * \param deviceUUID: The device uuid.
