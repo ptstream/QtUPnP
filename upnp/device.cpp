@@ -10,7 +10,7 @@ struct SDeviceData : public QSharedData
   SDeviceData () {}
   SDeviceData (SDeviceData const & other);
 
-  bool m_canManagePlaylists = false; //!< The renderer can managed playlits.
+  mutable qint8 m_canManagePlaylists = -1; //!< The renderer can managed playlits.
   int m_type = 0; //!< The type of the device e.g. server.
   QUrl m_url; //!< The url.
   QString m_uuid; //! < The uuid.
@@ -133,9 +133,9 @@ void CDevice::setUUID (QString const & uuid)
   m_d->m_uuid = uuid;
 }
 
-void CDevice::setCanManagePlaylists (bool set)
+void CDevice::setPlaylistStatus (EPlaylistStatus state)
 {
-  m_d->m_canManagePlaylists = set;
+  m_d->m_canManagePlaylists = state;
 }
 
 void CDevice::setModelName (QString const & name)
@@ -258,9 +258,14 @@ QUrl const & CDevice::url () const
   return m_d->m_url;
 }
 
-bool CDevice::canManagePlaylists () const
+CDevice::EPlaylistStatus CDevice::playlistStatus() const
 {
-  return m_d->m_canManagePlaylists;
+  if (m_d->m_canManagePlaylists == UnknownHandler)
+  {
+    m_d->m_canManagePlaylists = hasProtocol ("audio/x-mpegurl") ? PlaylistHandler : NoPlaylistHandler;
+  }
+
+  return static_cast<EPlaylistStatus>(m_d->m_canManagePlaylists);
 }
 
 bool CDevice::isSubDevice () const
@@ -601,4 +606,29 @@ CAction CDevice::action (QString const & serviceID, QString const & name) const
 {
   CService const & service = services ().value (serviceID);
   return service.actions ().value (name);
+}
+
+bool CDevice::hasProtocol (QString const & protocol, bool exact) const
+{
+  bool             found     = false;
+  CService const & service   = m_d->m_services.value ("urn:upnp-org:serviceId:ConnectionManager");
+  CStateVariable   variable  = service.stateVariable ("SinkProtocolInfo");
+  QString          protocols = variable.value ().toString ();
+  if (protocols.isEmpty ())
+  {
+    variable  = service.stateVariable ("SourceProtocolInfo");
+    protocols = variable.value ().toString ();
+  }
+
+  if (!exact)
+  {
+    found = protocols.indexOf (protocol) != -1;
+  }
+  else
+  {
+    QStringList protocolInfos = protocols.split (',');
+    found = std::find (protocolInfos.begin (), protocolInfos.end (), protocol) != protocolInfos.end ();
+  }
+
+  return found;
 }

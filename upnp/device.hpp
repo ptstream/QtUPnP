@@ -39,6 +39,11 @@ public:
                              HiResol, //!< High resolution.
                            };
 
+  enum EPlaylistStatus { UnknownHandler = -1,
+                         NoPlaylistHandler = 0,
+                         PlaylistHandler = 1,
+                       };
+
   /*! Default constructor. */
   CDevice ();
 
@@ -52,7 +57,7 @@ public:
   ~CDevice ();
 
   /*! Uses by renderer. Indicates that the device can manage playlist. */
-  void setCanManagePlaylists (bool set);
+  void setPlaylistStatus (EPlaylistStatus state);
 
   /*! Sets the device type. */
   void setType (EType type);
@@ -134,8 +139,22 @@ public:
   /*! Returns true if the device is an embedded device. */
   bool isSubDevice () const;
 
-  /*! Returns if the device can manage playlist. */
-  bool canManagePlaylists () const;
+  /*! Returns true if protocol has found.
+   * \param protocol: Protocol to search.
+   * \param exact: Search the exact protocol.
+   * The protocol is valid only if "urn:upnp-org:serviceId:ConnectionManager" is correctly evented
+   * and if the device has subcripted at this service.
+   *
+   * E.g. "http-get:*:audio/x-mpegurl:*" generally can be search with protocol = "audio/x-mpegurl" and
+   * exact = "false".
+   */
+  bool hasProtocol (QString const & protocol, bool exact = false) const;
+
+  /*! Returns the playlist status.
+   * The playlist status is valid only if urn:upnp-org:serviceId:ConnectionManager is correctly evented
+   * and if the device has subcripted at this service.
+   */
+  EPlaylistStatus playlistStatus () const;
 
   /*! Returns the device type. */
   EType type () const;
