@@ -1,8 +1,24 @@
 #include "avtransport.hpp"
 #include "controlpoint.hpp"
 #include "actioninfo.hpp"
+#include "../upnp/waitingloop.hpp"
 
 USING_UPNP_NAMESPACE
+
+bool CAVTransport::waitForAVTransportURI (QString const & renderer, int iTrack)
+{
+  int           cChecks = 0;
+  CPositionInfo info;
+  do
+  {
+    CWaitingLoop::wait (500, QEventLoop::ExcludeUserInputEvents);
+    info = getPositionInfo (renderer);
+    ++cChecks;
+  }
+  while (cChecks < 5 && static_cast<int>(info.track ()) != iTrack);
+  CWaitingLoop::wait (500, QEventLoop::ExcludeUserInputEvents); // Caution.
+  return cChecks < 5;
+}
 
 QStringList CAVTransport::getCurrentTransportActions (QString const & rendererUUID, unsigned instanceID)
 {
@@ -147,7 +163,7 @@ CMediaInfo CAVTransport::getMediaInfo (QString const & rendererUUID, unsigned in
 }
 
 bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem const & item,
-                                        int index, unsigned instanceID)
+                                      int index, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
   CActionInfo actionInfo;
@@ -170,6 +186,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
                                       CDidlItem::EPlaylistFormat format, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  bool        success = false;
   CActionInfo actionInfo;
   if (m_cp->setPlaylistContent (items, format) != 0)
   {
@@ -180,9 +197,14 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
     args << CControlPoint::TArgValue ("CurrentURI", uri);
     args << CControlPoint::TArgValue ("CurrentURIMetaData", QString::null);
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
+    success    = actionInfo.succeeded ();
+    if (success)
+    {
+      m_cp->setPlaylistName (playlistName);
+    }
   }
 
-  return actionInfo.succeeded ();
+  return success;
 }
 
 bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString const & uri, unsigned instanceID)

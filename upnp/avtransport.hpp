@@ -196,6 +196,14 @@ public:
    * \return true in case of success. Otherwise false.
    */
   bool seek (QString const & rendererUUID, int iTrack, unsigned instanceID = 0);
+
+  /*! This code is to fix a problem detected with Cabasse Stream1.
+   * If the Play action is sent to fast, the current track is good but the renderer play always the track 1.
+   * To fix it, we wait 0.5s and get the current track.
+   * If the current track is not good we retry the same code a maximum
+   * of 5 times (wait max 2.5s).
+   */
+  bool waitForAVTransportURI (QString const & renderer, int iTrack);
 };
 
 
