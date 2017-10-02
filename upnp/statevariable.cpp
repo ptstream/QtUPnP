@@ -194,15 +194,7 @@ void CStateVariable::setValue (QString const & value)
       if (!value.isEmpty ())
       {
         char c  = value[0].toLatin1 ();
-        boolean = c == '0' || c == 'f' || c == 'F' || c == 'n' || c == 'N';
-        if (!boolean)
-        {
-          boolean = c == '1' || c == 't' || c == 'T' || c == 'y' || c == 'Y';
-        }
-        else
-        {
-          boolean = !boolean;
-        }
+        boolean = c == '1' || c == 't' || c == 'T' || c == 't' || c == 'Y';
       }
 
       m_d->m_value = boolean;
