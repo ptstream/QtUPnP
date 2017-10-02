@@ -198,7 +198,10 @@ public:
   /*! Playlist format. Actually only M3u and M3u8 can be used. */
   enum EPlaylistFormat { M3u, M3u8, Wpl, Xspl };
 
-  /*! Type definition of a playlist element. */
+  /*! Type definition of a playlist element.
+   * \param CDidlItem: The didl item.
+   * \param int: The index of the res element.
+   */
   typedef QPair<CDidlItem, int> TPlaylistElem;
 
   /*! Default constructor. */
