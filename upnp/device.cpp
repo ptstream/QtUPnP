@@ -10,7 +10,7 @@ struct SDeviceData : public QSharedData
   SDeviceData () {}
   SDeviceData (SDeviceData const & other);
 
-  mutable qint8 m_canManagePlaylists = -1; //!< The renderer can managed playlits.
+  mutable qint8 m_managePlaylists = -1; //!< The renderer can managed playlits.
   int m_type = 0; //!< The type of the device e.g. server.
   QUrl m_url; //!< The url.
   QString m_uuid; //! < The uuid.
@@ -37,7 +37,7 @@ struct SDeviceData : public QSharedData
 };
 
 SDeviceData::SDeviceData (SDeviceData const & other) :  QSharedData (other),
-      m_canManagePlaylists (other.m_canManagePlaylists),
+      m_managePlaylists (other.m_managePlaylists),
       m_type (other.m_type),
       m_url (other.m_url), m_uuid (other.m_uuid), m_modelName (other.m_modelName),
       m_modelNumber (other.m_modelNumber), m_modelURL (other.m_modelURL), m_modelDesc (other.m_modelDesc),
@@ -135,7 +135,7 @@ void CDevice::setUUID (QString const & uuid)
 
 void CDevice::setPlaylistStatus (EPlaylistStatus state)
 {
-  m_d->m_canManagePlaylists = state;
+  m_d->m_managePlaylists = state;
 }
 
 void CDevice::setModelName (QString const & name)
@@ -258,14 +258,14 @@ QUrl const & CDevice::url () const
   return m_d->m_url;
 }
 
-CDevice::EPlaylistStatus CDevice::playlistStatus() const
+CDevice::EPlaylistStatus CDevice::playlistStatus () const
 {
-  if (m_d->m_canManagePlaylists == UnknownHandler)
+  if (m_d->m_managePlaylists == UnknownHandler)
   {
-    m_d->m_canManagePlaylists = hasProtocol ("audio/x-mpegurl") ? PlaylistHandler : NoPlaylistHandler;
+    m_d->m_managePlaylists = hasProtocol ("audio/x-mpegurl") ? PlaylistHandler : NoPlaylistHandler;
   }
 
-  return static_cast<EPlaylistStatus>(m_d->m_canManagePlaylists);
+  return static_cast<EPlaylistStatus>(m_d->m_managePlaylists);
 }
 
 bool CDevice::isSubDevice () const
@@ -492,7 +492,7 @@ QByteArray CDevice::pixmapBytes (EPreferedPixmapType type, char const * mimeType
 bool CDevice::parseXml (QByteArray const & data)
 {
   CXmlHDevice h (*this);
-  return h.parse (data);
+  return h.parse (data) | CXmlH::tolerantMode ();
 }
 
 bool CDevice::extractServiceComponents (int timeout)
@@ -562,17 +562,33 @@ QList<QString> CDevice::subscribedServices () const
   return services;
 }
 
-CStateVariable CDevice::stateVariable(QString const & name, QString const & serviceID) const
+CStateVariable CDevice::stateVariable (QString const & name, QString const & serviceID) const
 {
-  CStateVariable     v;
+  CStateVariable     variable;
   TMServices const & services = this->services ();
-  if (services.contains (serviceID))
+  if (serviceID.isEmpty ())
   {
-    CService const & service = services.value (serviceID);
-    v                        = service.stateVariable (name);
+    for (TMServices::const_iterator it = services.cbegin (), end = services.end (); it != end; ++it)
+    {
+      CService const &         service   = it.value ();
+      TMStateVariables const & variables = service.stateVariables ();
+      if (variables.contains (name))
+      {
+        variable = variables.value (name);
+        break;
+      }
+    }
+  }
+  else
+  {
+    if (services.contains (serviceID))
+    {
+      CService const & service = services.value (serviceID);
+      variable                 = service.stateVariable (name);
+    }
   }
 
-  return v;
+  return variable;
 }
 
 QList<CDevice> const & CDevice::subDevices () const
@@ -604,8 +620,47 @@ QStringList CDevice::serviceIDs (QString const & actionName) const
 
 CAction CDevice::action (QString const & serviceID, QString const & name) const
 {
-  CService const & service = services ().value (serviceID);
-  return service.actions ().value (name);
+  CAction action;
+  if (serviceID.isEmpty ())
+  {
+    for (TMServices::const_iterator its = m_d->m_services.cbegin (), end = m_d->m_services.cend (); its != end; ++its)
+    {
+      CService const &  service = its.value ();
+      TMActions const & actions = service.actions ();
+      if (actions.contains (name))
+      {
+        action = actions.value (name);
+      }
+    }
+  }
+  else
+  {
+    CService const & service = services ().value (serviceID);
+    action                   = service.actions ().value (name);
+  }
+
+  return action;
+}
+
+bool CDevice::hasAction (QString const & serviceID, QString const & name) const
+{
+  bool success = false;
+  if (serviceID.isEmpty ())
+  {
+    for (TMServices::const_iterator its = m_d->m_services.cbegin (), end = m_d->m_services.cend (); its != end && !success; ++its)
+    {
+      CService const &  service = its.value ();
+      TMActions const & actions = service.actions ();
+      success                   = actions.contains (name);
+    }
+  }
+  else
+  {
+    CService const & service = services ().value (serviceID);
+    success                  = service.actions ().contains (name);
+  }
+
+  return success;
 }
 
 bool CDevice::hasProtocol (QString const & protocol, bool exact) const

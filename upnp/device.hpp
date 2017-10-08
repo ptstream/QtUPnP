@@ -9,7 +9,13 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! Services map.
+ * \param QString: Service name.
+ * \param CService: Service data.
+ */
 typedef QMap<QString, CService> TMServices;
+
+/*! Forward declaration of service data. */
 class SDeviceData;
 
 /*! \brief The CDevice class holds information about a device being advertised or found by a control point.
@@ -39,9 +45,9 @@ public:
                              HiResol, //!< High resolution.
                            };
 
-  enum EPlaylistStatus { UnknownHandler = -1,
-                         NoPlaylistHandler = 0,
-                         PlaylistHandler = 1,
+  enum EPlaylistStatus { UnknownHandler = -1, //!< The device can use playlists status unknown.
+                         NoPlaylistHandler = 0, //!< The device cannot use playlists.
+                         PlaylistHandler = 1, //!< The device can use playlists.
                        };
 
   /*! Default constructor. */
@@ -284,7 +290,14 @@ public:
    * \param name: The action name.
    * \return The action.
    */
-  CAction action(QString const & serviceID, QString const & name) const;
+  CAction action (QString const & serviceID, QString const & name) const;
+
+  /*! Returns true if the device has the action named name.
+   * \param serviceID: The service identifier.
+   * \param name: The action name.
+   * \return True in case of success.
+   */
+  bool hasAction (QString const & serviceID, QString const & name) const;
 
    /*! Returns the list of service identifiers for an action.
    * \param actionName: The action name.
