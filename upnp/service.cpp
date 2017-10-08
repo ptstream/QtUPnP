@@ -199,8 +199,7 @@ void CService::clearSID ()
 bool CService::parseXml (QByteArray const & data)
 {
   CXmlHService h (*this);
-  bool         success = h.parse (data);
-  return success;
+  return h.parse (data) | CXmlH::tolerantMode ();
 }
 
 CStateVariable CService::stateVariable (QString const & name) const
