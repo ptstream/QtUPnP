@@ -33,12 +33,12 @@ public:
   virtual bool endElement (QString const & namespaceURI, QString const & localName, QString const & qName);
 
 private :
-  CDevice& m_device;
-  QStack<QVector<TTempService>> m_tempServices;
-  QStack<CDevice*> m_subDevices;
+  CDevice& m_device; //!< The device to updated.
+  QStack<QVector<TTempService>> m_tempServices; //!* The stack of services for the device and each embeded devices.
+  QStack<CDevice*> m_subDevices; //!* The stack of embeded devices.
   CDevice* m_current = nullptr; //!< Current parsed device.
   QString m_urlBase; //!< base url in case of embedded devices.
-  bool m_deviceList = false;
+  bool m_deviceList = false; //!< The xml contains a device list tag.
 };
 
 } // Namespace

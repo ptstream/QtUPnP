@@ -57,7 +57,7 @@ private :
   QMap<QByteArray, QByteArray> m_headerElems; //!< The headers map of rows.
   bool m_playlistPath = false; //!< The verb value is a point a playlist.
 
-  static char const * m_playlistSuffixes[];
+  static char const * m_playlistSuffixes[]; //!< Play list suffixes (m3u, m3u8...)
 };
 
 } // Namespace

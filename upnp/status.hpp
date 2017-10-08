@@ -47,7 +47,7 @@ public:
   inline unsigned status () const;
 
 protected :
-  unsigned m_status = 0; //!< The 32 bits
+  unsigned m_status = 0; //!< The 32 bits value of status.
 };
 
 CStatus::CStatus (unsigned st) : m_status (st)

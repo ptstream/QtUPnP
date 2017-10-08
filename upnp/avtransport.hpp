@@ -206,7 +206,6 @@ public:
   bool waitForAVTransportURI (QString const & renderer, int iTrack);
 };
 
-
 } // Namespace
 
 #endif // AVTRANSPORT_HPP

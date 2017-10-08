@@ -64,7 +64,7 @@ private slots:
 
 private :
   QString m_request; //!< The request.
-  QNetworkAccessManager* m_naMgr = nullptr;
+  QNetworkAccessManager* m_naMgr = nullptr; //!< The current netword access manager. see CDataCaller (QNetworkAccessManager* naMgr, QObject* parent).
 };
 
 } // End namespace

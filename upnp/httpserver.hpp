@@ -7,16 +7,27 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! Defines the type for evented variable constraints. */
+/*! Defines the type for evented variable constraints.
+ * \param QString: The constraint name.
+ * \param QString: The constraint value.
+ */
 typedef QPair<QString, QString> TEventCst; // Constaint e.g. channel="Master" of <Volume Channel="Master" val="30"/>
 
-/*! Defines the type for evented variable constraint list. */
+/*! Defines the type for evented variable constraint list.
+ * \param TEventCst: The constraints.
+ */
 typedef QList<TEventCst> TEventCsts; // Constaint list.
 
-/*! Defines the type for evented variable (value and constraint list). */
+/*! Defines the type for evented variable (value and constraint list).
+ * \param QString: The variable value.
+ * \param TEventCsts: The list of constraints.
+ */
 typedef QPair<QString, TEventCsts> TEventValue; // Variable value & constraint list e.g. val="30" Channel="Master" of <Volume Channel="Master" val="30"/>
 
-/*! Defines the type of evented variable (variable name and value). */
+/*! Defines the type of evented variable (variable name and value).
+ * \param QString: The variable name.
+ * \param TEventValue: The value and the constraints.
+ */
 typedef QMap<QString, TEventValue> TMEventVars; // Variables and all values. e.g <Volume Channel="Master" val="30"/>
 
 /*! \brief A partial HTTP server used by UPnP events and playlist manager.

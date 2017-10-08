@@ -8,6 +8,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! Forward declaration of CBrowseReply data. */
 struct SBrowseReplyData;
 
 /*! \brief The CBrowseReply class holds information about the response of Browse and Search action.

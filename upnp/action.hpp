@@ -7,7 +7,13 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! The arguments map.
+ * \param QString: Argument name.
+ * \param CArgument: The argument.
+ */
 typedef QMap<QString, CArgument> TMArguments;
+
+/*! Forward CAction data. */
 struct SActionData;
 
 /*! \brief The CAction class holds information about an UPnP action.

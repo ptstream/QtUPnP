@@ -7,6 +7,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! Defines a set of functions not include in object. */
 /*
   struct SIp4TableElem
   {
@@ -72,7 +73,7 @@ QString UPNP_API concatenateWords (QString s);
 
 /*! \brief Computes the Jarno Winkler distance between two strings.
  *
- * The code is from http://codes-sources.commentcamarche.net/source/49753-distance-de-jaro-winkler
+ * The code is derived from http://codes-sources.commentcamarche.net/source/49753-distance-de-jaro-winkler
  *
  * \param s1: The first string.
  * \param s2: The second string.

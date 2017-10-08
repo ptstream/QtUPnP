@@ -7,6 +7,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! Forward CArgument data. */
 struct SArgumentData;
 
 /*! \brief The CArgument class holds information about an action argument.

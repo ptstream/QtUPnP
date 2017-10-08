@@ -8,8 +8,19 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
+/*! The state variables map.
+ * \param QString: The variable name.
+ * \param CStateVariable: The state variable.
+ */
 typedef QMap<QString, CStateVariable> TMStateVariables;
+
+/*! The actions map.
+ * \param QString: The variable name.
+ * \param CAction: The action
+ */
 typedef QMap<QString, CAction> TMActions;
+
+/*! The forward declaration of CService data. */
 class SServiceData;
 
 /*! \brief The CService class holds information about a service being advertised or found by a control point.

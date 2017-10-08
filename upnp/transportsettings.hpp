@@ -42,7 +42,6 @@ public:
   /*! Returns the record quality. */
   QString const & recQualityMode () const;
 
-
 private:
   QSharedDataPointer<STransportSettingsData> m_d; //!< Shared data pointer.
 };

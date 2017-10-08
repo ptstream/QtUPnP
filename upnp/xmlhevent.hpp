@@ -23,6 +23,9 @@ public:
    */
   virtual bool characters (QString const & name);
 
+  /*! The xml handler handler e:property tag (check=true) or just LastChange evented variable (check=false).
+   * \internal
+   */
   void setCheckProperty (bool check) { m_checkProperty = check; }
 
 private :
