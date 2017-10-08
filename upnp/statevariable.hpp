@@ -10,13 +10,23 @@ START_DEFINE_UPNP_NAMESPACE
 
 class SStateVariableData;
 
-/*! Defines the constraint type. */
+/*! Defines the constraint type.
+ * \param QString: Constraint name.
+ * \param QString: Constraint value.
+ */
 typedef QPair<QString, QString> TConstraint;
+
+/*! Defines variable value and constraint type.
+ * \param QVariant: Variable value.
+ * \param QList<TConstraint>: Constraint list.
+ */
+typedef QPair<QVariant, QList<TConstraint>> TValue;
 
 /*! \brief The CStateVariable class holds information about an UPnP state variable.
  *
  * The state variable values are updated by action and UPnP events.
  * The values may not be the values in the device.
+ * More than one values can exists.
  * The constraints are updated only by UPnP events. e.g. For the volume, the UPnP event
  * sends the constraint Channel=Master and the value.
  *
@@ -76,10 +86,13 @@ public:
   /*! Sets the variable step. */
   void setStep (double step);
 
-  /*! Sets the value. */
+  /*! Sets the value, always the first value. */
   void setValue (QString const & value);
 
-  /*! Sets the variable constraints. */
+  /*! Sets the value and constraints. */
+  void setValue (QString const & value, const QList<TConstraint>& constraints);
+
+  /*! Sets the variable constraints, always the first value. */
   void setConstraints (QList<TConstraint> const & csts);
 
   /*! Returns the variable type. */
@@ -100,23 +113,32 @@ public:
   /*! Returns the variable step. */
   double step () const;
 
-  /*! Returns the value. */
+  /*! Returns the first value. */
   QVariant const & value () const;
 
-  /*! Returns the variable constraints as a const reference. */
+  /*! Returns the value for a list of contraints. */
+  QVariant value (QList<TConstraint> const & constraints) const;
+
+  /*! Returns the variable first constraints as a const reference. */
   QList<TConstraint> const & constraints () const;
 
-  /*! Returns the variable constraints as a reference. */
+  /*! Returns the variable first constraints as a reference. */
   QList<TConstraint> & constraints ();
 
   /*! Returns true if the variable has not the type Unknown. */
   bool isValid () const;
 
-  /*! Return the value as a QString. */
+  /*! Return the first value as a QString. */
   QString toString () const;
 
   /*! Returns the type from QString. */
   static EType typeFromString (QString const & stype);
+
+  /*! Returns the QVariant corresponding at value from the type. */
+  QVariant convert (QString const & value);
+
+  /*! Returns true if the 2 arguments are equal. The constraint names and values are identical. */
+  static bool sameConstraints (QList<TConstraint> const & c1s, QList<TConstraint> const & c2s);
 
 private:
   QSharedDataPointer<SStateVariableData> m_d; //!< Shared data pointer.

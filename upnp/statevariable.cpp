@@ -5,22 +5,25 @@ START_DEFINE_UPNP_NAMESPACE
 /*! \brief Internal structure of CStateVariable. */
 struct SStateVariableData : public QSharedData
 {
-  SStateVariableData () {}
+  SStateVariableData () { m_values.push_back (TValue ()); }
   SStateVariableData (SStateVariableData const & other);
 
   int m_type = 0;
   bool m_evented = false;
   QStringList m_allowedValues;
   double m_minimum = 0, m_maximum = 0, m_step = 0;
-  QVariant m_value;
-  QList<TConstraint> m_constraints;
-};
+  QList<TValue> m_values;
+ };
 
 SStateVariableData::SStateVariableData (SStateVariableData const & other) : QSharedData (other),
   m_type (other.m_type), m_evented (other.m_evented), m_allowedValues (other.m_allowedValues),
   m_minimum (other.m_minimum), m_maximum (other.m_maximum), m_step (other.m_step),
-  m_value (other.m_value), m_constraints (other.m_constraints)
+  m_values (other.m_values)
 {
+  if (m_values.isEmpty ())
+  {
+    m_values.push_back (TValue ());
+  }
 }
 
 } // Namespace
@@ -89,9 +92,34 @@ void CStateVariable::setStep (double step)
   m_d->m_step = step;
 }
 
-void CStateVariable::setValue (QString const & value)
+bool CStateVariable::sameConstraints (QList<TConstraint> const & c1s, QList<TConstraint> const & c2s)
 {
-  bool ok;
+  bool same = c1s.size () == c2s.size ();
+  if (same)
+  {
+    int count = 0;
+    for (TConstraint const & c1 : c1s)
+    {
+      for (TConstraint const & c2 : c2s)
+      {
+        if (c1.first.compare (c2.first, Qt::CaseInsensitive) == 0 &&
+            c1.second.compare (c2.second, Qt::CaseInsensitive) == 0)
+        {
+          ++count;
+        }
+      }
+    }
+
+    same = count == c1s.size ();
+  }
+
+  return same;
+}
+
+QVariant CStateVariable::convert (QString const & value)
+{
+  bool     ok;
+  QVariant variant;
   switch (m_d->m_type)
   {
     case I1 :
@@ -99,7 +127,7 @@ void CStateVariable::setValue (QString const & value)
       short i1 = value.toShort (&ok);
       if (ok)
       {
-        m_d->m_value = static_cast<qint8>(i1);
+        variant = static_cast<qint8>(i1);
       }
       break;
     }
@@ -109,7 +137,7 @@ void CStateVariable::setValue (QString const & value)
       unsigned short ui1 = value.toUShort (&ok);
       if (ok)
       {
-        m_d->m_value = static_cast<quint8>(ui1);
+        variant = static_cast<quint8>(ui1);
       }
       break;
     }
@@ -119,7 +147,7 @@ void CStateVariable::setValue (QString const & value)
       short i2 = value.toShort (&ok);
       if (ok)
       {
-        m_d->m_value = i2;
+        variant = i2;
       }
       break;
     }
@@ -129,7 +157,7 @@ void CStateVariable::setValue (QString const & value)
       unsigned short ui2 = value.toUShort (&ok);
       if (ok)
       {
-        m_d->m_value = ui2;
+        variant = ui2;
       }
       break;
     }
@@ -139,7 +167,7 @@ void CStateVariable::setValue (QString const & value)
       int i4 = value.toInt (&ok);
       if (ok)
       {
-        m_d->m_value = i4;
+        variant = i4;
       }
       break;
     }
@@ -149,7 +177,7 @@ void CStateVariable::setValue (QString const & value)
       unsigned ui4 = value.toUInt (&ok);
       if (ok)
       {
-        m_d->m_value = ui4;
+        variant = ui4;
       }
       break;
     }
@@ -159,7 +187,7 @@ void CStateVariable::setValue (QString const & value)
       long long i8 = value.toLongLong (&ok);
       if (ok)
       {
-        m_d->m_value = i8;
+        variant = i8;
       }
       break;
     }
@@ -169,7 +197,7 @@ void CStateVariable::setValue (QString const & value)
       unsigned long long ui8 = value.toULongLong (&ok);
       if (ok)
       {
-        m_d->m_value = ui8;
+        variant = ui8;
       }
       break;
     }
@@ -179,13 +207,13 @@ void CStateVariable::setValue (QString const & value)
       double real = value.toDouble (&ok);
       if (ok)
       {
-        m_d->m_value = real;
+        variant = real;
       }
       break;
     }
 
     case String :
-      m_d->m_value = value;
+      variant = value;
       break;
 
     case Boolean :
@@ -197,15 +225,44 @@ void CStateVariable::setValue (QString const & value)
         boolean = c == '1' || c == 't' || c == 'T' || c == 't' || c == 'Y';
       }
 
-      m_d->m_value = boolean;
+      variant = boolean;
       break;
     }
   }
+
+  return variant;
+}
+
+void CStateVariable::setValue (QString const & value, QList<TConstraint> const & constraints)
+{
+  bool update = false;
+  for (QList<TValue>::iterator it = m_d->m_values.begin (), end = m_d->m_values.end (); it != end; ++it)
+  {
+    TValue&             val                = (*it);
+    QList<TConstraint>& variableContraints = val.second;
+    if (sameConstraints (variableContraints, constraints))
+    {
+      update    = true;
+      val.first = convert (value);
+      break;
+    }
+  }
+
+  if (!update)
+  {
+    QVariant variant = convert (value);
+    m_d->m_values.push_back (TValue (variant, constraints));
+  }
+}
+
+void CStateVariable::setValue (QString const & value)
+{
+  m_d->m_values.first ().first = convert (value);
 }
 
 void CStateVariable::setConstraints (QList<TConstraint> const & csts)
 {
-  m_d->m_constraints = csts;
+  m_d->m_values.first ().second = csts;
 }
 
 CStateVariable::EType CStateVariable::type () const
@@ -238,19 +295,36 @@ double CStateVariable::step () const
   return m_d->m_step;
 }
 
+QVariant CStateVariable::value (QList<TConstraint> const & constraints) const
+{
+  QVariant variant;
+  for (QList<TValue>::const_iterator it = m_d->m_values.cbegin (), end = m_d->m_values.cend (); it != end; ++it)
+  {
+    TValue const &             val                = (*it);
+    QList<TConstraint> const & variableContraints = val.second;
+    if (sameConstraints (variableContraints, constraints))
+    {
+      variant = val.first;
+      break;
+    }
+  }
+
+  return variant;
+}
+
 QVariant const & CStateVariable::value () const
 {
-  return m_d->m_value;
+  return m_d->m_values.first ().first; // At least one value exists.
 }
 
 QList<TConstraint>& CStateVariable::constraints ()
 {
-  return m_d->m_constraints;
+  return m_d->m_values.first ().second; // At least one value exists.
 }
 
 QList<TConstraint> const & CStateVariable::constraints () const
 {
-  return m_d->m_constraints;
+  return m_d->m_values.first ().second; // At least one value exists.
 }
 
 bool CStateVariable::isValid () const
@@ -311,5 +385,5 @@ CStateVariable::EType CStateVariable::typeFromString (QString const & stype)
 
 QString CStateVariable::toString () const
 {
-  return m_d->m_value.toString ();
+  return m_d->m_values.first ().first.toString ();
 }

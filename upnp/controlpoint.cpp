@@ -192,8 +192,7 @@ void CControlPoint::updateEventVars (QString const & sid)
         {
           CStateVariable&     var   = stateVariables[name];
           TEventValue const & value = it.value ();
-          var.setValue (value.first);
-          var.setConstraints (value.second);
+          var.setValue (value.first, value.second);
           emitter << name;
         }
       }
