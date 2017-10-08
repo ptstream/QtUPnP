@@ -54,34 +54,6 @@ bool CXmlHDidlLite::characters (QString const & name)
   return true;
 }
 
-void CXmlHDidlLite::sortElems ()
-{
-  for (QList<CDidlItem>::iterator it = m_items.begin (); it != m_items.end (); ++it)
-  {
-    CDidlItem& item = *it;
-    if (CDidlItem::status ().hasStatus (CDidlItem::SortRes))
-    {
-      item.sortResElems ();
-    }
-
-    if (CDidlItem::status ().hasStatus (CDidlItem::SortAlbumArt))
-    {
-      item.sortAlbumArtURIs ();
-    }
-  }
-}
-
-bool CXmlHDidlLite::parse (QByteArray response)
-{
-  bool success = CXmlH::parse (response);
-  if (success)
-  {
-    sortElems ();
-  }
-
-  return success;
-}
-
 CDidlItem CXmlHDidlLite::firstItem (QByteArray data)
 {
   CDidlItem item;
@@ -94,20 +66,10 @@ CDidlItem CXmlHDidlLite::firstItem (QByteArray data)
   return item;
 }
 
-bool CXmlHDidlLite::parse (QString response)
-{
-  bool success = CXmlH::parse (response);
-  if (success)
-  {
-    sortElems ();
-  }
-
-  return success;
-}
-
-CDidlItem CXmlHDidlLite::firstItem (QString data)
+CDidlItem CXmlHDidlLite::firstItem (QString const & didlLite)
 {
   CDidlItem item;
+  QString   data    = ampersandHandler (didlLite);
   bool      success = parse (data);
   if (success && !m_items.isEmpty ())
   {

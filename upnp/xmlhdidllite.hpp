@@ -25,22 +25,14 @@ public:
    */
   virtual bool characters (QString const & name);
 
-  /*! Parse the XML response. */
-  virtual bool parse (QByteArray response);
-
-  /*! Parse the XML response. */
-  virtual bool parse (QString response);
-
   /*! Returns the lists of item components as a constant reference. */
   QList<CDidlItem> const & items () const { return m_items; }
 
   /*! Returns the first item of the item list. */
-  CDidlItem firstItem (QString data);
+  CDidlItem firstItem (QString const & didlLite);
 
   /*! Returns the first item of the item list. */
   CDidlItem firstItem (QByteArray data);
-
-  void sortElems ();
 
 private :
   QList<CDidlItem> m_items; //!< item list. See CDidlIem.
