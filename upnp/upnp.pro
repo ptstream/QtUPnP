@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += gui network xml xmlpatterns script scripttools
+QT += gui network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -113,8 +113,3 @@ unix {
     CONFIG += staticlib
 }
 
-win32 {
-    LIBS += -liphlpapi -lws2_32
-}
-
-DISTFILES +=
