@@ -3,16 +3,21 @@
 
 #include "using_upnp_namespace.hpp"
 #include "upnp_global.hpp"
-#include "status.hpp"
 #include <QSharedDataPointer>
 #include <QMultiMap>
 
 START_DEFINE_UPNP_NAMESPACE
 
-/*! Defines the properties map. */
+/*! Defines the properties map.
+ * \param QString: The property name.
+ * \param QString: The property value.
+ */
 typedef QMap<QString, QString> TMProps;
 
+//!* CDidldElem data. */
 struct SDidlElemData;
+
+//*! CDidlItem data. */
 struct SDidlItemData;
 
 /*! \brief Holds information about the xml item tag for the Browse or Search action.
@@ -191,9 +196,10 @@ public:
                LastType,                  //!< Just for dimensioning array or endding loop.
              };
 
-  enum EStatus { SortRes = 0x00000001, //!< The xml res elements will be sorted by resolution or . bitrate.
-                 SortAlbumArt = 0x00000002 //!< The xml albumArtURI elements will be sorted by resolution or . bitrate.
-               };
+  enum ESortType { NoSort = 0x00000000, //!< Not sort.
+                   SortRes = 0x00000001, //!< The xml res elements will be sorted by resolution or . bitrate.
+                   SortAlbumArt = 0x00000002 //!< The xml albumArtURI elements will be sorted by resolution or . bitrate.
+                 };
 
   /*! Playlist format. Actually only M3u and M3u8 can be used. */
   enum EPlaylistFormat { M3u, M3u8, Wpl, Xspl };
@@ -262,39 +268,35 @@ public:
   bool isContainer () const;
 
   /*! Returns the list of res uri elements.
-   * The list is sorted by resolution, the better resolution is first,
+   * The list can be sorted (default) by resolution, the better resolution is first,
    * if the static status has SortRes bit.
+   * \param sort: Must be NoSort or SortRes.
    */
-  QStringList uris () const;
+  QStringList uris (ESortType sort = SortRes) const;
 
   /*! Returns res uri element.
    * \param index: The index of res element.
+   * \param sort: Must be NoSort or SortRes.
   */
-  QString uri (int index) const;
+  QString uri (int index, ESortType sort = SortRes) const;
 
   /*! Returns the list of albumArtURIs.
-   * The list is sorted by resolution. The better resolution is first,
-   * if the static status has SortAlbumArt bit.
+   * The list can be sorted (default) by resolution if the resolution property exists.
+   * The better resolution is first
+   * \param sort: Must be NoSort or SortAlbumArt.
+   * \remark This function assumes that if elems albumArtURI exist and elems res exists
+   * also, the two set of elems are sorted independently.
    */
-  QStringList albumArtURIs () const;
+  QStringList albumArtURIs (ESortType sort = SortAlbumArt) const;
 
   /*! Returns AlbumArtURI uri element.
    * \param index: The index of albumArtURI element. Index=-1 returns the last uri.
+   * \param sort: Must be NoSort or SortAlbumArt.
   */
-  QString albumArtURI (int index) const;
+  QString albumArtURI (int index, ESortType sort = SortAlbumArt) const;
 
   /*! Returns the element in form of DIDL_Lite xml tag. */
   QString didl () const;
-
-  /*! Sorts the res elements by resolution or bitrate.
-   * \return The number of elements.
-   */
-  int sortResElems ();
-
-  /*! Sorts the albumArtURI elements by resolution.
-   * \return The number of elements.
-   */
-  int sortAlbumArtURIs ();
 
   /*! Clear all content. */
   void clear ();
@@ -383,8 +385,17 @@ public:
   /*! Returns the subject . */
   QString subject () const;
 
-  /*! Return the static status as a constant reference. */
-  static CStatus const & status () { return m_status; }
+  /*! Sorts the res elements by quality (resolution or bitrate).
+   * In case of multiple res elements of different type, the order is video,
+   * audio, image.
+   * \return The number of elements.
+   */
+  static int sortResElems (QList<CDidlElem>& elems);
+
+  /*! Sorts the albumArtURI elements by resolution.
+   * \return The number of elements.
+   */
+  static int sortAlbumArtURIs (QList<CDidlElem>& elems);
 
   /*! Returns an UTF-8 encoded copy of not coded in format UTF-8.
    * not coded <, >, ", ' are percent encoded.
@@ -420,7 +431,6 @@ private :
 
 private:
   QSharedDataPointer<SDidlItemData> m_d; //!< Shared data pointer.
-  static CStatus m_status; //!< The static status for sorting.
 };
 
 } // Namespace

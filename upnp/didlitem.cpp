@@ -4,8 +4,6 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-CStatus CDidlItem::m_status = CDidlItem::SortAlbumArt;
-
 /*! \brief Internal structure of CDidlElem. */
 struct SDidlElemData  : public QSharedData
 {
@@ -153,14 +151,13 @@ CDidlItem& CDidlItem::operator = (CDidlItem const & other)
   return *this;
 }
 
-int CDidlItem::sortResElems ()
+int CDidlItem::sortResElems (QList<CDidlElem>& elems)
 {
-  QList<CDidlElem> ress = m_d->m_elems.values ("res");
-  QList<TQE>       qes;
-  qes.reserve (ress.size ());
-  for (CDidlElem const & res : ress)
+  QList<TQE> qes;
+  qes.reserve (elems.size ());
+  for (CDidlElem const & elem : elems)
   {
-    TMProps const & props    = res.props ();
+    TMProps const & props    = elem.props ();
     unsigned        iQuality = 0;
     QString         quality  = props.value ("resolution");
     if (!quality.isEmpty ())
@@ -168,7 +165,12 @@ int CDidlItem::sortResElems ()
       QStringList xy = quality.split ('x');
       if (xy.size () == 2)
       {
-        iQuality = xy[0].toUInt () * xy[1].toUInt ();
+        iQuality         = xy[0].toUInt () * xy[1].toUInt ();
+        QString protocol = props.value ("protocolInfo");
+        if (protocol.indexOf ("video") != -1)
+        {
+          iQuality |= 0x80000000;
+        }
       }
     }
     else
@@ -178,26 +180,31 @@ int CDidlItem::sortResElems ()
       {
         iQuality = quality.toUInt ();
       }
+
+      QString protocol = props.value ("protocolInfo");
+      if (protocol.indexOf ("audio") != -1)
+      {
+        iQuality |= 0x40000000;
+      }
     }
 
-    TQE qe (iQuality, res);
+    TQE qe (iQuality, elem);
     qes.push_back (qe);
   }
 
   std::sort (qes.begin (), qes.end (), [](TQE const & a, TQE const & b) {return a.first > b.first; });
-  m_d->m_elems.remove ("res");
+  elems.clear ();
   for (TQE const & qe : qes)
   {
-    m_d->m_elems.insert ("res", qe.second);
+    elems << qe.second;
   }
 
   return qes.size ();
 }
 
-int CDidlItem::sortAlbumArtURIs ()
+int CDidlItem::sortAlbumArtURIs (QList<CDidlElem>& elems)
 {
-  QList<CDidlElem> elems = m_d->m_elems.values ("albumArtURI");
-  QList<TQE>       qes;
+  QList<TQE> qes;
   qes.reserve (elems.size ());
   for (CDidlElem const & elem : elems)
   {
@@ -249,10 +256,10 @@ int CDidlItem::sortAlbumArtURIs ()
   }
 
   std::sort (qes.begin (), qes.end (), [](TQE const & a, TQE const & b) {return a.first > b.first; });
-  m_d->m_elems.remove ("albumArtURI");
+  elems.clear ();
   for (TQE const & qe : qes)
   {
-    m_d->m_elems.insert ("albumArtURI", qe.second);
+    elems << qe.second;
   }
 
   return qes.size ();
@@ -302,32 +309,91 @@ QStringList CDidlItem::stringValues (char const * tag) const
   return vals;
 }
 
-QStringList CDidlItem::uris () const
+QStringList CDidlItem::uris (ESortType sort) const
 {
-  return stringValues ("res");
+  QStringList uris;
+  if (sort != SortRes)
+  {
+    uris = stringValues ("res");
+  }
+  else
+  {
+    QList<CDidlElem> elems = m_d->m_elems.values ("res");
+    sortResElems (elems);
+    uris.reserve (elems.size ());
+    for (CDidlElem const & elem : elems)
+    {
+      uris << elem.value ();
+    }
+  }
+
+  return uris;
 }
 
-QString CDidlItem::uri (int index) const
+QString CDidlItem::uri (int index, ESortType sort) const
 {
-  QStringList uris = this->uris ();
+  QStringList uris = this->uris (sort);
   QString     uri;
-  if (index >= 0 && index < uris.size ())
+  if (!uris.isEmpty ())
   {
-    uri = uris[index];
+    if (index == -1)
+    {
+      index = uris.size () - 1;
+    }
+
+    if (index >= 0 && index < uris.size ())
+    {
+      uri = uris[index];
+    }
   }
 
   return uri;
 }
 
-QStringList CDidlItem::albumArtURIs () const
+QStringList CDidlItem::albumArtURIs (ESortType sort) const
 {
-  return stringValues ("upnp:albumArtURI");
+  QStringList      uris;
+  QList<CDidlElem> elems = m_d->m_elems.values ("upnp:albumArtURI");
+  if (sort == SortAlbumArt)
+  {
+    sortAlbumArtURIs (elems);
+  }
+
+  QList<CDidlElem> resElems = m_d->m_elems.values ("res");
+  uris.reserve (elems.size () + resElems.size ());
+  for (CDidlElem const & elem : elems)
+  {
+    uris << elem.value ();
+  }
+
+  elems.clear ();
+  for (CDidlElem const & elem : resElems)
+  {
+    TMProps const & props    = elem.props ();
+    QString         protocol = props.value ("protocolInfo");
+    if (protocol.indexOf ("image") != -1)
+    {
+      elems << elem;
+    }
+  }
+
+  if (sort == SortAlbumArt)
+  {
+    sortResElems (elems);
+  }
+
+  for (CDidlElem const & elem : elems)
+  {
+    uris << elem.value ();
+  }
+
+  return uris;
 }
 
-QString CDidlItem::albumArtURI (int index) const
+QString CDidlItem::albumArtURI (int index, ESortType sort) const
 {
   QString     uri;
-  QStringList uris = this->albumArtURIs ();
+  QStringList uris = this->albumArtURIs (sort);
   if (!uris.isEmpty ())
   {
     if (index == -1)
