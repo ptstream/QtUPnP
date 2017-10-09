@@ -170,7 +170,7 @@ long long QtUPnP::timeToMS (QString const & time)
       duration  += m * 60 * 1000;
       if (size >= 3)
       {
-        unsigned h = hms[size - 2].toUInt ();
+        unsigned h = hms[size - 3].toUInt ();
         duration  += h * 3600 * 1000;
       }
     }
