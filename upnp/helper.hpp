@@ -89,6 +89,9 @@ float UPNP_API jaroWinklerDistance (const QString& s1, QString const & s2, int c
  */
 bool UPNP_API isDuration (QString const & s);
 
+/*! Return the nearest int. */
+inline int UPNP_API nearestInt (float val) { return static_cast<int>(val < 0 ? val - 0.5f : val + 0.5f); }
+
 /*! \brief  Write data in QtUPnP-dump.xml file.
  *
  * \param data: The data to write.*
