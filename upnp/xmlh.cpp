@@ -6,7 +6,7 @@
 
 USING_UPNP_NAMESPACE
 
-bool CXmlH::m_tolerantMode = false;
+bool CXmlH::m_tolerantMode = true;
 
 class CErrorHandler : public QXmlErrorHandler
 {
