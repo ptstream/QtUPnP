@@ -12,7 +12,7 @@ It <b>focuses</b> on the <b>UPnP/AV</b> standard. For this, a set of classes are
 
 QtUPnp is based on QT5 framework. It has been tested on systems:
 \li Windows. Windows 10 32 or 64 bits from Vista (32 bits) and Windows 10 (32 & 64 bits).
-The binaries are created from "qt-opensource-windows-x86-mingw492-5.6.0.exe" installer.
+The binaries are created from "qt-opensource-windows-x86-mingw530-5.8.0.exe" installer.
 
 \li Linux 64 bits distrubution Kubuntu and Ubuntu.
 The binaries are created from "qt-opensource-linux-x64-5.8.0.run" installer.
