@@ -198,7 +198,10 @@ void CControlPoint::updateEventVars (QString const & sid)
       }
     }
 
-    emit eventReady (emitter);
+    if (!emitter.isEmpty ())
+    {
+      emit eventReady (emitter);
+    }
   }
 }
 
