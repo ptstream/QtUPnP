@@ -28,9 +28,10 @@ void CActionManager::finished ()
 
 void CActionManager::error (QNetworkReply::NetworkError err)
 {
+  m_error                    = err;
   QNetworkReply* replySender = static_cast<QNetworkReply*>(sender ());
   QString        errorString = replySender->errorString ();
-  qDebug () << "CActionManager::error: " << err << " (" << errorString << ")";
+  qDebug () << "CActionManager::error: " << static_cast<int>(err) << " (" << errorString << ")";
   emit networkError (m_device, err, errorString);
 }
 
@@ -59,8 +60,10 @@ bool CActionManager::post (QString const & device, QUrl const & url,
     connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
     connect (reply, SIGNAL(finished()), this, SLOT(finished()));
 
+    m_error     = QNetworkReply::NoError;
     int idTimer = startTimer (timeout);
-    success     = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers) == 0;
+    int retCode = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
+    success     =  retCode == 0 && m_error == QNetworkReply::NoError;
     killTimer (idTimer);
     if (success)
     {
@@ -68,14 +71,17 @@ bool CActionManager::post (QString const & device, QUrl const & url,
     }
     else
     {
-      qint32 statusCode = reply->attribute (QNetworkRequest::HttpStatusCodeAttribute).toInt ();
-      m_lastError       = reply->attribute (QNetworkRequest::HttpReasonPhraseAttribute).toString ();
-      QString message   = QString ("Action failed. Response from the server: %1, %2").arg (statusCode).arg (m_lastError);
-      message          += '\n';
-      message          += url.toString () + '\n';
-      message          += info.message () + "\n\n";
-      qDebug () << "CActionManager::post:" << message;
-      m_lastError.prepend (QString ("(%1) ").arg (statusCode));
+      if (m_error != QNetworkReply::NoError)
+      {
+        qint32 statusCode = reply->attribute (QNetworkRequest::HttpStatusCodeAttribute).toInt ();
+        m_lastError       = reply->attribute (QNetworkRequest::HttpReasonPhraseAttribute).toString ();
+        QString message   = QString ("Action failed. Response from the server: %1, %2").arg (statusCode).arg (m_lastError);
+        message          += '\n';
+        message          += url.toString () + '\n';
+        message          += info.message () + "\n\n";
+        qDebug () << "CActionManager::post:" << message;
+        m_lastError.prepend (QString ("(%1) ").arg (statusCode));
+      }
     }
 
     reply->deleteLater ();
