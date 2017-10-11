@@ -2,57 +2,87 @@
 #include "helper.hpp"
 #include <QBuffer>
 #include <QUrl>
+#include <QDateTime>
 #include <QDebug>
 
 USING_UPNP_NAMESPACE
 
 bool CXmlH::m_tolerantMode = true;
+QString CXmlH::m_dumpErrorFileName;
 
 class CErrorHandler : public QXmlErrorHandler
 {
 public :
-  CErrorHandler (QByteArray const & data) : QXmlErrorHandler (), m_data (data)
-  {
-  }
+  CErrorHandler (QByteArray const & data, QString const & fileName);
+  CErrorHandler (QString const & data, QString const & fileName);
 
-  CErrorHandler (QString const & data) : QXmlErrorHandler (), m_data (data.toUtf8 ())
-  {
-  }
+  virtual bool error (QXmlParseException const & exception);
+  virtual QString errorString () const;
+  virtual bool fatalError (QXmlParseException const & exception);
+  virtual bool warning (QXmlParseException const & exception);
+  void errorString (QXmlParseException const & exception);
 
-  virtual bool error (QXmlParseException const & exception)
-  {
-    errorString (exception);
-    return CXmlH::tolerantMode ();
-  }
+private :
+  QByteArray m_data;
+  QString m_fileName;
+};
 
-  virtual QString errorString () const
-  {
-    return "Parsing error";
-  }
+CErrorHandler::CErrorHandler (QByteArray const & data, QString const & fileName) : QXmlErrorHandler (),
+  m_data (data), m_fileName (fileName)
+{
+}
 
-  virtual bool fatalError (QXmlParseException const & exception)
-  {
-    errorString (exception);
-    return CXmlH::tolerantMode ();
-  }
+CErrorHandler::CErrorHandler (QString const & data, QString const & fileName) : QXmlErrorHandler (),
+  m_data (data.toUtf8 ()), m_fileName (fileName)
+{
+}
 
-  virtual bool warning (QXmlParseException const & exception)
-  {
-    errorString (exception);
-    return true;
-  }
+bool CErrorHandler::error (QXmlParseException const & exception)
+{
+  errorString (exception);
+  return CXmlH::tolerantMode ();
+}
 
-  void errorString (QXmlParseException const & exception)
+QString CErrorHandler::errorString () const
+{
+  return "UPnP XML error during parsing";
+}
+
+bool CErrorHandler::fatalError (QXmlParseException const & exception)
+{
+  errorString (exception);
+  return CXmlH::tolerantMode ();
+}
+
+bool CErrorHandler::warning (QXmlParseException const & exception)
+{
+  errorString (exception);
+  return true;
+}
+
+void CErrorHandler::errorString (QXmlParseException const & exception)
+{
+  if (!m_fileName.isEmpty())
   {
-    // To do for generate dump file.
+    QFile file (m_fileName);
+    if (file.open (QIODevice::Append | QIODevice::Text))
+    {
+      QString text = QString ("%1;XML error; line: %2; column: %3; message: %4\n%5\n")
+                     .arg (QDateTime::currentDateTime ().toString ())
+                     .arg (exception.lineNumber ()).arg (exception.columnNumber ())
+                     .arg (exception.message ()).arg (m_data.constData ());
+      file.write (text.toUtf8 ());
+      file.close ();
+    }
+  }
+  else
+  {
     qDebug () << "Line: " << exception.lineNumber ();
     qDebug () << "Column: " << exception.columnNumber ();
     qDebug () << "Message: " << exception.message ();
     qDebug () << m_data.constData ();
   }
-
-  QByteArray m_data;
-};
+}
 
 CXmlH::CXmlH ()
 {
@@ -86,7 +116,7 @@ bool CXmlH::parse (QByteArray response)
     QXmlSimpleReader reader;
     QXmlInputSource  source (&buffer);
     reader.setContentHandler (this);
-    CErrorHandler errorHandler (data);
+    CErrorHandler errorHandler (data, m_dumpErrorFileName);
     reader.setErrorHandler (&errorHandler);
     success = reader.parse (source) | m_tolerantMode;
   }
@@ -111,7 +141,7 @@ bool CXmlH::parse (QString const & response)
     QXmlSimpleReader reader;
     QXmlInputSource  source (&buffer);
     reader.setContentHandler (this);
-    CErrorHandler errorHandler (data);
+    CErrorHandler errorHandler (data, m_dumpErrorFileName);
     reader.setErrorHandler (&errorHandler);
     success = reader.parse (source)  | m_tolerantMode;
   }

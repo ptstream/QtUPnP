@@ -59,6 +59,11 @@ public:
    */
   static bool tolerantMode () { return m_tolerantMode; }
 
+  /*! Sets the file name to dump xml errors.
+   * By default the dump file name is empty and no dump is generated. *.
+   */
+  static void setDumpErrorFileName (QString const & fileName) { m_dumpErrorFileName = fileName; }
+
 protected :
   /*! Returns the current tag at a level. */
   QString tag (int level) const;
@@ -81,6 +86,7 @@ protected :
   QStack<QString> m_stack; //!< Stack of tags.
   QStringList m_tags; //!< List of tag to handle
   static bool m_tolerantMode; //!< Defined the parsing mode.
+  static QString m_dumpErrorFileName; //!< The file to dump xml errors (Can be empty).
 };
 
 } // Namespace
