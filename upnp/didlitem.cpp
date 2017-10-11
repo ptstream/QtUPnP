@@ -635,9 +635,26 @@ QString CDidlItem::date () const
 
 QString CDidlItem::duration (int index) const
 {
+  QString          duration;
   QList<CDidlElem> elems = m_d->m_elems.values ("res");
   int              size  = elems.size ();
-  return index >= 0 && index < size ? elems[index].props ().value ("duration") : QString::null;
+  if (index >= 0 && index < size)
+  {
+    duration = elems[index].props ().value ("duration");
+  }
+  else
+  {
+    for (CDidlElem const & elem : elems)
+    {
+      duration = elem.props ().value ("duration");
+      if (!duration.isEmpty ())
+      {
+        break;
+      }
+    }
+  }
+
+  return duration;
 }
 
 QString CDidlItem::protocolInfo (int index) const
