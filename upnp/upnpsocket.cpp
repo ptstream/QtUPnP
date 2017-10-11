@@ -11,6 +11,7 @@ USING_UPNP_NAMESPACE
 
 QHostAddress CUpnpSocket::m_localHostAddress;
 QList<QByteArray> CUpnpSocket::m_skippedAddresses;
+QList<QByteArray> CUpnpSocket::m_skippedUUIDs;
 
 CUpnpSocket::SNDevice::SNDevice (EType type) : m_type (type)
 {
@@ -220,6 +221,19 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
     {
       type = SNDevice::Unknown;
     }
+
+    if (type != SNDevice::Unknown)
+    {
+      for (QByteArray const & skippedUUID : m_skippedUUIDs)
+      {
+        value = uuid.toLower ();
+        if (value.contains (skippedUUID))
+        {
+          type = SNDevice::Unknown;
+          break;
+        }
+      }
+    }
   }
 
   if (type != SNDevice::Unknown && uuid.isEmpty ())
@@ -288,4 +302,9 @@ void CUpnpSocket::setSkippedAddresses (QList<QByteArray> const & addresses)
 
     m_skippedAddresses << addr;
   }
+}
+
+void CUpnpSocket::addSkippedUUID (QByteArray const & uuid)
+{
+  m_skippedUUIDs.append (uuid.toLower ());
 }

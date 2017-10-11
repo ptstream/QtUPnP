@@ -94,6 +94,19 @@ public :
   /*! Returns IPV4 addresses to ignore (see above). */
   static QList<QByteArray> const & skippedAddresses () { return m_skippedAddresses; }
 
+  /*! Adds IPV4 addresses to ignore (see above). */
+  static void addSkippedAddresses (QByteArray const & addr) { m_skippedAddresses.append (addr); }
+
+  /*! Returns the list of uuid to ignored. */
+  static QList<QByteArray> const & skippedUUIDs () { return m_skippedUUIDs; }
+
+  /*! Adds a device uuid to ignored.
+   * \param uuid: uuid can be partial. E.g for a gateway device with an uuid=,
+   * "uuid:upnp-InternetGatewayDevice-1_0-8cb9363e1228",
+   * "uuid=gatewaydevice" is valid.
+   */
+  static void addSkippedUUID (QByteArray const & uuid);
+
   /*! Returns the local host address.
    * This function returns the local host address of the first interface and different of 127.0.0.1.
    */
@@ -114,6 +127,8 @@ private :
 
 private :
   static QHostAddress m_localHostAddress; //!< The local host address.
+  static QList<QByteArray> m_skippedUUIDs; //!< uuid to ignored.
+  static QList<QByteArray> m_skippedAddresses; //!< IPV4 addresses to ignore.
 
 private :
   QHostAddress m_senderAddr; //!< Host address of the device.
@@ -121,7 +136,6 @@ private :
   QByteArray m_datagram; //!< The current datagram.
   QList<SNDevice> m_devices; //!< The list of devices.
   int m_wait = StartingWait; //!< Current wait for linux system (2s). Reduce by 400ms at each call.
-  static QList<QByteArray> m_skippedAddresses; //!< IPV4 addresses to ignore.
 };
 
 } // End namespace
