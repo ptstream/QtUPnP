@@ -24,7 +24,7 @@ bool CMulticastSocket::initialize (QHostAddress multicastAddress, quint16 multic
   bool success = false;
 
   // Bind multicast socket
-  if (bind (QHostAddress::AnyIPv4, multicastPort, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
+  if (bind (localAddress (), multicastPort, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
   {
     if (joinMulticastGroup (multicastAddress))
     {
