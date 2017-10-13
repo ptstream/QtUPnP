@@ -41,7 +41,6 @@ CUpnpSocket::SNDevice& CUpnpSocket::SNDevice::operator = (SNDevice const & other
 
 CUpnpSocket::CUpnpSocket (QObject* parent) : QUdpSocket (parent)
 {
-  setProxy (QNetworkProxy::NoProxy);
 }
 
 CUpnpSocket::~CUpnpSocket ()
@@ -112,16 +111,6 @@ QHostAddress CUpnpSocket::localHostAddress (bool ipv6)
 
 QByteArray const & CUpnpSocket::readDatagrams ()
 {
-#ifdef Q_OS_LINUX
-  // This code is due to experimental results.
-  // For a clear explanation, consult a medial or a cartmist.
-  if (m_wait > 0)
-  {
-    CWaitingLoop::wait (m_wait * 100, QEventLoop::ExcludeUserInputEvents);
-    m_wait -= 4;
-  }
-#endif
-
   QByteArray datagram;
   while (hasPendingDatagrams ())
   {
@@ -133,6 +122,27 @@ QByteArray const & CUpnpSocket::readDatagrams ()
       m_datagram += datagram;
     }
   }
+
+  /*
+  if (!m_datagram.isEmpty () && !m_datagram.startsWith ("M-SEARCH"))
+  {
+    QByteArray location, usn;
+    QList<QByteArray> ss = m_datagram.split ('\r');
+    for (QByteArray s: ss)
+    {
+      s = s.toLower ().replace ("\n", "");
+      if (s.startsWith ("location"))
+      {
+        location = s;
+      }
+      else if (s.startsWith ("usn"))
+      {
+        usn = s;
+      }
+    }
+
+    qDebug () << ++iii << ss.first () << ':' << location << ':' << usn;
+  }*/
 
   return m_datagram;
 }
