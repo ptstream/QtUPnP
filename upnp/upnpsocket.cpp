@@ -123,27 +123,6 @@ QByteArray const & CUpnpSocket::readDatagrams ()
     }
   }
 
-  /*
-  if (!m_datagram.isEmpty () && !m_datagram.startsWith ("M-SEARCH"))
-  {
-    QByteArray location, usn;
-    QList<QByteArray> ss = m_datagram.split ('\r');
-    for (QByteArray s: ss)
-    {
-      s = s.toLower ().replace ("\n", "");
-      if (s.startsWith ("location"))
-      {
-        location = s;
-      }
-      else if (s.startsWith ("usn"))
-      {
-        usn = s;
-      }
-    }
-
-    qDebug () << ++iii << ss.first () << ':' << location << ':' << usn;
-  }*/
-
   return m_datagram;
 }
 
@@ -294,7 +273,7 @@ bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, 
   if (!success)
   {
     QString message = hostAddress.toString () + ':' + QString::number (port);
-    qDebug () << "CUpnpSocket::discover (write datagram):\n" << message;
+    qDebug () << "CUpnpSocket::discover (write datagram):" << message;
   }
 
   return success;
