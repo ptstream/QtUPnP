@@ -22,8 +22,7 @@ CDeviceMap::~CDeviceMap ()
 
 bool CDeviceMap::subscribe (CDevice& device, int renewDelay, int requestTimeout)
 {
-  bool success;
-
+  bool         success;
   int          cServices = 0, cEventings = 0;
   TMServices&  services  = device.services ();
   for (TMServices::iterator it = services.begin (), end = services.end (); it != end; ++it)
@@ -32,7 +31,7 @@ bool CDeviceMap::subscribe (CDevice& device, int renewDelay, int requestTimeout)
     if (service.isEvented ())
     {
       ++cEventings;
-      CEventingManager em;
+      CEventingManager em (m_naMgr);
       success = em.subscribe (device.url (), service.eventSubURL (),
                               m_httpServer->serverAddress (), m_httpServer->serverPort (),
                               renewDelay, requestTimeout);
@@ -58,9 +57,9 @@ void CDeviceMap::renewSubscribe (CDevice& device, int requestTimeout)
     if (service.isEvented ())
     {
       QString const & sid = service.subscribeSID ();
-      if (sid.isEmpty ())
+      if (!sid.isEmpty ())
       {
-        CEventingManager em;
+        CEventingManager em (m_naMgr);
         if (!em.renewSubscribe (url, service.eventSubURL (), sid, requestTimeout))
         {
           service.clearSID ();
@@ -80,7 +79,7 @@ void CDeviceMap::unsubscribe (CDevice& device, int requestTimeout)
     QString const & sid     = service.subscribeSID ();
     if (!sid.isEmpty ())
     {
-      CEventingManager em;
+      CEventingManager em (m_naMgr);
       em.unsubscribe (url, service.eventSubURL (), sid, requestTimeout);
       service.clearSID ();
     }
@@ -120,7 +119,7 @@ void CDeviceMap::removeDevice (QString const & uuid)
 
 bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
 {
-  bool success = device.extractServiceComponents (timeout);
+  bool success = device.extractServiceComponents (m_naMgr, timeout);
   if (success)
   {
     QList<CDevice>& subDevices = device.subDevices ();
@@ -154,7 +153,7 @@ int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & n
           }
         }
       }
-      else if (!contains (nDevice.m_uuid) && m_invalidDevices.value (nDevice.m_uuid) < 2)
+      else if (!contains (nDevice.m_uuid) && m_invalidDevices.value (nDevice.m_uuid) < m_deviceFails)
       {
         bool        success      = false;
         char const * failMessage = nullptr;

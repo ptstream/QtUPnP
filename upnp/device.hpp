@@ -263,7 +263,7 @@ public:
    * \param height: The prefered widht or the nearest height.
    * \param timeout: The timeout of the request.
    */
-  QByteArray pixmapBytes (EPreferedPixmapType type = HiResol,
+  QByteArray pixmapBytes (QNetworkAccessManager* naMgr, EPreferedPixmapType type = HiResol,
                           char const * mimeType = "jpeg", int width = 0, int height = 0,
                           int timeout = CDataCaller::Timeout) const;
 
@@ -309,7 +309,7 @@ public:
   bool parseXml (QByteArray const & data);
 
   /*! Extracts the services components. */
-  bool extractServiceComponents (int timeout = CDataCaller::Timeout);
+  bool extractServiceComponents (QNetworkAccessManager* naMgr, int timeout = CDataCaller::Timeout);
 
 private:
   QSharedDataPointer<SDeviceData> m_d; //!< Shared data pointer.

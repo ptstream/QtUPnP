@@ -475,15 +475,14 @@ QUrl CDevice::pixmap (EPreferedPixmapType type, char const * mimeType, int width
   return url;
 }
 
-QByteArray CDevice::pixmapBytes (EPreferedPixmapType type, char const * mimeType,
+QByteArray CDevice::pixmapBytes (QNetworkAccessManager* naMgr, EPreferedPixmapType type, char const * mimeType,
                                  int width, int height, int timeout) const
 {
   QByteArray bytes;
   QUrl       url = pixmap (type, mimeType, width, height);
   if (!url.isEmpty ())
   {
-    CDataCaller dc;
-    bytes = dc.callData (url.toString (), timeout);
+    bytes = CDataCaller (naMgr).callData (url.toString (), timeout);
   }
 
   return bytes;
@@ -495,7 +494,7 @@ bool CDevice::parseXml (QByteArray const & data)
   return h.parse (data) | CXmlH::tolerantMode ();
 }
 
-bool CDevice::extractServiceComponents (int timeout)
+bool CDevice::extractServiceComponents (QNetworkAccessManager* naMgr, int timeout)
 {
   bool success = false;
   for (TMServices::iterator its = m_d->m_services.begin (), end = m_d->m_services.end (); its != end; ++its)
@@ -507,7 +506,7 @@ bool CDevice::extractServiceComponents (int timeout)
     {
       QUrl url = m_d->m_url;
       url.setPath (scpdURL);
-      CDataCaller dc;
+      CDataCaller dc (naMgr);
       QByteArray  data = dc.callData (url.toString (), timeout);
       if (!data.isEmpty ())
       {

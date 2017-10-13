@@ -92,7 +92,7 @@ protected :
   iterator insertDevice (QString const & uuid);
 
  /*! Extracts the services components. */
-  static bool extractServiceComponents (CDevice& device, int timeout);
+  bool extractServiceComponents (CDevice& device, int timeout);
 
 private :
   CHTTPServer* m_httpServer = nullptr; //!< The http server for eventing.
@@ -100,6 +100,7 @@ private :
   QStringList m_newDevices; //!< List of new devices.
   QStringList m_lostDevices; //!< List of lost devices.
   QMap<QString, int> m_invalidDevices; //!< Invalid devices. The device is invalid when get services fails twice.
+  int m_deviceFails = 2;
 };
 
 } // End namespace
