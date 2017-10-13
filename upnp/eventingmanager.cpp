@@ -7,8 +7,16 @@ USING_UPNP_NAMESPACE
 int CEventingManager::m_elapsedTime = 0;
 QString CEventingManager::m_lastError;
 
-CEventingManager::CEventingManager ()
+CEventingManager::CEventingManager () : m_naMgr (new QNetworkAccessManager (this))
 {
+}
+
+CEventingManager::CEventingManager (QNetworkAccessManager* naMgr) : m_naMgr (naMgr)
+{
+  if (m_naMgr == nullptr)
+  {
+    m_naMgr = new QNetworkAccessManager (this);
+  }
 }
 
 void CEventingManager::timerEvent (QTimerEvent*)
@@ -36,12 +44,10 @@ bool CEventingManager::sendRequest (QUrl url, char const * verb, QString const &
   url.setPath (eventSubURL);
   req.setUrl (url);
 
-  QNetworkAccessManager naMgr (this);
-
   QTime time;
   time.start ();
 
-  QNetworkReply* reply = naMgr.sendCustomRequest (req, verb);
+  QNetworkReply* reply = m_naMgr->sendCustomRequest (req, verb);
   connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
   connect (reply, SIGNAL(finished()), this, SLOT(finished()));
 

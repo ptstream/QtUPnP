@@ -2,12 +2,16 @@
 
 USING_UPNP_NAMESPACE
 
-CDataCaller::CDataCaller (QObject* parent) : QEventLoop (parent), m_naMgr (new QNetworkAccessManager (parent))
+CDataCaller::CDataCaller (QObject* parent) : QEventLoop (parent), m_naMgr (new QNetworkAccessManager (this))
 {
 }
 
 CDataCaller::CDataCaller (QNetworkAccessManager* naMgr, QObject* parent) : QEventLoop (parent), m_naMgr (naMgr)
 {
+  if (m_naMgr == nullptr)
+  {
+    m_naMgr = new QNetworkAccessManager (this);
+  }
 }
 
 CDataCaller::~CDataCaller ()
@@ -62,5 +66,5 @@ void CDataCaller::error (QNetworkReply::NetworkError err)
   QString        error = QString ("Network reply error:%1->%2->%3")
                        .arg (err).arg (reply->url ().toString ()).arg (reply->errorString ());
   qDebug () << "CDataCaller::error: " << err << " (" << error << ")";
-  exit (err);
+  exit (-1);
 }

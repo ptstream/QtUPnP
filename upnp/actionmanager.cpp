@@ -7,8 +7,17 @@ USING_UPNP_NAMESPACE
 int CActionManager::m_elapsedTime = 0;
 QString CActionManager::m_lastError;
 
-CActionManager::CActionManager (QObject* parent ) : QEventLoop (parent)
+CActionManager::CActionManager (QObject* parent ) : QEventLoop (parent), m_naMgr (new QNetworkAccessManager (this))
 {
+}
+
+CActionManager::CActionManager (QNetworkAccessManager* naMgr, QObject* parent) : QEventLoop (parent),
+     m_naMgr (naMgr)
+{
+  if (m_naMgr == nullptr)
+  {
+    m_naMgr = new QNetworkAccessManager (this);
+  }
 }
 
 CActionManager::~CActionManager ()
@@ -35,8 +44,7 @@ void CActionManager::error (QNetworkReply::NetworkError err)
   emit networkError (m_device, err, errorString);
 }
 
-bool CActionManager::post (QString const & device, QUrl const & url,
-                           CActionInfo& info, int timeout)
+bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo& info, int timeout)
 {
   m_lastError.clear ();
   m_device     = device;
@@ -51,12 +59,10 @@ bool CActionManager::post (QString const & device, QUrl const & url,
     QString soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID ()).arg (actionName);
     req.setRawHeader ("SOAPAction", soapActionHdr.toUtf8 ());
 
-    QNetworkAccessManager naMgr;
-
     QTime time;
     time.start ();
 
-    QNetworkReply* reply = naMgr.post (req, info.message ().toUtf8 ());
+    QNetworkReply* reply = m_naMgr->post (req, info.message ().toUtf8 ());
     connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
     connect (reply, SIGNAL(finished()), this, SLOT(finished()));
 
