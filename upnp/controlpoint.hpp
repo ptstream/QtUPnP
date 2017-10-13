@@ -413,12 +413,13 @@ private :
   bool m_discoveryFinished = false; //!< Discovery was launched onece.
   QHostAddress m_upnpMulticastAddr = QHostAddress ("239.255.255.250"); //!< Standard multicast IPV4 address.
   quint16 m_upnpMulticastPort = 1900; //!< Standard multicats  port.
-  CUnicastSocket* m_unicastSocket; //!< Unicast sockets.
-  CMulticastSocket* m_multicastSocket;  //!< Multicast sockets
+  CUnicastSocket* m_unicastSocket = nullptr; //!< Unicast sockets.
+  CUnicastSocket* m_unicastSocketLocal = nullptr; //!< Unicast sockets local. Use by Windows Media player
+  CMulticastSocket* m_multicastSocket = nullptr;  //!< Multicast sockets ipv4.
   CDeviceMap m_devices; //!< Map of discovered devices.
   QMap<QString, TSubscriptionTimer> m_subcriptionTimers; //!< Map of subscription timers.
   int m_discoveryRetryCount = 3; //!< Number of discovery messages sent.
-  int m_discoveryPause = 800; //!< Delay between two discoveries message in ms.
+  int m_discoveryPause = 100; //!< Delay between two discoveries message in ms.
   int m_renewalGard = 120; //!< Gard for renewing in seconds (2 mn).
   SLastActionError m_lastActionError; //!< Last error generate by the last action.
   int m_level = 0; //!< To emit signal only once.

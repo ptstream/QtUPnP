@@ -26,17 +26,22 @@ CControlPoint::~CControlPoint ()
 bool CControlPoint::initialize ()
 {
   m_multicastSocket = new CMulticastSocket (this);
-  QHostAddress addr = CUpnpSocket::localHostAddress ();
-  bool done = m_multicastSocket->bind (addr, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress);
+  bool done = m_multicastSocket->initialize (m_upnpMulticastAddr);
   if (done)
   {
+    connect (m_multicastSocket, SIGNAL(readyRead()), this, SLOT(readDatagrams()));
     m_unicastSocket = new CUnicastSocket (this);
-    done = m_unicastSocket->QUdpSocket::bind (addr, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress);
+    done            = m_unicastSocket->bind (QHostAddress::AnyIPv4);
     if (done)
     {
-      connect (m_multicastSocket, SIGNAL(readyRead()), this, SLOT(readDatagrams()));
       connect (m_unicastSocket, SIGNAL(readyRead()), this, SLOT(readDatagrams()));
       connect (m_devices.httpServer (), SIGNAL(eventReady(QString const &)), this, SLOT(updateEventVars(QString const &)));
+      m_unicastSocketLocal = new CUnicastSocket (this);
+      done                 = m_unicastSocketLocal->bind (QHostAddress ("127.0.0.1"));
+      if (done)
+      {
+        connect (m_unicastSocketLocal, SIGNAL(readyRead()), this, SLOT(readDatagrams()));
+      }
     }
   }
 
@@ -48,7 +53,12 @@ bool CControlPoint::avDiscover ()
   bool success = false;
   if (!m_closing)
   {
-    m_discoveryFinished = false;
+    m_discoveryFinished =
+#ifdef Q_OS_WIN
+                          true;
+#else
+                          false;
+#endif
     char const * urns[] = { "urn:schemas-upnp-org:device:MediaServer:1",
                             "urn:schemas-upnp-org:device:MediaRenderer:1",
                             "upnp:rootdevice",
@@ -57,23 +67,33 @@ bool CControlPoint::avDiscover ()
     int cDeviceTypes = sizeof (urns) / sizeof (char const *);
     int iDiscovery   = 0;
     int cDiscoveries = m_discoveryRetryCount * cDeviceTypes;
-    int pauseMin     = m_discoveryPause / 4;
-    CInitialDiscovery initDiscovery (m_multicastSocket, m_upnpMulticastAddr, m_upnpMulticastPort);
-    for (int iRetry = 0; iRetry < m_discoveryRetryCount; ++iRetry)
+    int pauseMin     = m_discoveryPause / 5;
+
+    // Discovery is launched from m_unicastSocket and m_unicastSocketLocal.
+    // Theorically m_unicastSocket is sufficient by without m_unicastSocketLocal, Windows Media player
+    // is never detected.
+    CUnicastSocket* sockets[] = { m_unicastSocket, m_unicastSocketLocal };
+    for (CUnicastSocket* socket : sockets)
     {
-      for (int iDeviceType = 0; iDeviceType < cDeviceTypes; ++iDeviceType)
+      CInitialDiscovery initDiscovery (socket, m_upnpMulticastAddr, m_upnpMulticastPort);
+      for (int iRetry = 0; iRetry < m_discoveryRetryCount; ++iRetry)
       {
-        // Choose a pause between m_discoveryPause / 5 and m_discoveryPause
-        int          pause = qrand () % (m_discoveryPause - pauseMin) + pauseMin;
-        initDiscovery.setDiscoveryPause (pause);
-        char const * urn = urns[iDeviceType % (sizeof (urns) / sizeof (char const *))];
-        emit searched (urn, ++iDiscovery, cDiscoveries);
-        success |= initDiscovery.discover (false, urn);
+        for (int iDeviceType = 0; iDeviceType < cDeviceTypes; ++iDeviceType)
+        {
+          // Choose a pause between m_discoveryPause / 5 and m_discoveryPause
+          int          pause = qrand () % (m_discoveryPause - pauseMin) + pauseMin;
+          initDiscovery.setDiscoveryPause (pause);
+          char const * urn = urns[iDeviceType % (sizeof (urns) / sizeof (char const *))];
+          emit searched (urn, ++iDiscovery, cDiscoveries);
+          success |= initDiscovery.discover (false, urn);
+        }
       }
     }
 
+#ifndef Q_OS_WIN
     newDevicesDetected ();
     m_discoveryFinished = true;
+#endif
   }
   return success;
 }
@@ -83,20 +103,33 @@ bool CControlPoint::discover (char const * nt)
   bool success = false;
   if (!m_closing)
   {
-    m_discoveryFinished            = false;
-    int               iDiscovery   = 0;
-    int               pauseMin     = m_discoveryPause / 4;
-    CInitialDiscovery initDiscovery (m_unicastSocket, m_upnpMulticastAddr, m_upnpMulticastPort);
-    for (int iRetry = 0; iRetry < m_discoveryRetryCount; ++iRetry)
+    m_discoveryFinished =
+#ifdef Q_OS_WIN
+                          true;
+#else
+                          false;
+#endif
+    int    iDiscovery   = 0;
+    int    pauseMin     = m_discoveryPause / 5;
+
+    // See comments above about m_unicastSocketLocal.
+    CUnicastSocket* sockets[] = { m_unicastSocket, m_unicastSocketLocal };
+    for (CUnicastSocket* socket : sockets)
     {
-      int pause = qrand () % (m_discoveryPause - pauseMin) + pauseMin;
-      initDiscovery.setDiscoveryPause (pause);
-      emit searched (nt, ++iDiscovery, m_discoveryRetryCount);
-      success |= initDiscovery.discover (false, nt);
+      CInitialDiscovery initDiscovery (socket, m_upnpMulticastAddr, m_upnpMulticastPort);
+      for (int iRetry = 0; iRetry < m_discoveryRetryCount; ++iRetry)
+      {
+        int pause = qrand () % (m_discoveryPause - pauseMin) + pauseMin;
+        initDiscovery.setDiscoveryPause (pause);
+        emit searched (nt, ++iDiscovery, m_discoveryRetryCount);
+        success |= initDiscovery.discover (false, nt);
+      }
     }
 
+#ifndef Q_OS_WIN
     newDevicesDetected ();
     m_discoveryFinished = true;
+#endif
   }
 
   return success;
@@ -201,19 +234,23 @@ void CControlPoint::networkAccessManager (QString const & deviceUUID, QNetworkRe
 QList<CUpnpSocket::SNDevice> CControlPoint::ndevices () const
 {
   QList<CUpnpSocket::SNDevice> devices;
-  int                          count = m_unicastSocket->devices ().size () + m_multicastSocket->devices ().size ();
+  int                          count = m_unicastSocket->devices ().size () +
+                                       m_multicastSocket->devices ().size () +
+                                       m_unicastSocketLocal->devices ().size ();
   devices.reserve (count);
-
-  CUpnpSocket* sockets[] = { m_unicastSocket, m_multicastSocket };
+  CUpnpSocket* sockets[] = { m_unicastSocket, m_multicastSocket, m_unicastSocketLocal };
   for (CUpnpSocket* socket : sockets)
   {
-    QList<CUpnpSocket::SNDevice> const & socketDevices = socket->devices ();
-    for (CUpnpSocket::SNDevice const & device : socketDevices)
+    if (socket != nullptr)
     {
-      devices.push_back (device);
-    }
+      QList<CUpnpSocket::SNDevice> const & socketDevices = socket->devices ();
+      for (CUpnpSocket::SNDevice const & device : socketDevices)
+      {
+        devices.push_back (device);
+      }
 
-    socket->resetDevices ();
+      socket->resetDevices ();
+    }
   }
 
   return devices;
@@ -654,9 +691,6 @@ void CControlPoint::close ()
       unsubscribe (uuid);
     }
   }
-
-  m_unicastSocket->close ();
-  m_multicastSocket->close ();
 }
 
 QByteArray CControlPoint::callData (QString const & uri, int timeout)
