@@ -167,13 +167,13 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem co
 {
   Q_ASSERT (m_cp != nullptr);
   CActionInfo actionInfo;
-  QString     uri = item.uri (index);
+  QString     uri = replace127_0_0_1 (item.uri (index));
   if (!uri.isEmpty ())
   {
     QList<CControlPoint::TArgValue> args;
     args.reserve (3);
     args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-    args << CControlPoint::TArgValue ("CurrentURI", replace127_0_0_1 (uri));
+    args << CControlPoint::TArgValue ("CurrentURI", uri);
     args << CControlPoint::TArgValue ("CurrentURIMetaData", item.didl ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     if (!actionInfo.succeeded () && !args[2].second.isEmpty ())
