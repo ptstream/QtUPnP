@@ -27,7 +27,7 @@ CMainWindow::CMainWindow (QWidget* parent) : QMainWindow (parent), ui (new Ui::C
   ui->m_tabWidget->setCurrentIndex (0);
   m_itemBrush = ui->m_devices->topLevelItem (0)->foreground (0);
   createActionLinks ();
-  m_timer.start (250); // Lauch discovery when all widgets are polished.
+  m_timer.start (500); // Launch discovery when all widgets are polished.
 }
 
 CMainWindow::~CMainWindow ()
@@ -293,7 +293,7 @@ QTreeWidgetItem* CMainWindow::insertItem (QTreeWidgetItem* parentItem, CDevice c
   quint16          port     = device.url ().port ();
   QString          text     = QString ("%1 [%2:%3] (%4)").arg (name).arg (host).arg (port).arg (uuid);
   QTreeWidgetItem* item     = new QTreeWidgetItem (parentItem, QStringList (text));
-  QByteArray       pxmBytes = device.pixmapBytes (); // Retreive the pixmap attached at the device.
+  QByteArray       pxmBytes = device.pixmapBytes (m_cp->networkAccessManager ()); // Retreive the pixmap attached at the device.
   if (!pxmBytes.isEmpty ())
   {
     QPixmap pxm;
