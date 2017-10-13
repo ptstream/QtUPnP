@@ -141,7 +141,7 @@ void CHTTPServer::parseMessage (CHTTPParser const & httpParser, int headerLength
   }
   else
   {
-    bool       playlist = httpParser.isPlaylistPath ();;
+    bool       playlist = httpParser.isPlaylistPath ();
     QByteArray response;
     if (verb == "GET")
     {
@@ -236,8 +236,7 @@ void CHTTPServer::bytesWritten (qint64 bytes)
 QString CHTTPServer::playlistBaseName (QString const & name)
 {
   QString temp = name;
-  temp.replace (':', '-');
-  return temp;
+  return temp.replace (':', '-'); // Replace uuid: by uuid-
 }
 
 QString CHTTPServer::playlistURI (QString const & name) const
@@ -245,7 +244,8 @@ QString CHTTPServer::playlistURI (QString const & name) const
   QString      temp = playlistBaseName (name);
   QHostAddress host = serverAddress ();
   quint16      port = serverPort ();
-  return QString ("http://%1:%2/%3.m3u").arg (host.toString ()).arg (port).arg (temp);
+  return QString ("http://%1:%2/%3-%4.m3u").arg (host.toString ()).arg (port)
+                                           .arg (temp).arg (m_playlistIndex++);
 }
 
 QString CHTTPServer::audioFileURI (QString const & name) const

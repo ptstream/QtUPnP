@@ -188,6 +188,7 @@ private :
   TMEventVars m_vars; //!< The map of variables modified by the UPnP event.
   mutable QByteArray m_playlistContent; //!< The formatted playlist.
   QString m_playlistName; //!< The current playlist name.
+  mutable int m_playlistIndex = 1; //!< Playlist index incremented by one at each use of setPlaylistName.
 };
 
 } // End namespace
