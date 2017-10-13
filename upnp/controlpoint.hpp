@@ -54,12 +54,6 @@ public :
    */
   typedef QPair<QTimer*, int> TSubscriptionTimer;
 
-  /*! Multicast IP protocols. */
-  enum EMulticastIPProtocol { McpIPV4, //!< IPV4 protocol
-                              McpIPV6, //!< IPV6 protocol
-                              McpIPLast, //!< IP last protocol.
-                            };
-
   /*! Index of action error string. */
   enum EActionErrorType { ErrorDeviceUUID, //!< Device uuid.
                           ErrorServiceTypeOrID, //!< Service type or service id.
@@ -80,6 +74,11 @@ public :
    * If you pass a non null parent at the constructor, it is not necessary to call the destructor.
    */
   virtual ~CControlPoint ();
+
+  /*! Initialize the control point. This function is called by the constructor.
+   * \return True in case of well initialization.
+   */
+  bool initialize ();
 
   /*! The state of the control point creation.
    * \return True the control point is well constructed. You should not use this address
@@ -288,6 +287,8 @@ public :
   /*! Returns true if the control point is closing. */
   bool isClosing () const { return m_closing; }
 
+  QByteArray callData (QString const & uri, int timeout);
+
   /*! Constant to define a empty list of argument. */
   static QList<CControlPoint::TArgValue> noArgs;
 
@@ -341,11 +342,6 @@ signals :
   void networkError (QString const & deviceUUID, QNetworkReply::NetworkError errorCode, QString const & errorDesc);
 
 private :
-  /*! Initialize the control point. This function is called by the constructor.
-   * \return True in case of well initialization.
-   */
-  bool initialize ();
-
   /*! Returns the list of device recently discovered. */
   QList<CUpnpSocket::SNDevice> ndevices () const;
 
@@ -414,15 +410,15 @@ private :
 private :
   bool m_done = false; //!< The status of the creation.
   bool m_closing = false; //!< The control point  is being closed.
+  bool m_discoveryFinished = false; //!< Discovery was launched onece.
   QHostAddress m_upnpMulticastAddr = QHostAddress ("239.255.255.250"); //!< Standard multicast IPV4 address.
-  QHostAddress m_upnpMulticastAddr6 = QHostAddress ("FF02::C"); //!< Standard multicast IPV6 address.
   quint16 m_upnpMulticastPort = 1900; //!< Standard multicats  port.
-  CUnicastSocket* m_unicastSockets[6]; //!< Unicast sockets.
-  CMulticastSocket* m_multicastSockets[McpIPLast];  //!< Multicast sockets 0 ipv4, 1 ipv6.
+  CUnicastSocket* m_unicastSocket; //!< Unicast sockets.
+  CMulticastSocket* m_multicastSocket;  //!< Multicast sockets
   CDeviceMap m_devices; //!< Map of discovered devices.
   QMap<QString, TSubscriptionTimer> m_subcriptionTimers; //!< Map of subscription timers.
   int m_discoveryRetryCount = 3; //!< Number of discovery messages sent.
-  int m_discoveryPause = 500; //!< Delay between two discoveries message in ms.
+  int m_discoveryPause = 800; //!< Delay between two discoveries message in ms.
   int m_renewalGard = 120; //!< Gard for renewing in seconds (2 mn).
   SLastActionError m_lastActionError; //!< Last error generate by the last action.
   int m_level = 0; //!< To emit signal only once.

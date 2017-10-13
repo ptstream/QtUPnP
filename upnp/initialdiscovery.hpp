@@ -21,13 +21,16 @@ public :
    * \param port: The port generally 1900.
    * \param discoveryPause: Discovery pause between each sent message.
    */
-  CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & hostAddress, quint16 port, int discoveryPause);
+  CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & hostAddress, quint16 port);
 
   /*! Launchs discovery.
    * \param changeMX: True means the MX of the discovery message is changed at each sended message.
    * \param uuid: The destination uuid.
    */
   bool discover (bool changeMX = false, char const * uuid = nullptr);
+
+  /*! Sets the discovery pause in milliseconds. */
+  void setDiscoveryPause (int pause) { m_discoveryPause = pause; }
 
   /*! Restore the MX value at the default value (3s). */
   void restoreDefaultMX () { m_mx = 3; }
@@ -56,7 +59,7 @@ protected :
   QHostAddress m_hostAddress; //!< ip address.
   quint16      m_port; //!< The port.
   qint16       m_mx; //!< The current MX value.
-  int          m_discoveryPause; //!< Discovery pause between each sent message.
+  int          m_discoveryPause = 500; //!< Defualt discovery pause between each sent message (500ms).
   int          m_idTimer; //<! The id timer for timeout.
 };
 

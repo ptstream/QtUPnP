@@ -6,9 +6,9 @@
 
 USING_UPNP_NAMESPACE
 
-CInitialDiscovery::CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & hostAddress, quint16 port, int discoveryPause) :
+CInitialDiscovery::CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & hostAddress, quint16 port) :
                                       m_socket (socket), m_hostAddress (hostAddress), m_port (port), m_mx (2),
-                                      m_discoveryPause (discoveryPause), m_idTimer (0)
+                                      m_idTimer (0)
 {
 }
 
