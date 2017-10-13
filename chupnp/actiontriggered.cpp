@@ -10,6 +10,7 @@
 
 void CMainWindow::on_m_rescan_triggered ()
 {
+  QApplication::setOverrideCursor (Qt::WaitCursor);
   ui->m_tabWidget->setCurrentIndex (0);
   ui->m_services->clear ();
   hideProgressBar (false);
@@ -23,6 +24,7 @@ void CMainWindow::on_m_rescan_triggered ()
   QString message = QString ("Discovery time: %1 s").arg (static_cast<float>(ms) / 1000.0f);
   statusBar ()->showMessage (message);
   hideProgressBar (true);
+  QApplication::restoreOverrideCursor ();
 }
 
 void CMainWindow::on_m_update_triggered ()
