@@ -20,7 +20,7 @@ public :
    * \param multicastPort: 1900
    * \return True in case of success.
    */
-  bool initialize (QHostAddress multicastAddress, quint16 multicastPort);
+  bool initialize (QHostAddress multicastAddress);
 
   /*! Binds to IPV6 address on port multicastPort and join the multicast group.
    * \param multicastAddress: FF02::C
@@ -28,7 +28,7 @@ public :
    * \return True in case of success.
    * \remark Actually IPV6 is not really used.
    */
-  bool initialize6 (QHostAddress multicastAddress, quint16 multicastPort);
+  bool initialize6 (QHostAddress multicastAddress);
 
 private :
   QHostAddress m_joinAddress; //!< Save the join address.

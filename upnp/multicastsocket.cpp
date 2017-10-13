@@ -19,12 +19,10 @@ CMulticastSocket::~CMulticastSocket ()
   }
 }
 
-bool CMulticastSocket::initialize (QHostAddress multicastAddress, quint16 multicastPort)
+bool CMulticastSocket::initialize (QHostAddress multicastAddress)
 {
   bool success = false;
-
-  // Bind multicast socket
-  if (bind (localAddress (), multicastPort, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
+  if (bind (QHostAddress::AnyIPv4, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
   {
     if (joinMulticastGroup (multicastAddress))
     {
@@ -38,16 +36,16 @@ bool CMulticastSocket::initialize (QHostAddress multicastAddress, quint16 multic
   }
   else
   {
-    qDebug () << "CMulticastSocket::initialize (bind port):" << QByteArray::number (multicastPort);
+    qDebug () << "CMulticastSocket::initialize (bind)";
   }
 
   return success;
 }
 
-bool CMulticastSocket::initialize6 (QHostAddress multicastAddress, quint16 multicastPort)
+bool CMulticastSocket::initialize6 (QHostAddress multicastAddress)
 {
   bool success = false;
-  if (bind (QHostAddress::AnyIPv6, multicastPort, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
+  if (bind (QHostAddress::AnyIPv6, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
   {
     if (joinMulticastGroup (multicastAddress))
     {
@@ -61,7 +59,7 @@ bool CMulticastSocket::initialize6 (QHostAddress multicastAddress, quint16 multi
   }
   else
   {
-    qDebug () << "CMulticastSocket::initialize6 (bind port):" << QByteArray::number (multicastPort);
+    qDebug () << "CMulticastSocket::initialize6 (bind)";
   }
 
   return success;
