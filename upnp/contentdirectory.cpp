@@ -15,7 +15,7 @@ CBrowseReply CContentDirectory::browse (QString const & serverUUID,
   {
     CBrowseReply tempReply;
     QList<CControlPoint::TArgValue> args = browseArguments (objectID, type,
-                           filter, startingIndex, requestedCount, sortCriteria);
+                           filter, index, requestedCount, sortCriteria);
     CActionInfo actionInfo = m_cp->invokeAction (serverUUID, "Browse", args, m_browseTimeout);
     if (actionInfo.succeeded ())
     {
