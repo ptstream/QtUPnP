@@ -245,7 +245,8 @@ QString CHTTPServer::playlistURI (QString const & name) const
   QHostAddress host = serverAddress ();
   quint16      port = serverPort ();
   return QString ("http://%1:%2/%3-%4.m3u").arg (host.toString ()).arg (port)
-                                           .arg (temp).arg (m_playlistIndex++);
+                                           .arg (temp)
+                                           .arg (QDateTime::currentMSecsSinceEpoch ());
 }
 
 QString CHTTPServer::audioFileURI (QString const & name) const
