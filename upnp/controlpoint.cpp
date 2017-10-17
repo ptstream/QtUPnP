@@ -53,7 +53,19 @@ bool CControlPoint::avDiscover ()
   bool success = false;
   if (!m_closing)
   {
-    m_discoveryFinished =
+
+  char const * ignored[] { "InternetGatewayDevice",
+                           "WANConnectionDevice",
+                           "WANDevice",
+                           "WFADevice",
+                         };
+  for (char const * device : ignored)
+  {
+    CUpnpSocket::addSkippedUUID (device);
+  }
+
+  m_devices.setAVOnly ();
+  m_discoveryFinished =
 #ifdef Q_OS_WIN
                           true;
 #else

@@ -167,19 +167,27 @@ int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & n
           if (success)
           {
             device.setType ();
-            success = extractServiceComponents (device, timeout); // Extract state variables and actions
-            if (!success)
+            CDevice::EType type = device.type ();
+            if (!m_avOnly || type == CDevice::MediaServer || type == CDevice::MediaRenderer)
             {
-              failMessage = "Bad service components:" ;
+              success = extractServiceComponents (device, timeout); // Extract state variables and actions
+              if (!success)
+              {
+                failMessage = "Bad service components:" ;
+              }
+              else
+              {
+                QStringList::const_iterator end = m_newDevices.cend ();
+                if (std::find (m_newDevices.cbegin (), end, nDevice.m_uuid) == end)
+                {
+                  m_newDevices.push_back (nDevice.m_uuid);
+                  m_lostDevices.removeOne (nDevice.m_uuid);
+                }
+              }
             }
             else
             {
-              QStringList::const_iterator end = m_newDevices.cend ();
-              if (std::find (m_newDevices.cbegin (), end, nDevice.m_uuid) == end)
-              {
-                m_newDevices.push_back (nDevice.m_uuid);
-                m_lostDevices.removeOne (nDevice.m_uuid);
-              }
+              m_invalidDevices.insert (url.toString (), 1000);
             }
           }
           else

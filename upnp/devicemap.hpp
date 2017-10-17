@@ -81,6 +81,9 @@ public :
   /*! Returns the netwok access manager created to speed up retreive data. */
   QNetworkAccessManager* networkAccessManager () const { return m_naMgr; }
 
+  /*! Set UPnP/AV only. Just AV servers and renderers are handle */
+  void setAVOnly () { m_avOnly = true; }
+
 protected :
   /*! Inserts a new device. */
   void insertDevice (CDevice& device);
@@ -100,7 +103,8 @@ private :
   QStringList m_newDevices; //!< List of new devices.
   QStringList m_lostDevices; //!< List of lost devices.
   QMap<QString, int> m_invalidDevices; //!< Invalid devices. The device is invalid when get services fails twice.
-  int m_deviceFails = 2;
+  int m_deviceFails = 2; //!< Max number of fails to consider the device invalid.
+  bool m_avOnly = false; //!< The discovery is launched from avDiscovery.
 };
 
 } // End namespace
