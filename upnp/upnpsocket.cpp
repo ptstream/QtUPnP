@@ -213,10 +213,11 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
 
     if (type != SNDevice::Unknown)
     {
-      for (QByteArray const & skippedUUID : m_skippedUUIDs)
+      QString uuidTemp = uuid.toLower ();
+      QString urlTemp  = url.toLower ();
+      for (QList<QByteArray>::const_iterator it = m_skippedUUIDs.cbegin (), end = m_skippedUUIDs.cend (); it != end; ++it)
       {
-        value = uuid.toLower ();
-        if (value.contains (skippedUUID))
+        if (uuidTemp.contains (*it) || urlTemp.contains (*it))
         {
           type = SNDevice::Unknown;
           break;
