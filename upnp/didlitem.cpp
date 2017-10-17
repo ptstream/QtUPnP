@@ -129,6 +129,36 @@ bool CDidlElem::isEmpty () const
   return m_d->m_props.isEmpty () && m_d->m_value.isEmpty ();
 }
 
+bool CDidlElem::isEqual (CDidlElem const & other) const
+{
+  bool equal = false;
+  if (m_d->m_value == other.m_d->m_value)
+  {
+    int count = m_d->m_props.size ();
+    if (count == other.m_d->m_props.size ())
+    {
+      for (TMProps::const_iterator it = m_d->m_props.cbegin (), end = m_d->m_props.cend (); it != end; ++it)
+      {
+        for (TMProps::const_iterator itOther = other.m_d->m_props.cbegin (), end = other.m_d->m_props.cend (); itOther != end; ++itOther)
+        {
+          if (it.value () == itOther.value ())
+          {
+            --count;
+            break;
+          }
+        }
+      }
+
+      if (count == 0)
+      {
+        equal = true;
+      }
+    }
+  }
+
+  return equal;
+}
+
 CDidlItem::CDidlItem () : m_d (new SDidlItemData)
 {
 }
@@ -354,7 +384,7 @@ QStringList CDidlItem::albumArtURIs (ESortType sort) const
 {
   QStringList      uris;
   QList<CDidlElem> elems = m_d->m_elems.values ("upnp:albumArtURI");
-  if (sort == SortAlbumArt)
+  if (elems.size () > 1 && sort == SortAlbumArt)
   {
     sortAlbumArtURIs (elems);
   }
@@ -377,7 +407,7 @@ QStringList CDidlItem::albumArtURIs (ESortType sort) const
     }
   }
 
-  if (sort == SortAlbumArt)
+  if (elems.size () > 1 && sort == SortAlbumArt)
   {
     sortResElems (elems);
   }
@@ -754,3 +784,39 @@ QString CDidlItem::subject () const
 {
   return m_d->m_elems.value ("dc:subject").value ();
 }
+
+CDidlItem CDidlItem::mix (CDidlItem const & item1, CDidlItem const & item2)
+{
+  CDidlItem item = item1;
+  for (QMultiMap<QString, CDidlElem>::const_iterator it = item2.m_d->m_elems.cbegin (), end = item2.m_d->m_elems.cend (); it != end; ++it)
+  {
+    QString const &   name  = it.key ();
+    CDidlElem const & elem2 = item2.m_d->m_elems.value (name);
+    if (!item.m_d->m_elems.contains (name))
+    {
+      item.insert (name, elem2);
+    }
+    else
+    {
+      QList<CDidlElem> elems1 = item1.values (name);
+      bool             equal  = false;
+      for (QList<CDidlElem>::const_iterator it = elems1.cbegin (), end = elems1.cend (); it != end; ++it)
+      {
+        if (elem2.isEqual (*it))
+        {
+          equal = true;
+          break;
+        }
+      }
+
+      if (!equal)
+      {
+        item.insert (name, elem2);
+      }
+    }
+  }
+
+
+  return item;
+}
+

@@ -79,8 +79,11 @@ public :
   /*! Returns the value. */
   QString const & value () const;
 
-  /*! Returns true if the value and the property map are empty. */
+  /*! Returns true if the value and the property are empty. */
   bool isEmpty () const;
+
+  /*! Returns true if the value and the property are equal. */
+  bool isEqual (CDidlElem const & other) const;
 
 private :
   QSharedDataPointer<SDidlElemData> m_d; //!< Shared data pointer.
@@ -384,6 +387,9 @@ public:
 
   /*! Returns the subject . */
   QString subject () const;
+
+  /*! Mix 2 CDidlItem. */
+  static CDidlItem mix (CDidlItem const & item1, CDidlItem const & item2);
 
   /*! Sorts the res elements by quality (resolution or bitrate).
    * In case of multiple res elements of different type, the order is video,
