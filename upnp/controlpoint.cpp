@@ -315,7 +315,7 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
             { // Known state variable.
               CStateVariable& stateVariable = stateVariables[relatedStateVariableName]; //Get the variable.
               stateVariable.setValue (arg.second); // Change the variable value.
-              actionInfo.addArgument (arg.first, stateVariable.type (), arg.second); // Add argument at the HTTP message
+              actionInfo.addArgument (arg.first, arg.second); // Add argument at the SOAP message
             }
             else
             {
