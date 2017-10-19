@@ -253,6 +253,15 @@ void CUpnpSocket::addDevice (SNDevice const & device)
   }
 }
 
+QByteArray CUpnpSocket::userAgent ()
+{
+  QByteArray ua = "UPnP/1.0 ";
+  ua           += libraryName ();
+  ua           += '/';
+  ua           += libraryVersion ();
+  return ua;
+}
+
 bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, const char* uuid)
 {
   QByteArray datagram = "M-SEARCH * HTTP/1.1\r\nHOST: %1:1900\r\nMAN: \"ssdp:discover\"\r\nMX: %2\r\nST: %3\r\nUSER-AGENT: UPnP/1.0 %4/%5\r\n\r\n";
@@ -265,8 +274,7 @@ bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, 
   }
 
   datagram.replace ("%3", uuid);
-  datagram.replace ("%4", libraryName ());
-  datagram.replace ("%5", libraryVersion ());
+  datagram.replace ("%4", userAgent ());
   qint64 count = writeDatagram (datagram, hostAddress, port);
   flush ();
   waitForBytesWritten (2000);

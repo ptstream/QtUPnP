@@ -115,6 +115,9 @@ public :
   /*! Reset the wait for Linux see readDatagrams (). */
   void resetWait () { m_wait = StartingWait; }
 
+  /*! Returns the http header value of User-Agent. */
+  static QByteArray userAgent ();
+
 private :
   /*! See CUpnpSocket::readDatagrams comment. */
   enum EWait { StartingWait = 30 };
