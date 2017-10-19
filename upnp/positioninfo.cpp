@@ -134,7 +134,6 @@ int CPositionInfo::absCount () const
   return m_d->m_absCount;
 }
 
-
 CDidlItem CPositionInfo::didlItem () const
 {
   CXmlHDidlLite h;
