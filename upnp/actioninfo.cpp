@@ -3,20 +3,15 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-#define DHttp_envelope  "http://schemas.xmlsoap.org/soap/envelope/"
-#define DHttp_instance  "http://www.w3.org/1999/XMLSchema-instance"
-#define DHttp_encoding  "http://schemas.xmlsoap.org/soap/encoding/"
-#define DHttp_XMLSchema "http://www.w3.org/1999/XMLSchema"
-
 #define DStartEnvelopeBody \
-"<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"%1\" SOAP-ENV:encodingStyle=\"%2\" xmlns:xsd=\"%3\">\
-<SOAP-ENV:Body xmlns:SOAP-ENV=\"%1\">"
+"<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" \
+xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body>"
 
 #define DActionserviceID "<u:%1 xmlns:u=\"%2\">"
 
 #define DAction0 "</u:%1>"
 
-#define DEndBodyEnvelope "</SOAP-ENV:Body></SOAP-ENV:Envelope>"
+#define DEndBodyEnvelope "</s:Body></s:Envelope>"
 
 /*! \brief Internal structure of CActionInfo. */
 struct SActionInfoData : public QSharedData
@@ -69,8 +64,7 @@ void CActionInfo::startMessage (QString const & deviceUUID, QString const & serv
   m_d->m_deviceUUID = deviceUUID;
   m_d->serviceID    = serviceID;
   m_d->m_actionName = action;
-  m_d->m_message    = QString (DStartEnvelopeBody).arg (DHttp_envelope, DHttp_encoding, DHttp_XMLSchema) +
-                      QString (DActionserviceID).arg (action).arg (serviceID);
+  m_d->m_message    = DStartEnvelopeBody + QString (DActionserviceID).arg (action).arg (serviceID);
 }
 
 void CActionInfo::endMessage ()
@@ -78,36 +72,9 @@ void CActionInfo::endMessage ()
   m_d->m_message += QString (DAction0).arg (m_d->m_actionName) + QString (DEndBodyEnvelope);
 }
 
-void CActionInfo::addArgument (QString const & name, CStateVariable::EType dataType, QString const & value)
+void CActionInfo::addArgument (QString const & name, QString const & value)
 {
-  const char * soapType = nullptr;
-  switch (dataType)
-  {
-    case CStateVariable::I4 :
-      soapType = "xsd:int";
-      break;
-
-    case CStateVariable::Ui4 :
-      soapType = "xsd:unsignedInt";
-      break;
-
-    case  CStateVariable::Real :
-      soapType = "xsd:double"; // To confirm
-      break;
-
-    case  CStateVariable::String :
-      soapType = "xsd:string";
-      break;
-
-    case  CStateVariable::Boolean :
-      soapType = "xsd:boolean";
-      break;
-
-    default :
-      break;
-  }
-
-  m_d->m_message += QString ("<%1 xsi:type=\"%2\" xmlns:xsi=\"%4\">%3</%1>").arg (name, soapType, value, DHttp_instance);
+  m_d->m_message += QString ("<%1>%2</%1>").arg (name, value);
 }
 
 bool CActionInfo::succeeded () const
