@@ -52,16 +52,22 @@ bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo
   if (!isRunning ())
   {
     QNetworkRequest req (url);
+    req.setPriority (QNetworkRequest::HighPriority);
+     // To fix a problem with DSM6 (Synology). If User-Agent exists DSM send only the full precision
+     // image not the thumbnails.
+    req.setHeader (QNetworkRequest::UserAgentHeader, " ");
     req.setHeader (QNetworkRequest::ContentTypeHeader, QString ("text/xml; charset=\"utf-8\""));
-
-    // Build "[sevice type]#[action name]". e.g. "urn:schemas-upnp-org:service:AVTransport:1#Stop"
-    QString const & actionName = info.actionName ();
-    QString soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID ()).arg (actionName);
+    req.setRawHeader ("Accept-Encoding", "*");
+    req.setRawHeader ("Accept-Language", "*");
+    req.setRawHeader ("Connection", "Close");
+    QString const & actionName    = info.actionName ();
+    QString         soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID ()).arg (actionName);
     req.setRawHeader ("SOAPAction", soapActionHdr.toUtf8 ());
 
     QTime time;
     time.start ();
 
+    m_naMgr->setNetworkAccessible (QNetworkAccessManager::Accessible);
     QNetworkReply* reply = m_naMgr->post (req, info.message ().toUtf8 ());
     connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
     connect (reply, SIGNAL(finished()), this, SLOT(finished()));
