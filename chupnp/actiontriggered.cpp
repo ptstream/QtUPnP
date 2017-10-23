@@ -18,7 +18,7 @@ void CMainWindow::on_m_rescan_triggered ()
   QTime ti;
   ti.start ();
 
-  m_cp->avDiscover (); // Launch the UPnP device discovery. This function can be called more than once.
+  m_cp->discover (); // Launch the UPnP device discovery. This function can be called more than once.
 
   int ms = ti.elapsed ();
   QString message = QString ("Discovery time: %1 s").arg (static_cast<float>(ms) / 1000.0f);
