@@ -1,7 +1,15 @@
 
 #include "multicastsocket.hpp"
+#include <QNetworkInterface>
 
 USING_UPNP_NAMESPACE
+
+QHostAddress const CMulticastSocket::upnpMulticastAddr = QHostAddress ("239.255.255.250"); //!< Standard multicast IPV4 address.
+QHostAddress const CMulticastSocket::upnpMulticastAddr6 = QHostAddress ("FF02::C"); //!< Standard multicast IPV5 address.
+quint16 const  CMulticastSocket::upnpMulticastPort = 1900; //!< Standard multicast  port.
+
+int const fOK = QNetworkInterface::CanMulticast | QNetworkInterface::IsUp | QNetworkInterface::IsRunning;
+int const fKO = QNetworkInterface::IsLoopBack;
 
 CMulticastSocket::CMulticastSocket (QObject* parent) : CUpnpSocket (parent)
 {
@@ -9,29 +17,26 @@ CMulticastSocket::CMulticastSocket (QObject* parent) : CUpnpSocket (parent)
 
 CMulticastSocket::~CMulticastSocket ()
 {
-  if (state () == QUdpSocket::BoundState)
+  bool ok = leaveMulticastGroup (m_group);
+  if (!ok)
   {
-    bool ok = leaveMulticastGroup (m_joinAddress);
-    if (!ok)
-    {
-      qDebug () << "CMulticastSocket::~CMulticastSocket (leaveMulticastGroup):" << m_joinAddress.toString ().toLatin1 ();
-    }
+    qDebug () << "CMulticastSocket::~CMulticastSocket (leaveMulticastGroup):" << m_group.toString ().toLatin1 ();
   }
 }
 
-bool CMulticastSocket::initialize (QHostAddress multicastAddress)
+bool CMulticastSocket::initialize (QHostAddress const & bindAddr, QHostAddress const & group)
 {
-  bool success = false;
-  if (bind (QHostAddress::AnyIPv4, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
+  bool success = bind (bindAddr, upnpMulticastPort, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress);
+  if (success)
   {
-    if (joinMulticastGroup (multicastAddress))
+    success = joinMulticastGroup (group);
+    if (!success)
     {
-      m_joinAddress = multicastAddress;
-      success       = true;
+      qDebug () << "CMulticastSocket::initialize (joinMulticast):" << upnpMulticastAddr.toString ().toLatin1 ();
     }
     else
     {
-      qDebug () << "CMulticastSocket::initialize (joinMulticast):" << multicastAddress.toString ().toLatin1 ();
+      m_group = group;
     }
   }
   else
@@ -41,27 +46,3 @@ bool CMulticastSocket::initialize (QHostAddress multicastAddress)
 
   return success;
 }
-
-bool CMulticastSocket::initialize6 (QHostAddress multicastAddress)
-{
-  bool success = false;
-  if (bind (QHostAddress::AnyIPv6, 0, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
-  {
-    if (joinMulticastGroup (multicastAddress))
-    {
-      m_joinAddress = multicastAddress;
-      success       = true;
-    }
-    else
-    {
-      qDebug () << "CMulticastSocket::initialize6 (joinMulticast):" << multicastAddress.toString ().toLatin1 ();
-    }
-  }
-  else
-  {
-    qDebug () << "CMulticastSocket::initialize6 (bind)";
-  }
-
-  return success;
-}
-

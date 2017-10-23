@@ -14,13 +14,21 @@ CInitialDiscovery::CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & 
 
 bool CInitialDiscovery::discover (bool changeMX, char const * uuid)
 {
-  bool success = m_socket->discover (m_hostAddress, m_port, m_mx, uuid);
-  if (success)
+  bool success = false;
+  if (m_socket != nullptr)
   {
-    CWaitingLoop::wait (m_discoveryPause, QEventLoop::AllEvents);
-    if (changeMX)
+    success = m_socket->discover (m_hostAddress, m_port, m_mx, uuid);
+    if (success && m_discoveryPause != 0)
     {
-      m_mx = std::rand () % 5 + 1; // Delay [1 5] See UPnP documentation.
+      if (success)
+      {
+        CWaitingLoop::wait (m_discoveryPause, QEventLoop::AllEvents);
+      }
+
+      if (changeMX)
+      {
+        m_mx = std::rand () % 5 + 1; // Delay [1 5] See UPnP documentation.
+      }
     }
   }
 

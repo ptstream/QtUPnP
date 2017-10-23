@@ -57,9 +57,9 @@ protected:
 protected :
   CUpnpSocket* m_socket; //!< The socket.
   QHostAddress m_hostAddress; //!< ip address.
-  quint16      m_port; //!< The port.
-  qint16       m_mx; //!< The current MX value.
-  int          m_discoveryPause = 500; //!< Defualt discovery pause between each sent message (500ms).
+  quint16      m_port = 0; //!< The port.
+  qint16       m_mx = 5; //!< The current MX value.
+  int          m_discoveryPause = 0; //!< Defualt discovery pause between each sent message (500ms).
   int          m_idTimer; //<! The id timer for timeout.
 };
 

@@ -20,18 +20,14 @@ public :
    * \param multicastPort: 1900
    * \return True in case of success.
    */
-  bool initialize (QHostAddress multicastAddress);
+  bool initialize (QHostAddress const & bindAddr,  QHostAddress const & group);
 
-  /*! Binds to IPV6 address on port multicastPort and join the multicast group.
-   * \param multicastAddress: FF02::C
-   * \param multicastPort: 1900
-   * \return True in case of success.
-   * \remark Actually IPV6 is not really used.
-   */
-  bool initialize6 (QHostAddress multicastAddress);
+  static QHostAddress const upnpMulticastAddr; //!< Standard multicast IPV4 address.
+  static QHostAddress const upnpMulticastAddr6; //!< Standard multicast IPV4 address.
+  static quint16 const upnpMulticastPort; //!< Standard multicats  port.
 
 private :
-  QHostAddress m_joinAddress; //!< Save the join address.
+  QHostAddress m_group; //!< Save the join group.
 };
 
 } // End namespace

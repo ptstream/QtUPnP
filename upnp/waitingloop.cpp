@@ -21,5 +21,5 @@ void CWaitingLoop::timerEvent (QTimerEvent*)
 void CWaitingLoop::wait (int timeout, ProcessEventsFlags flags)
 {
   CWaitingLoop loop (timeout, flags);
-  loop.exec (loop.m_flags);
+  loop.exec (flags);
 }

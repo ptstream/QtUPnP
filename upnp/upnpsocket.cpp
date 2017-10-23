@@ -6,6 +6,7 @@
 #include <QNetworkInterface>
 #include <QNetworkProxy>
 #include <QTcpSocket>
+#include <QThread>
 
 USING_UPNP_NAMESPACE
 
@@ -53,9 +54,15 @@ QHostAddress CUpnpSocket::localHostAddressFromRouter ()
   QTcpSocket   tcpSocket;
   tcpSocket.connectToHost ("8.8.8.8", 53); // google DNS
   int  iter = 0;
-  bool connected;
-  while (iter < 4 && (connected = tcpSocket.waitForConnected (2500)))
+  bool connected = false;
+  while (iter < 4 && !connected)
   {
+    connected = tcpSocket.waitForConnected (2500);
+    if (!connected)
+    {
+      tcpSocket.connectToHost ("8.8.8.8", 53);
+    }
+
     ++iter;
   }
 
@@ -264,7 +271,7 @@ QByteArray CUpnpSocket::userAgent ()
 
 bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, const char* uuid)
 {
-  QByteArray datagram = "M-SEARCH * HTTP/1.1\r\nHOST: %1:1900\r\nMAN: \"ssdp:discover\"\r\nMX: %2\r\nST: %3\r\nUSER-AGENT: UPnP/1.0 %4/%5\r\n\r\n";
+  QByteArray datagram = "M-SEARCH * HTTP/1.1\r\nHOST: %1:1900\r\nMAN: \"ssdp:discover\"\r\nMX: %2\r\nST: %3\r\nCONTENT-LENGTH: 0\r\n\r\n";
   datagram.replace ("%1", hostAddress.toString ().toLatin1 ().constData ());
 
   datagram.replace ("%2", std::to_string (mx).c_str ());
@@ -274,10 +281,7 @@ bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, 
   }
 
   datagram.replace ("%3", uuid);
-  datagram.replace ("%4", userAgent ());
   qint64 count = writeDatagram (datagram, hostAddress, port);
-  flush ();
-  waitForBytesWritten (2000);
   bool success = count == datagram.size ();
   if (!success)
   {

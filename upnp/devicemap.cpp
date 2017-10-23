@@ -125,15 +125,20 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
     QList<CDevice>& subDevices = device.subDevices ();
     for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
     {
-      success &= extractServiceComponents (*it, timeout);
+      CDevice& subDevice = *it;
+      success           &= extractServiceComponents (subDevice, timeout);
+      if (success)
+      {
+        device.setType ();
+        insertDevice (subDevice.uuid ()); // Insert in the map.
+      }
     }
   }
 
   return success;
 }
 
-int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & nDevices,
-                                          int timeout)
+int CDeviceMap::extractDevicesFromNotify (QList<CUpnpSocket::SNDevice> const & nDevices, int timeout)
 {
   // For each device in the temp buffer
   for (CUpnpSocket::SNDevice const & nDevice : nDevices)

@@ -70,13 +70,21 @@ public :
   void decodeDatagram ();
 
   /*! Launchs the M-SEARCH udp datagram. */
-  bool discover (QHostAddress hostAddress, quint16 port, quint16 mx = 1, char const * uuid = nullptr);
+  bool discover (QHostAddress hostAddress, quint16 port, quint16 mx = 5, char const * uuid = nullptr);
 
   /*! Clear the device list. */
   void resetDevices () { m_devices.clear (); }
 
   /*! Returns the device list. */
   QList<SNDevice> const & devices () const { return m_devices; }
+
+  /*! Sets the user name.
+   * \param name: The user name.
+   */
+   void setName (QString const & name) { m_name = name; }
+
+  /*! Returns the user name. */
+   QString const & name () { return m_name; }
 
   /*! Returns the local host address from router.
    * This function is used in case of multiple network interfaces.
@@ -112,9 +120,6 @@ public :
    */
   static QHostAddress localHostAddress (bool ipv6 = false);
 
-  /*! Reset the wait for Linux see readDatagrams (). */
-  void resetWait () { m_wait = StartingWait; }
-
   /*! Returns the http header value of User-Agent. */
   static QByteArray userAgent ();
 
@@ -138,7 +143,7 @@ private :
   quint16  m_senderPort; //!< The port used by the device.
   QByteArray m_datagram; //!< The current datagram.
   QList<SNDevice> m_devices; //!< The list of devices.
-  int m_wait = StartingWait; //!< Current wait for linux system (2s). Reduce by 400ms at each call.
+  QString m_name; //!< Socket user name.
 };
 
 } // End namespace
