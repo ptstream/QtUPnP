@@ -15,7 +15,7 @@ CMainWindow::CMainWindow (QWidget* parent) : QMainWindow (parent), ui (new Ui::C
   statusBar ()->addPermanentWidget (m_pb);
   connect (&m_timer, &QTimer::timeout, this, &CMainWindow::timeout);
   m_cp = new CControlPoint (this);
-  connect (m_cp, SIGNAL(searched(const char*,int,int)), this, SLOT(discoveryLaunched(const char*,int,int)));
+  connect (m_cp, SIGNAL(searched(const char*,int,int)), this, SLOT(discoveryLaunched(const char*,int,int)));// Not essential. Can be skipped.
   connect (m_cp, SIGNAL(eventReady(QStringList const &)), this, SLOT(eventReady(QStringList const &)));
   connect (m_cp, SIGNAL(upnpError(int, QString const &)), this, SLOT(upnpError(int, QString const &)));
   connect (m_cp, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),

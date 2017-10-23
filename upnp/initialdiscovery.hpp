@@ -19,7 +19,6 @@ public :
    * \param socket: The socket to send discovery messages.
    * \param hostAddress: The ip address.
    * \param port: The port generally 1900.
-   * \param discoveryPause: Discovery pause between each sent message.
    */
   CInitialDiscovery (CUpnpSocket* socket, QHostAddress const & hostAddress, quint16 port);
 

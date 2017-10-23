@@ -42,7 +42,6 @@ public :
 
   /*! Add an argument.
    * \param name: The argument name.
-   * \param dataType: The type of data.
    * \param value: The parameter value.
    */
   void addArgument (QString const & name, QString const & value);

@@ -257,6 +257,7 @@ public:
   QUrl pixmap (EPreferedPixmapType type = HiResol, char const * mimeType = "jpeg", int width = 0, int height = 0) const;
 
   /*! Returns the pixmap bytes. The bytes can be used by QPixmap::loadFromData.
+   * \param naMgr: A QNetworkAccessManager.
    * \param type: Pixmap type.
    * \param mimeType: The mime type.
    * \param width: The prefered widht or the nearest width.

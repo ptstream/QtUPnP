@@ -16,8 +16,8 @@ public :
   virtual ~CMulticastSocket ();
 
   /*! Binds to IPV4 address on port multicastPort and join the multicast group.
-   * \param multicastAddress: 239.255.255.250
-   * \param multicastPort: 1900
+   * \param bindAddr: Generally QHostAddress::AnyIPv4 ou QHostAddress::AnyIPv6.
+   * \param group: Generally 239.255.255.250 or FF02::C.
    * \return True in case of success.
    */
   bool initialize (QHostAddress const & bindAddr,  QHostAddress const & group);
