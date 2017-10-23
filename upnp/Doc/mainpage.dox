@@ -198,8 +198,8 @@ See CBrowseReply:search.
 \li Generally, the UPnP servers implementation seems good. It is not the case with the renderers because
 renderers are sold with their IOS/Android applications. The manufacturers can be used their own APIs and they not accord equal importance
 at the UPnP implementation.
-\li For users of VirtualBox, it is important to select Mode Bridge not NAT.
-In NAT mode, VirtualBox can changed the IP local address.
+\li For VirtualBox users, install only 'VirtualBox Bridge Networking' (Do not install 'VirtualBox Host-Only networking').
+Also choose 'Bridge Mode' in the network configuration. it is important to select Bridge Mode not NAT.
 You can also select promiscuous at refused. Sometimes the default card type must be changed.
 
 <h1>Test program</h1>
