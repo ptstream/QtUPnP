@@ -271,7 +271,7 @@ bool CAVTransport::setPlayMode (QString const & rendererUUID, QString const & mo
   QList<CControlPoint::TArgValue> args;
   args.reserve (2);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("CurrentPlayMode", mode);
+  args << CControlPoint::TArgValue ("NewPlayMode", mode);
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "SetPlayMode", args);
   return actionInfo.succeeded ();
 }
