@@ -11,6 +11,7 @@
 USING_UPNP_NAMESPACE
 
 QHostAddress CUpnpSocket::m_localHostAddress;
+QHostAddress CUpnpSocket::m_localHostAddress6;
 QList<QByteArray> CUpnpSocket::m_skippedAddresses;
 QList<QByteArray> CUpnpSocket::m_skippedUUIDs;
 
@@ -77,7 +78,7 @@ QHostAddress CUpnpSocket::localHostAddressFromRouter ()
 
 QHostAddress CUpnpSocket::localHostAddress (bool ipv6)
 {
-  if (m_localHostAddress.isNull ())
+  if ((m_localHostAddress.isNull () && !ipv6) || (m_localHostAddress6.isNull () && ipv6))
   {
     m_localHostAddress = localHostAddressFromRouter ();
     if (m_localHostAddress.isNull ())
@@ -104,7 +105,7 @@ QHostAddress CUpnpSocket::localHostAddress (bool ipv6)
             }
             else if (ipv6 && addr.protocol () == QAbstractSocket::IPv6Protocol)
             {
-              m_localHostAddress = addr;
+              m_localHostAddress6 = addr;
               break;
             }
           }

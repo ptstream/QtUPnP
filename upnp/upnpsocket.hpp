@@ -135,6 +135,7 @@ private :
 
 private :
   static QHostAddress m_localHostAddress; //!< The local host address.
+  static QHostAddress m_localHostAddress6; //!< The local host address.
   static QList<QByteArray> m_skippedUUIDs; //!< uuid to ignored.
   static QList<QByteArray> m_skippedAddresses; //!< IPV4 addresses to ignore.
 
