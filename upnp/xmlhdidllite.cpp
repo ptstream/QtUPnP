@@ -39,16 +39,13 @@ bool CXmlHDidlLite::startElement (QString const & namespaceURI, QString const & 
 
 bool CXmlHDidlLite::characters (QString const & name)
 {
-  if (!m_stack.isEmpty () && !m_items.isEmpty ())
+  if (!m_stack.isEmpty () && !m_items.isEmpty () && !name.trimmed ().isEmpty ())
   {
     QString const & tag  = m_stack.top ();
     CDidlItem&      item = m_items.last ();
     CDidlElem       elem = item.value (tag);
-    if (name != "\n")
-    {
-      elem.setValue (name);
-      item.replace (tag, elem);
-    }
+    elem.setValue (name);
+    item.replace (tag, elem);
   }
 
   return true;
