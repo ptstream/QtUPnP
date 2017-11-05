@@ -208,22 +208,23 @@ This example shows devices, services, actions and event results (see the chupnp 
 
 <h1>Devices tested</h1>
 <h2>Servers</h2>
-\li Windows Media Player v12.015063.608.
-\li Foobar 2000 v1.3.15.
-\li NAS Synology under DSM 6.
+\li Windows Media Player v12.015063.608 (Windows).
+\li Foobar 2000 v1.3.15 (Windows).
+\li NAS Synology (DSM 6).
 \li NAS Western Digital My Cloud.
 \li StriimServer Awox v1.2.0.0.
 \li Cabasse Stream 1 v16.09.3.
 \li La Box Numericable.
-\li MediaMonkey Windows.
 \li FreeBox Révolution.
+\li MediaMonkey Windows v4.1.19 (Windows).
+\li MediaTomb v0.12.2  (Linux).
 
 <h2>Renderers</h2>
 \li Cabasse Stream 1 v 16.09.
-\li Renderer Android Awox  v2.3.0
-\li Foobar 2000 v1.3.15.
-\li BubbleUPnP v2.8.10.
-\li Windows Media Player v12.015063.608.
+\li Renderer Android Awox  v2.3.0 (Android).
+\li Foobar 2000 v1.3.15 (Windows).
+\li BubbleUPnP v2.8.10 (Android).
+\li Windows Media Player v12.015063.608 (Windows).
 \li La Box Numericable.
 \li Stream800 EVM de Streamunlimited.
 \li iEast SoundStream de Sonoé.
