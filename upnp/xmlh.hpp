@@ -15,9 +15,6 @@ public:
   /*! Default constructor. */
   CXmlH ();
 
-  /*! Constructor. */
-  CXmlH (QStringList const & tags);
-
   /*! Destructor. */
   ~CXmlH ();
 
@@ -84,7 +81,6 @@ protected :
 
 protected :
   QStack<QString> m_stack; //!< Stack of tags.
-  QStringList m_tags; //!< List of tag to handle
   static bool m_tolerantMode; //!< Defined the parsing mode.
   static QString m_dumpErrorFileName; //!< The file to dump xml errors (Can be empty).
 };

@@ -88,10 +88,6 @@ CXmlH::CXmlH ()
 {
 }
 
-CXmlH::CXmlH (QStringList const & tags) : m_tags (tags)
-{
-}
-
 CXmlH::~CXmlH ()
 {
 }
@@ -189,29 +185,33 @@ QString CXmlH::removeNameSpace (QString name)
 
 QString CXmlH::ampersandHandler (QString const & data)
 {
-  QChar const ampersand      = QLatin1Char ('&');
-  QStringList ampersandCodes = { "&amp;", "&gt;", "&lt;", "&apos;", "&quot;" };
-  QString     dataCoded;
-  int         length = data.length ();
-  dataCoded.reserve (length + 20);
+  QChar const      ampersand        = QLatin1Char ('&');
+  QString          ampersandCodes[] = { "&amp;", "&gt;", "&lt;", "&apos;", "&quot;" };
+  QChar            replacements[]   = { '&',     '>',    '<',     '\'',    '"' };
+  QString          dataCoded;
+  int              length = data.length ();
+  int              cAmpersandCodes = sizeof (ampersandCodes) / sizeof (QString);
+
+  dataCoded.reserve (length + 50);
 
   for (int i = 0; i < length; ++i)
   {
     QChar c = data.at (i);
     if (c == ampersand)
     {
-      bool ampersandIsolated = true;
-      for (QString const & ampersandCode : ampersandCodes)
+      int iAmpersandCode = 0;
+      for (;iAmpersandCode < cAmpersandCodes; ++iAmpersandCode)
       {
-        if (data.indexOf (ampersandCode, i) == 0)
+        if (data.indexOf (ampersandCodes[iAmpersandCode], i) == i)
         {
-          ampersandIsolated = false;
+          break;
         }
       }
 
-      if (ampersandIsolated)
+      if (iAmpersandCode < cAmpersandCodes)
       {
-        dataCoded.append (ampersandCodes.first ());
+        dataCoded.append (replacements[iAmpersandCode]);
+        i += ampersandCodes[iAmpersandCode].length () - 1;
       }
       else
       {
