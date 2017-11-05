@@ -109,12 +109,22 @@ void CDidlElem::setProps (TMProps const & props)
   m_d->m_props = props;
 }
 
+void CDidlElem::addProp (QString const & name, QString const & value)
+{
+  m_d->m_props.insert (name, value);
+}
+
 void CDidlElem::setValue (QString const & value)
 {
   m_d->m_value = value;
 }
 
-const TMProps& CDidlElem::props () const
+TMProps const & CDidlElem::props () const
+{
+  return m_d->m_props;
+}
+
+TMProps& CDidlElem::props ()
 {
   return m_d->m_props;
 }
@@ -472,15 +482,15 @@ QString CDidlItem::didl () const
       {
         stream.writeCharacters (value);
       }
-    }
 
-    if (close)
-    {
-      stream.writeEndElement ();
+      if (close)
+      {
+        stream.writeEndElement ();
+      }
     }
   };
 
-  QStringList                 keys = m_d->m_elems.keys ();
+  QStringList                 keys = m_d->m_elems.uniqueKeys ();
   QStringList::const_iterator it   = std::find (keys.begin (), keys.end (), "item");
   if (it != keys.end ())
   {
@@ -616,6 +626,48 @@ QString CDidlItem::toPercentEncodeing (QByteArray const & notCoded)
   }
 
   return encoded;
+}
+
+QString CDidlItem::id () const
+{
+  QString id = containerID ();
+  if (id.isEmpty ())
+  {
+    id = itemID ();
+  }
+
+  return id;
+}
+
+QString CDidlItem::parentID () const
+{
+  QString id = containerParentID ();
+  if (id.isEmpty ())
+  {
+    id = itemParentID ();
+  }
+
+  return id;
+}
+
+QString CDidlItem::itemID () const
+{
+  return value ("item", "id");
+}
+
+QString CDidlItem::itemParentID () const
+{
+  return value ("item", "parentID");
+}
+
+QString CDidlItem::containerID () const
+{
+  return value ("container", "id");
+}
+
+QString CDidlItem::containerParentID () const
+{
+  return value ("container", "parentID");
 }
 
 QString CDidlItem::title () const

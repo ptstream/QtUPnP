@@ -60,13 +60,22 @@ public :
   /*! Destructor. */
   ~CDidlElem ();
 
-  /*! Equal operator. */
+  /*! Assignment operator. */
   CDidlElem& operator = (CDidlElem const & other);
+
+  /*! Equality operator. */
+  bool operator == (CDidlElem const & other) { return isEqual (other); }
 
   /*! Sets a list of properties.
    * \param props: The map of properties.
    */
   void setProps (TMProps const & props);
+
+  /*! Adds a propertiy.
+   * \param name: Property name.
+   * \param value: Property value.
+   */
+  void addProp (QString const & name, QString const & value);
 
   /*! Sets the value.
    * \param value: The value of the element.
@@ -75,6 +84,9 @@ public :
 
   /*! Returns the property map as a constant reference. */
   TMProps const & props () const;
+
+  /*! Returns the property map as a reference. */
+  TMProps& props ();
 
   /*! Returns the value. */
   QString const & value () const;
@@ -123,6 +135,12 @@ private :
  * To facilitate the use, a set of functions can be use to retrieve the item metadata. All of these functions return an empty string or 0
  * if the CItemElem or the property is not present.
  * \code
+ * QString id () const;
+ * QString parentID () const;
+ * QString itemID () const;
+ * QString parentItemID () const;
+ * QString containerID () const;
+ * QString parentContainerID () const;
  * QString uri (int index) const;
  * QString albumArtURI (int index) const;
  * QString title () const;
@@ -303,6 +321,34 @@ public:
 
   /*! Clear all content. */
   void clear ();
+
+  /*! Returns the container or item id.
+   * If value ("container", "id") is empty, returns value ("item", "id").
+   */
+  QString id () const;
+
+  /*! Returns the container or item parentID.
+   * If value ("container", "parentID") is empty, returns value ("item", "parentID").
+   */
+  QString parentID () const;
+
+  /*! Returns the item id.
+   * It is equivalent at value ("item", "id").
+   */
+  QString itemID () const;
+
+  /*! Returns the container id. */
+  QString containerID () const;
+
+  /*! Returns the parent identifier of an item.
+   * It is equivalent at value ("item", "parentID").
+   */
+  QString itemParentID () const;
+
+  /*! Returns the parent identifier of a container.
+   * It is equivalent at value ("container", "parentID").
+   */
+  QString containerParentID () const;
 
   /*! Returns the title. */
   QString title () const;
