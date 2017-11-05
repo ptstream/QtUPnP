@@ -4,6 +4,7 @@
 #include "actioninfo.hpp"
 #include "multicastsocket.hpp"
 #include "unicastsocket.hpp"
+#include "dump.hpp"
 
 USING_UPNP_NAMESPACE
 
@@ -70,6 +71,7 @@ CUnicastSocket* CControlPoint::initializeUnicast (QHostAddress const & host, cha
 
 bool CControlPoint::initialize ()
 {
+  new CDump (this);
   bool done         = false;
   m_multicastSocket = initializeMulticast (QHostAddress::AnyIPv4, CMulticastSocket::upnpMulticastAddr, "MulticastSocket");
   if (m_multicastSocket != nullptr)
@@ -170,6 +172,11 @@ void CControlPoint::readDatagrams ()
   QByteArray const & datagrams = socket->readDatagrams ();
   if (!datagrams.isEmpty () && datagrams.endsWith ("\r\n\r\n"))
   {
+//    if (datagrams.startsWith ("HTTP"))
+//    {
+//      CDump::dump (datagrams);
+//    }
+
     socket->decodeDatagram ();
     m_newDevicesDetectedTimer.start ();
   }
