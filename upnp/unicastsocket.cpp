@@ -18,9 +18,8 @@ quint16 CUnicastSocket::bind (QHostAddress addr)
   // The range is specified by the UDA 1.1 standard
   for (port = 49152; port < 65535; ++port)
   {
-    if (QUdpSocket::bind (addr, port, QUdpSocket::ReuseAddressHint | QUdpSocket::ShareAddress))
+    if (QUdpSocket::bind (addr, port, QAbstractSocket::DontShareAddress))
     {
-      setSocketOption (QAbstractSocket::TypeOfServiceOption, 224);
       break;
     }
   }
