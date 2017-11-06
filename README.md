@@ -17,7 +17,18 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
 
 The framework use only QT API, no other system dependent API.
 
-chupnp is the program to test the framework.
+chupnp is the program for developer to test the framework.
+After discovery of devices, it is possible to invoke the actions and see the results.
+
+Shortly, I will commit a new application using QtUPnP.
+This application will be user oriented. It will be a complet control point to drive media servers and media renderers.
+The main fonctionnalities will be:
+  - A remote control format (small size on the screen).
+  - Discover and show servers and renderers.
+  - Browse the servers directories.
+  - Manage renderers like a player (volume, seek, mute, suffle, repeat, cover, previous, next...).
+  - Create audio, image, video playlists and favorites.
+  - And a lot of another things. 
 
 
 
