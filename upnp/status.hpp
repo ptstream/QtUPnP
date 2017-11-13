@@ -37,6 +37,9 @@ public:
   /*! Adds a set of bits. */
   inline void addStatus (unsigned st);
 
+  /*! Sets a set of bits. */
+  inline void setStatus (unsigned st);
+
   /*! Removes a set of bits. */
   inline void remStatus (unsigned st);
 
@@ -73,6 +76,11 @@ CStatus& CStatus::operator = (unsigned st)
 void CStatus::addStatus (unsigned st)
 {
   m_status |= st;
+}
+
+void CStatus::setStatus (unsigned st)
+{
+  m_status = st;
 }
 
 void CStatus::remStatus (unsigned st)
