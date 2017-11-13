@@ -215,7 +215,7 @@ QString CXmlH::ampersandHandler (QString const & data)
       }
       else
       {
-        dataCoded.append (c);
+        dataCoded.append ("%26");
       }
     }
     else
