@@ -66,11 +66,14 @@ CDidlItem CXmlHDidlLite::firstItem (QByteArray data)
 CDidlItem CXmlHDidlLite::firstItem (QString const & didlLite)
 {
   CDidlItem item;
-  QString   data    = ampersandHandler (didlLite);
-  bool      success = parse (data);
-  if (success && !m_items.isEmpty ())
+  if (!didlLite.isEmpty () && didlLite != "NOT_IMPLEMENTED")
   {
-    item = m_items.first ();
+    QString   data    = ampersandHandler (didlLite);
+    bool      success = parse (data);
+    if (success && !m_items.isEmpty ())
+    {
+      item = m_items.first ();
+    }
   }
 
   return item;
