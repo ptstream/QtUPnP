@@ -137,6 +137,71 @@ unsigned CContentDirectory::getSystemUpdateID (QString const & serverUUID)
   return id;
 }
 
+bool CContentDirectory::isValidItem (CDidlItem const & item)
+{
+  Q_ASSERT (m_cp != nullptr);
+  auto key = [] (CDidlItem const & item) -> QString
+  {
+    return item.uri (0) + item.itemID () + item.title ();
+  };
+
+  QString itemKey = key (item);
+  auto identical = [&itemKey, key] (CDidlItem const & item) -> bool
+  {
+    return key (item) == itemKey;
+  };
+
+  bool valid = m_validatedItemKeys.contains (itemKey);
+  if (!valid)
+  {
+    QString      server = m_cp->deviceUUID (item.uri (0), CDevice::MediaServer);
+    CBrowseReply reply  = browse (server, item.itemID (), CContentDirectory::BrowseMetaData);
+    if (reply.numberReturned () == 1)
+    {
+      QList<CDidlItem> const & replyItems = reply.items ();
+      if (replyItems.size () == 1)
+      {
+        CDidlItem const & replyItem = replyItems.first ();
+        if (identical (replyItem))
+        {
+          valid            = true;
+          QString parentID = replyItem.parentID ();
+          if (!m_parentIDs.contains (parentID))
+          {
+            m_parentIDs.insert (parentID);
+            reply = browse (server, parentID);
+            for (CDidlItem const & parentItem : reply.items ())
+            {
+              m_validatedItemKeys.insert (key (parentItem));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return valid;
+}
+
+QList<int> CContentDirectory::invalidItems (QList<CDidlItem> const & items)
+{
+  Q_ASSERT (m_cp != nullptr);
+  QList<int> indices;
+  indices.reserve (items.size ());
+  int        index = 0;
+  for (CDidlItem const & item : items)
+  {
+    if (!isValidItem (item))
+    {
+      indices.push_back (index);
+    }
+
+    ++index;
+  }
+
+  return indices;
+}
+
 // -------------------------- Private code -----------------------------------
 QList<CControlPoint::TArgValue> CContentDirectory::browseArguments (
             QString const & objectID, EBrowseType type, QString const & filter,

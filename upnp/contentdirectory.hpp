@@ -88,6 +88,18 @@ public:
    */
   unsigned getSystemUpdateID (QString const & serverUUID);
 
+  /*! Returns true if the item is valid.
+   * \param item: CDidlItem to check.
+   * \return True if item is valid.
+   */
+  bool isValidItem (CDidlItem const & item);
+
+  /*! Returns the indices of invalid items.
+   * \param items: CDidlItem to check.
+   * \return The indices of invalid items.
+   */
+  QList<int> invalidItems (QList<CDidlItem> const & items);
+
 private :
   /*! Prepares the arguments for browse action. See browse function for the arguments.
    * \return The list of parameters.
@@ -104,6 +116,8 @@ private :
 
 private :
   int m_browseTimeout = 20000; //!< Browse timeout to 20s.
+  QSet<QString> m_validatedItemKeys;
+  QSet<QString> m_parentIDs;
 };
 
 } // Namespace
