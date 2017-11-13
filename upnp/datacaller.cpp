@@ -33,7 +33,8 @@ QByteArray CDataCaller::callData (QUrl const & url, int timeout)
       connect (reply, SIGNAL (error (QNetworkReply::NetworkError)), this, SLOT (error (QNetworkReply::NetworkError)));
       connect (reply, SIGNAL (finished ()), this, SLOT (finished ()));
       int  idTimer = startTimer (timeout); // Start the timeout timer to stop the event loop in case of timeout.
-      bool success = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers) == 0;
+      bool success = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers) == 0 &&
+                           reply->error () == QNetworkReply::NoError;
       killTimer (idTimer); // The waiting event loop is finished. Kill the timer
       if (success)
       {
