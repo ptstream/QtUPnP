@@ -149,14 +149,14 @@ bool CControlPoint::discover (char const * nt)
     int               iDiscovery   = 0;
     CInitialDiscovery initDiscovery (m_unicastSocket, CMulticastSocket::upnpMulticastAddr, CMulticastSocket::upnpMulticastPort);
 
-    success  = initDiscovery.discover (false, nt);
+    success |= initDiscovery.discover (false, nt);
     emit searched (nt, ++iDiscovery, 4);
 
     success |= initDiscovery.discover (false, nt);
     emit searched (nt, ++iDiscovery, 4);
 
     initDiscovery.setSocket (m_unicastSocketLocal);
-    success  = initDiscovery.discover (false, nt);
+    success |= initDiscovery.discover (false, nt);
     emit searched (nt, ++iDiscovery, 4);
 
     success |= initDiscovery.discover (false, nt);
@@ -743,4 +743,24 @@ void CControlPoint::close ()
 QByteArray CControlPoint::callData (QString const & uri, int timeout)
 {
   return CDataCaller (m_devices.networkAccessManager ()).callData (uri, timeout);
+}
+
+QString CControlPoint::deviceUUID (QString const & uri, CDevice::EType type) const
+{
+  QString     deviceUUID;
+  QString     ip    = QUrl (uri).host ();
+  QStringList uuids = devices (type);
+  for (QString const & uuid : uuids)
+  {
+    CDevice const & device = this->device (uuid);
+    QUrl const &    url    = device.url ();
+    QString         host   = url.host ();
+    if (host == ip)
+    {
+      deviceUUID = uuid;
+      break;
+    }
+  }
+
+  return deviceUUID;
 }

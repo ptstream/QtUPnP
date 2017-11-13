@@ -279,7 +279,18 @@ public :
   /*! Returns true if the control point is closing. */
   bool isClosing () const { return m_closing; }
 
+  /*! Returns the response at CDataCaller::callData for the current QMetworkManager.
+   * \param uri: The request.
+   * \param timeout: The timeout to execute the request.
+   * \return The response.
+   */
   QByteArray callData (QString const & uri, int timeout);
+
+  /*! Returns the device uuid from the ip addresse.
+   * \param hostAddress: The ip address of the server.
+   * \return The device uuid or an empty string if the device not found.
+   */
+  QString deviceUUID (QString const & uri, CDevice::EType type) const;
 
   /*! Constant to define a empty list of argument. */
   static QList<CControlPoint::TArgValue> noArgs;
