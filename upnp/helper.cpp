@@ -284,23 +284,6 @@ float QtUPnP::jaroWinklerDistance (QString const & s1, QString const & s2, int c
   return dist;
 }
 
-QString QtUPnP::concatenateWords (QString s)
-{
-  s           = s.toUpper ();
-  int     len = s.length ();
-  QString concat;
-  concat.reserve (len);
-  for (int k = 0; k < len; ++k)
-  {
-    if (s[k].isLetterOrNumber ())
-    {
-      concat.push_back (s[k]);
-    }
-  }
-
-  return removeDiacritics (concat);
-}
-
 QString QtUPnP::removeDiacritics (QString const & s)
 {
   QString normalizedString = s.normalized (QString::NormalizationForm_D);

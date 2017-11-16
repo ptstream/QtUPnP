@@ -68,9 +68,6 @@ long long UPNP_API timeToMS (QString const & time);
  */
 QString UPNP_API removeDiacritics (QString const & s);
 
-/*! \brief Returns s without any unicode characters other than number and letter. */
-QString UPNP_API concatenateWords (QString s);
-
 /*! \brief Computes the Jarno Winkler distance between two strings.
  *
  * The code is derived from http://codes-sources.commentcamarche.net/source/49753-distance-de-jaro-winkler
