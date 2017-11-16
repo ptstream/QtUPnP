@@ -101,9 +101,9 @@ public :
    */
   static void sort (CBrowseReply& reply, QString const & criteria, ESortDir dir = ascending);
 
-  /*! Returns the CDidlItem list that match exactly or approximately text.
-   * This function search the title that best corresponds to the text entered and returns
-   * the list sorted by better match.
+   /*! Returns the CDidlItem list that match exactly or approximately text.
+   * This function search the best corresponds between a text and a title list and returns
+   * the list sorted by the better match.
    * \param text: Text to search.
    * \param commonPrefixLength; Winkler common prefix see jaroWinklerDistance in helper.hpp.
    * \param returned: Max number of CDidlItem return. If returned <= 0 or > items size, returnd whill be items size.
@@ -112,8 +112,8 @@ public :
   QList<CDidlItem> search (QString text, int returned = -1, int commonPrefixLength = -1) const;
 
   /*! Returns the CDidlItem list that match exactly or approximately text.
-   * This function search the title that best corresponds to the text entered and returns
-   * the list sorted by better match.
+   * This function search the best corresponds between a text and a title list and returns
+   * the list sorted by the better match.
    * \param items: Search in items by title.
    * \param text: Text to search.
    * \param commonPrefixLength; Winkler common prefix see jaroWinklerDistance in helper.hpp.

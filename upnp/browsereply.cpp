@@ -107,65 +107,83 @@ QList<CDidlItem> CBrowseReply::search (QList<CDidlItem> const & items, QString t
                                        int commonPrefixLength)
 {
   typedef QPair<float, int> TDistance;
-
-  QString simplifiedTitle;
-  simplifiedTitle.reserve (100); // To minimize reallocation.
   QList<CDidlItem> results;
   if (!text.isEmpty ())
   {
-    int   cItems      = items.size ();
-    float distanceMax = 0.0f;
-    for (int iItem = 0; iItem < cItems; ++iItem)
-    {
-      QString const & title = items[iItem].title ();
-      float length          = static_cast<float>(title.length () + 1);
-      distanceMax           = std::max (distanceMax, length);
-    }
+    QRegExp re ("[\\s\\-,&°()':\\.\"]"); // Separators.
+    text = removeDiacritics (text.toUpper ());
 
-    if (returned <= 0 || returned > cItems)
+    // Update returned.
+    int cItems  = items.size ();
+    if (returned <= 0 || returned > items.size ())
     {
       returned = cItems;
     }
 
-    text = concatenateWords (text);
+    float       distanceMax = 100000.0f;
+    QStringList texts       = text.split (re, QString::SkipEmptyParts);
+
     QVector<TDistance> distances (cItems);
     int                cMatches = 0;
-    // Pass 1. Search exact matches.
+    QStringList        titleComponents;
+    titleComponents.reserve (20);
+
+    QVector<QString> titles (cItems); // To speed up pass 2.
+
+    // Pass 1. Search exact matches. For each item title, the distance is defined by the position
+    // in the title words and the index of the title words. This defined the bigger distance
+    // by the position in the word and the position int the list of words.
+    // Part 1 is to find a word every where in the title.
     for (int iItem = 0; iItem < cItems; ++iItem)
     {
-      float distance  = 0.0f;
-      simplifiedTitle = ::concatenateWords (items[iItem].title ());
-      int index       = simplifiedTitle.indexOf (text);
-      if (index != -1)
+      float biggerDistance = 0.0f;
+      titles[iItem]        = removeDiacritics (items[iItem].title ().toUpper ());
+      titleComponents      = titles[iItem].split (re, QString::SkipEmptyParts);
+      for (int k = 0, cTitleComponents = titleComponents.size (); k < cTitleComponents; ++k)
       {
-        distance += distanceMax - static_cast<float>(index);
-        distances[iItem] = TDistance (distance, iItem);
+        for (QString const & text : texts)
+        {
+          int index = titleComponents[k].indexOf (text);
+          if (index != -1)
+          {
+            float distance = distanceMax - static_cast<float>((index + 1) * (k + 1));
+            if (distance > biggerDistance)
+            {
+              biggerDistance = distance;
+            }
+          }
+        }
+      }
+
+      if (biggerDistance != 0.0f)
+      {
+        distances[iItem] = TDistance (biggerDistance, iItem);
         ++cMatches;
       }
     }
 
-    // Pass 2. Compute the Jaro Winkler distance
+    // Pass 2. Compute the Jaro-Winkler distance.
     if (cMatches < returned)
     {
       for (int iItem = 0; iItem < cItems; ++iItem)
       {
         if (distances[iItem].first == 0.0f)
         {
-          simplifiedTitle  = concatenateWords (items[iItem].title ());
-          float distance   = jaroWinklerDistance (text, simplifiedTitle, commonPrefixLength);
+          float distance   = jaroWinklerDistance (text, titles[iItem], commonPrefixLength);
           distances[iItem] = TDistance (distance, iItem);
         }
       }
     }
 
-    // Sort the distances.
     std::sort (distances.begin (), distances.end (),
                [] (TDistance const & d1, TDistance const & d2) { return d1.first > d2.first; });
 
+    // Reorganized items.
     results.reserve (returned);
     for (int iItem = 0; iItem < returned; ++iItem)
     {
-      results.push_back (items[distances[iItem].second]);
+      int index = distances[iItem].second;
+      results.push_back (items[index]);
     }
   }
 
