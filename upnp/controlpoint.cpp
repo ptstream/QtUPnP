@@ -556,6 +556,21 @@ QStringList CControlPoint::devices (CDevice::EType type) const
   return deviceUUIDs;
 }
 
+int CControlPoint::devicesCount (CDevice::EType type) const
+{
+  int count = 0;
+  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  {
+    CDevice const & device = *it;
+    if (device.type () == type)
+    {
+      ++count;
+    }
+  }
+
+  return count;
+}
+
 bool CControlPoint::hasDevice (CDevice::EType type) const
 {
   bool success = false;
@@ -590,6 +605,16 @@ bool CControlPoint::hasRenderer () const
 bool CControlPoint::hasServer () const
 {
   return hasDevice (CDevice::MediaServer);
+}
+
+int CControlPoint::renderersCount () const
+{
+  return devicesCount (CDevice::MediaRenderer);
+}
+
+int CControlPoint::serversCount () const
+{
+  return devicesCount (CDevice::MediaServer);
 }
 
 QString CControlPoint::playlistURI (QString const & name) const

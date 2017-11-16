@@ -102,6 +102,9 @@ public :
    */
   QStringList devices (CDevice::EType type) const;
 
+  /*! Returns the number of UPnP devices of a particular type. */
+  int devicesCount (CDevice::EType type) const;
+
   /*! Checks the existence of UPnP/AV devices from a particular type.
    * \param type: The type of devices.
    * \return True if control point contains at least one device of determined type.
@@ -114,15 +117,17 @@ public :
    */
   bool contains (QString const & uuid) const { return m_devices.contains (uuid); }
 
-  /*! Retuns the list of renderers.
-   * \return The list of renderers.
-   */
+  /*! Retuns the list of renderers. */
   QStringList renderers () const;
 
-  /*! Retuns the list of servers.
-   * \return The list of servers.
-   */
+  /*! Retuns the list of servers. */
   QStringList servers () const;
+
+  /*! Retuns numberof renderers. */
+  int renderersCount () const;
+
+  /*! Retuns the list of servers. */
+  int serversCount () const;
 
   /*! Launch the discovery for all root devices with special case for UPnP/AV devices.
    * \return true if success, false for error.
@@ -287,7 +292,8 @@ public :
   QByteArray callData (QString const & uri, int timeout);
 
   /*! Returns the device uuid from the ip addresse.
-   * \param hostAddress: The ip address of the server.
+   * \param uri: The ip address of the server.
+   * \param type: Device type.
    * \return The device uuid or an empty string if the device not found.
    */
   QString deviceUUID (QString const & uri, CDevice::EType type) const;
