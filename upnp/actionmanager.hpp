@@ -66,7 +66,7 @@ private slots:
   void error (QNetworkReply::NetworkError err);
 
 signals :
-  /*! Signal for network error. */
+  /*! Network error. */
   void networkError (QString const &, QNetworkReply::NetworkError, QString const &);
 
 private :
