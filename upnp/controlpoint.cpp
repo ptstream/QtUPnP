@@ -94,13 +94,12 @@ bool CControlPoint::avDiscover ()
   bool success = false;
   if (!m_closing)
   {
-
     char const * ignored[] { "InternetGatewayDevice",
                              "WANConnectionDevice",
                              "WANDevice",
                              "WFADevice",
                              "Printer",
-    };
+                            };
 
     for (char const * device : ignored)
     {
@@ -323,6 +322,8 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
   CActionInfo    actionInfo;
   if (!m_closing)
   {
+    CDevice::EType deviceType = device.type ();
+    startNetworkCom (deviceType);
     CActionManager actionManager (m_devices.networkAccessManager ());
     connect (&actionManager, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),
              this, SLOT(networkAccessManager(QString const &, QNetworkReply::NetworkError, QString const &)));
@@ -419,6 +420,8 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
           }
         }
       }
+
+      endNetworkCom (deviceType);
     }
     else
     {
@@ -498,8 +501,11 @@ bool CControlPoint::subscribe (QString const & deviceUUID, int renewalDelay, int
   bool success = false;
   if (!deviceUUID.isEmpty () && m_devices.contains (deviceUUID))
   {
-    CDevice& device = m_devices[deviceUUID];
-    success         = m_devices.subscribe (device, renewalDelay, requestTimeout);
+    CDevice&       device = m_devices[deviceUUID];
+    CDevice::EType type   = device.type ();
+    startNetworkCom (type);
+    success = m_devices.subscribe (device, renewalDelay, requestTimeout);
+    endNetworkCom (type);
     if (success)
     {
       QTimer* timer = new QTimer;
@@ -518,6 +524,9 @@ void CControlPoint::unsubscribe (QString const & deviceUUID, int requestTimeout)
 {
   if (!deviceUUID.isEmpty () && m_devices.contains (deviceUUID))
   {
+    CDevice&       device = m_devices[deviceUUID];
+    CDevice::EType type   = device.type ();
+    startNetworkCom (type);
     QTimer* timer = m_subcriptionTimers.value (deviceUUID).first;
     if (timer != nullptr)
     {
@@ -525,8 +534,8 @@ void CControlPoint::unsubscribe (QString const & deviceUUID, int requestTimeout)
       m_subcriptionTimers.remove (deviceUUID);
     }
 
-    CDevice& device = m_devices[deviceUUID];
     m_devices.unsubscribe (device, requestTimeout);
+    endNetworkCom (type);
   }
 }
 
@@ -534,10 +543,13 @@ void CControlPoint::renewSubscribe (QString const & deviceUUID, int requestTimeo
 {
   if (!deviceUUID.isEmpty () && m_devices.contains (deviceUUID))
   {
-    CDevice& device = m_devices[deviceUUID];
+    CDevice&       device = m_devices[deviceUUID];
+    CDevice::EType type   = device.type ();
+    startNetworkCom (type);
     m_devices.renewSubscribe (device, requestTimeout);
     QTimer* timer = m_subcriptionTimers.value (deviceUUID).first;
     timer->start ();
+    endNetworkCom (type);
   }
 }
 
@@ -767,7 +779,8 @@ void CControlPoint::close ()
 
 QByteArray CControlPoint::callData (QString const & uri, int timeout)
 {
-  return CDataCaller (m_devices.networkAccessManager ()).callData (uri, timeout);
+  QByteArray bytes = CDataCaller (m_devices.networkAccessManager ()).callData (uri, timeout);
+  return bytes;
 }
 
 QString CControlPoint::deviceUUID (QString const & uri, CDevice::EType type) const

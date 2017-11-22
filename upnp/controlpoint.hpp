@@ -298,6 +298,21 @@ public :
    */
   QString deviceUUID (QString const & uri, CDevice::EType type) const;
 
+  /*! Validates the signals for network communications.
+   * Used only for the fun.
+   * \param set: True to validated and false to invalidated.
+   */
+  void validateNetworkCom (bool set) { m_networkCom = set; }
+
+  /*! Returns true if the signals for network communications has been validated. */
+  bool hasNetworkPComValidated () const { return m_networkCom; }
+
+  /*! Emits the signal networkComStarted. */
+  inline void startNetworkCom (CDevice::EType type);
+
+  /*! Emits the signal networkComEnded. */
+  inline void endNetworkCom (CDevice::EType type);
+
   /*! Constant to define a empty list of argument. */
   static QList<CControlPoint::TArgValue> noArgs;
 
@@ -352,6 +367,12 @@ signals :
    * \remark May be the device has generated a network error before.
    */
   void networkError (QString const & deviceUUID, QNetworkReply::NetworkError errorCode, QString const & errorDesc);
+
+  /*! Network communication is started. */
+  void networkComStarted (QtUPnP::CDevice::EType type);
+
+  /*! Network communication is ended. */
+  void networkComEnded (QtUPnP::CDevice::EType type);
 
 private :
   CMulticastSocket* initializeMulticast (QHostAddress const & host, QHostAddress const & group, char const * name);
@@ -422,6 +443,7 @@ private :
 private :
   bool m_done = false; //!< The status of the creation.
   bool m_closing = false; //!< The control point  is being closed.
+  bool m_networkCom = false; //!< Do not emit signals for network communications.
   CUnicastSocket* m_unicastSocket = nullptr; //!< Unicast sockets.
   CUnicastSocket* m_unicastSocketLocal = nullptr; //!< Unicast sockets local (bind on 127.0.0.1).
   CMulticastSocket* m_multicastSocket = nullptr;  //!< Multicast sockets ipv4.
@@ -434,6 +456,22 @@ private :
   QTimer m_newDevicesDetectedTimer; //!<< Timer to delayed device creation (similar at idle).
 
 }; // CControlPoint
+
+void CControlPoint::startNetworkCom (CDevice::EType type)
+{
+  if (m_networkCom)
+  {
+    emit networkComStarted (type);
+  }
+}
+
+void CControlPoint::endNetworkCom (CDevice::EType type)
+{
+  if (m_networkCom)
+  {
+    emit networkComEnded (type);
+  }
+}
 
 } // Namespace
 
