@@ -420,13 +420,13 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
           }
         }
       }
-
-      endNetworkCom (deviceType);
     }
     else
     {
       unknownAction (actionName, device, service);
     }
+
+    endNetworkCom (deviceType);
   }
 
   return actionInfo;
