@@ -25,7 +25,7 @@ class UPNP_API CBrowseReply
 {
 public :
   /*! Sort direction. */
-  enum ESortDir { ascending, descending };
+  enum ESortDir { Ascending, Descending };
 
   /*! Default constructor. */
   CBrowseReply ();
@@ -76,7 +76,7 @@ public :
    * \param dir: ascending or descending see ESortDir.
    * E.g. To sort by duration, the criteria is "res@duration".
    */
-  void sort (QString const & criteria, ESortDir dir = ascending);
+  void sort (QString const & criteria, ESortDir dir = Ascending);
 
   /*! returns the sort capabilities. It is the list of criterias for sort function.
    * \param reply: Detect the sort capabilities from CBrowseReply content.
@@ -94,12 +94,12 @@ public :
   /*! Sorts the item list by criteria.
    * \param reply: CBrowseReply to sort.
    * \param criteria: The criteria is the CDidlElem name or property.
-   * To sort by CDidlElem name, the criteria must be the complet name (e.g. to sort by title, the criteria is "dc:title").
+   * To sort by CDidlElem title, the criteria must be the complet title (e.g. to sort by title, the criteria is "dc:title").
    * To sort by property, the criteria must have the form "name@property".
-   * E.g. To sort by duration, the criteria is res\@duration.
-   * \param dir: ascending or descending see ESortDir.
+   * E.g. To sort by duration, the criteria is res@duration.
+   * \param dir: Ascending or Descending see ESortDir.
    */
-  static void sort (CBrowseReply& reply, QString const & criteria, ESortDir dir = ascending);
+  static void sort (CBrowseReply& reply, QString const & criteria, ESortDir dir = Ascending);
 
    /*! Returns the CDidlItem list that match exactly or approximately text.
    * This function search the best corresponds between a text and a title list and returns
