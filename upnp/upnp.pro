@@ -19,6 +19,10 @@ win32 {
     DEFINES += UPNP_EXPORTS _WIN32_WINNT=0x0600
 }
 
+unix {
+    CONFIG += staticlib
+}
+
 SOURCES += \
     actionmanager.cpp \
     controlpoint.cpp \
@@ -111,7 +115,4 @@ HEADERS +=\
     pixmapcache.hpp \
     dump.hpp
 
-unix {
-    CONFIG += staticlib
-}
 
