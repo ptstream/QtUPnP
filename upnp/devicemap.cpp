@@ -22,9 +22,9 @@ CDeviceMap::~CDeviceMap ()
 
 bool CDeviceMap::subscribe (CDevice& device, int renewDelay, int requestTimeout)
 {
-  bool         success;
-  int          cServices = 0, cEventings = 0;
-  TMServices&  services  = device.services ();
+  bool        success;
+  int         cServices = 0, cEventings = 0;
+  TMServices& services  = device.services ();
   for (TMServices::iterator it = services.begin (), end = services.end (); it != end; ++it)
   {
     CService& service = *it;
