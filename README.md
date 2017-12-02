@@ -20,6 +20,7 @@ The framework use only QT API, no other system dependent API.
 upnp is the framework to encapsulate the UPnP protocol.
 
 *************** chupnp *******************
+
 chupnp is an application for developers to test the framework. You can see the documentation at /QtUPnP/chupnp/docs/Test QtUPnP with chupnp.pdf
 The main functionalities are:
   - Discover devices
@@ -29,6 +30,7 @@ The main functionalities are:
   - ...
 
 *************** AIVCtrl *******************
+
 aivctrl is a control point for users to drive media servers and media renderers.
 The main fonctionnalities are:
   - A remote control format (small size on the screen).
