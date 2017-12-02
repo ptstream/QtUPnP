@@ -35,7 +35,8 @@ The main fonctionnalities are:
   - Discover and show servers and renderers.
   - Browse the servers content.
   - Manage renderers like a player (volume, seek, mute, suffle, repeat, cover, previous, next...).
-  - Create audio, image, video playlists and favorites.
+  - Manage audio, image, video playlists and favorites.
+  - Verify playlist elemnts.
   - And a lot of another things.
   
 To test easily AIVCtrl, some installers are available at:
