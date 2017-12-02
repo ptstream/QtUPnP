@@ -19,6 +19,8 @@ The framework use only QT API, no other system dependent API.
 
 upnp is the framework to encapsulate the UPnP protocol.
 
+
+
 *************** chupnp *******************
 
 chupnp is an application for developers to test the framework. You can see the documentation at /QtUPnP/chupnp/docs/Test QtUPnP with chupnp.pdf
@@ -28,10 +30,12 @@ The main functionalities are:
   - Invoke the actions.
   - and see the detailed results.
   - ...
+  
+  
 
 *************** AIVCtrl *******************
 
-aivctrl is a control point for users to drive media servers and media renderers.
+aivctrl is a control point for users to drive media servers and media renderers. The user documentation it in /QtUPnP\aivctrl\doc
 The main fonctionnalities are:
   - A remote control format (small size on the screen).
   - Discover and show servers and renderers.
@@ -41,7 +45,7 @@ The main fonctionnalities are:
   - Verify playlist elements.
   - And a lot of another things.
   
-To test easily AIVCtrl, some installers are available at:
+To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
   - Windows 7 to 10: Download install-AIVCtrl-100.exe and double click on it to install.
     Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
   - Kubuntu and Ubuntu: Download aivctrl-1.0.0-beta-1.deb double click on it to install.
