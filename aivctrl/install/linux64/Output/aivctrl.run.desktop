@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=AIVCtrl
+GenericName=AIVCtrl
+Exec=/usr/bin/aivctrl/aivctrl
+Comment=AIVCtrl - An UPnP/AV control point
+Icon=/usr/bin/aivctrl/aivctrl48.png
+Terminal=false
+Categories=Qt;AudioVideo;Audio;Player;
+

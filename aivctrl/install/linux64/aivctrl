@@ -1,0 +1,2 @@
+export LD_LIBRARY_PATH=/usr/bin/aivctrl/lib:$LD_LIBRARY_PATH
+/usr/bin/aivctrl/aivctrl

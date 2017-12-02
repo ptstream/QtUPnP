@@ -17,18 +17,33 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
 
 The framework use only QT API, no other system dependent API.
 
-chupnp is the program for developer to test the framework.
-After discovery of devices, it is possible to invoke the actions and see the results.
+upnp is the framework to encapsulate the UPnP protocol.
 
-Shortly, I will commit a new application using QtUPnP.
-This application will be user oriented. It will be a complet control point to drive media servers and media renderers.
-The main fonctionnalities will be:
+chupnp is an application for developers to test the framework. You can see the documentation at /QtUPnP/chupnp/docs/Test QtUPnP with chupnp.pdf
+The main functionalities are:
+  - Discover devices
+  - Choose devices.
+  - Invoke the actions.
+  - and see the detailed results.
+  - ...
+
+aivctrl is a control point for users to drive media servers and media renderers.
+The main fonctionnalities are:
   - A remote control format (small size on the screen).
   - Discover and show servers and renderers.
-  - Browse the servers directories.
+  - Browse the servers content.
   - Manage renderers like a player (volume, seek, mute, suffle, repeat, cover, previous, next...).
   - Create audio, image, video playlists and favorites.
-  - And a lot of another things. 
+  - And a lot of another things.
+  
+To test easily AIVCtrl, some installers are available at:
+  - Windows 7 to 10: Download install-AIVCtrl-100.exe and double click on it to install.
+    Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
+  - Kubuntu and Ubuntu: Download aivctrl-1.0.0-beta-1.deb double click on it to install.
+    Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
+  - All Linux: Download aivctrl-1.0.0-beta-1.zip for a manual installation.
+    Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).)
+  - Documentation in English and French.
 
 
 

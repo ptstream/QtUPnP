@@ -1,0 +1,18 @@
+Create debian package:
+  sudo chmod 755 post*
+  sudo dpkg-deb --build debian aivctrl-1.0.0-beta-1.deb 
+  
+Install package
+  sudo dpkg -i aivctrl-1.0.0-beta-1.deb
+  
+Uninstall package
+  sudo apt-get remove aivctrl
+  
+Executable directory: /usr/bin/aivctrl
+Data directory: /home/$USER/.local/share/aivctrl
+aivctrl.desktop file: /usr/share/applications/
+
+In case of problem : 
+    backup file /var/lib/dpkg/status
+    edit /var/lib/dpkg/status (warning lines length)
+    remove aivctrl block.
