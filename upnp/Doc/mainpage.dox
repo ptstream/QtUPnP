@@ -11,7 +11,7 @@ QtUPnP framework is a framework to build easily an UPnP control point.
 It <b>focuses</b> on the <b>UPnP/AV</b> standard. For this, a set of classes are created to handle easily media servers and media renderers.
 
 QtUPnp is based on QT5 framework. It has been tested on systems:
-\li Windows. Windows 10 32 or 64 bits from Vista (32 bits) and Windows 10 (32 & 64 bits).
+\li Windows. Windows 10 32 or 64 bits from Vista (32 bits must be built with Qt5.6) and Windows 10 (32 & 64 bits).
 The binaries are created from "qt-opensource-windows-x86-mingw530-5.8.0.exe" installer.
 
 \li Linux 64 bits distrubution Kubuntu and Ubuntu.
@@ -41,7 +41,7 @@ A very simple representation can be:
 \li The control point invokes UPnP actions with "in" arguments and the device update the "out" arguments. For QtUPnP/AV
 the out arguments are returned in standard C++ class containing standard Qt and C++ data type.
 
-\li The UPnP events are also handled. E.g. the user changes the volume with a button on the device
+\li The UPnP events are also handled. E.g. the user changes the volume with a button on the device.
 
 <h1>Start an UPnP/AV control point</h1>
 To start an UPnP control point, it is necessary to:
