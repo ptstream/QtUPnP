@@ -84,7 +84,7 @@ Some hardware or software devices are tested :
     Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49 (Windows).
     Windows Media Player v12.015063.608 (Windows)
 
-If you have some free time to test or use AIVCtrl, please use the wiki for your remarks, malfunctions
+If you have some free time to test or use AIVCtrl, please use the issues and pull requests tabs for your remarks, malfunctions
 and also to report if your servers and renderers are working or not working properly.
 
 Good luck to all
