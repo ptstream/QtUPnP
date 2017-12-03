@@ -1,0 +1,10 @@
+To create a Debian installer a shell command is provided.
+
+1. Launch build.sh to create the ".../QtUPnP/aivctrl/install/linux64/Output/debian/usr/aivctrl" folder containing all files to run aivctrl.
+   It contains also "aivctrl.desktop" the shortcut to launch aivctrl and "aivctrl.run.desktop" to launch aivctrl.run. 
+   aivctrl.desktop is used when all Qt dependencies are SATISFIED (e.g. Kubuntu 17.10).
+   aivctrl.run.desktop is used when all Qt dependencies are UNSATISFIED (e.g. Ubuntu 16.04 LTS).
+   
+2. The Debian package is created ".../QtUPnP/aivctrl/install/linux64/Output". Also a zip file is created to use without installer.
+
+

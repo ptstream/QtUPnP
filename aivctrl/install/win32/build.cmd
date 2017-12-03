@@ -1,9 +1,9 @@
 @echo off
 
-rem Qt installation folder where find bin.
+rem Qt installation folder where find bin (Change to your Qt folder).
 set QTDIR=C:\Qt\Qt5.8.0\5.8\mingw53_32
 
-rem The QtUPnP folder.
+rem The QtUPnP folder (Change to your QtUPnP folder).
 set DEVELDIR=C:\Users\%USERNAME%\Documents\Development
 
 rem All files and folders for InstallShield or to launch AIVCtrl
