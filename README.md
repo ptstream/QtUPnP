@@ -7,8 +7,8 @@ For a better description, unzip /upnp/docs/html.zip and choose index.html.
 
 Build the framework and the test program need to install QT5. QtUPnP has been coded from:
   - Windows "qt-opensource-windows-x86-mingw530-5.8.0.exe" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
-    The built version is a 32 bits. It runs from Windows Vista to Windows 10 32 or 64 bits. 
-    It has been tested on Vista 32 bits and Windows 10 32 and 64 bits.
+    The built version is a 32 bits. It runs from Windows 7 to Windows 10 32 or 64 bits. 
+    It has been tested on Windows 10 32 and 64 bits.
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
@@ -18,7 +18,6 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
 The framework use only QT API, no other system dependent API.
 
 upnp is the framework to encapsulate the UPnP protocol.
-
 
 
 *************** chupnp *******************
@@ -35,7 +34,7 @@ The main functionalities are:
 
 *************** AIVCtrl *******************
 
-aivctrl is a control point for users to drive media servers and media renderers. The user documentation it in /QtUPnP\aivctrl\doc
+aivctrl is a control point for users to drive media servers and media renderers. The user documentation it in /QtUPnP/aivctrl/doc
 The main fonctionnalities are:
   - A remote control format (small size on the screen).
   - Discover and show servers and renderers.
@@ -53,7 +52,42 @@ To test easily AIVCtrl, some installers are available at: https://drive.google.c
   - All Linux: Download aivctrl-1.0.0-beta-1.zip for a manual installation.
     Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).)
   - Documentation in English and French.
+  
+Some hardware or software devices are tested :
+  
+ Hardware servers
 
+    - NAS Synology (DSM 6).
+    - NAS Western Digital My Cloud.
+    - Cabasse Stream 1 v17.01.5.
+    - La Box Numericable.
+    - FreeBox Révolution.
+ 
+ Software servers
+
+    - Windows Media Player v12.015063.608 (Windows).
+    - Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49(Windows).
+    - StriimServer Awox v1.2.0.0 (Windows).
+    - MediaMonkey Windows v4.1.19 (Windows).
+    - MediaTomb v0.12.2 (Linux).	
+
+ Harware renderers
+
+    Cabasse Stream 1 v17.01.5.
+    La Box Numericable.
+    Some televisions Samsung and Sony.
+
+ Software renderers
+
+    Renderer Android Awox v2.3.0 (Android).
+    BubbleUPnP v2.8.14 (Android).
+    Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49 (Windows).
+    Windows Media Player v12.015063.608 (Windows)
+
+If you have some free time to test or use AIVCtrl, please use the wiki for your remarks, malfunctions
+and also to report if your servers and renderers are working or not working properly.
+
+Good luck to all
 
 
 
