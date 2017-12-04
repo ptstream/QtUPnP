@@ -173,14 +173,14 @@ void CMainWindow::rowsMoved (QModelIndex const &, int start, int end, QModelInde
 {
   searchAction (false);
   CPlaylistBrowser* sender = static_cast<CPlaylistBrowser*>(this->sender ());
-  if (sender == ui->m_pPlaylistContent)
+  if (sender == ui->m_playlistContent)
   {
     QString const & name     = sender->name ();
     CPlaylist&      playlist = m_playlists[name];
     playlist.rowsMoved (start, end, row);
     sender->decSelectedCount ();
   }
-  else if (sender == ui->m_pQueue)
+  else if (sender == ui->m_queue)
   {
     sender->decSelectedCount ();
     if (sender->selectedCount () == 0)

@@ -423,14 +423,20 @@ void CPlaylist::rowsMoved (int start, int end, int row)
 
     if (row > end)
     {
-      row -= end - start;
+      row -= end - start + 1;
+    }
+    else
+    {
+      row -= start;
     }
 
     for (CDidlItem const & item : items)
     {
-      m_d->m_items.insert (row + 1, item);
+      m_d->m_items.insert (row, item);
       ++row;
     }
+
+    m_d->m_changed = true;
   }
 }
 
