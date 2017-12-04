@@ -23,7 +23,8 @@ void CMainWindow::changeFolder (int index)
 void CMainWindow::on_m_stackedWidget_currentChanged (int index)
 {
   searchAction (false);
-  QToolButton::ToolButtonPopupMode popupMode = QToolButton::DelayedPopup;
+  QToolButton::ToolButtonPopupMode popupMode               = QToolButton::DelayedPopup;
+  bool                             enableContextualActions = false;
   switch (index)
   {
     case Home :
@@ -33,7 +34,8 @@ void CMainWindow::on_m_stackedWidget_currentChanged (int index)
       ui->m_playlistContent->clear ();
       ui->m_provider->clear ();
       updatePlaylistItemCount ();
-      popupMode = QToolButton::InstantPopup;
+      popupMode               = QToolButton::InstantPopup;
+      enableContextualActions = true;
       break;
 
     case ContentDirectory :
@@ -42,6 +44,7 @@ void CMainWindow::on_m_stackedWidget_currentChanged (int index)
       ui->m_folders->updateText ();
       ui->m_playlistContent->clear ();
       ui->m_contentDirectory->setFocus ();
+      enableContextualActions = ui->m_contentDirectory->count () != 0;
       break;
 
     case Queue :
@@ -51,18 +54,21 @@ void CMainWindow::on_m_stackedWidget_currentChanged (int index)
       ui->m_previousStackedWidgetIndex->setEnabled (true);
       ui->m_playlistContent->clear ();
       ui->m_queue->setFocus ();
+      enableContextualActions = ui->m_queue->count () != 0;
       break;
 
     case Playing :
       ui->m_currentQueuePlaying->setIcon (::resIcon ("current_playing"));
       ui->m_previousStackedWidgetIndex->setEnabled (true);
       ui->m_playlistContent->clear ();
+      enableContextualActions = false;
       break;
 
     case Playlist :
       ui->m_playlistContent->startIconUpdateTimer ();
       ui->m_previousStackedWidgetIndex->setEnabled (true);
       ui->m_playlistContent->setFocus ();
+      enableContextualActions = ui->m_playlistContent->count () != 0;
       break;
   }
 
@@ -70,6 +76,7 @@ void CMainWindow::on_m_stackedWidget_currentChanged (int index)
   ui->m_footer->setHidden (hidden);
   ui->m_myDevice->clearSelection ();
   ui->m_home->setPopupMode (popupMode);
+  ui->m_contextualActions->setEnabled (enableContextualActions);
 }
 
 void CMainWindow::updatePosition ()
