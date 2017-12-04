@@ -13,7 +13,7 @@ BEGIN
       VALUE "LegalCopyright", "Copyright (C) 2017-2018"
       VALUE "OriginalFilename", "aivctrl.exe"
       VALUE "ProductName", "aivctrl"
-      VALUE "ProductVersion", "Beta 1"
+      VALUE "ProductVersion", "Beta2"
     END
   END
 
