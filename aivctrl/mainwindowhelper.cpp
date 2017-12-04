@@ -44,7 +44,7 @@ void CMainWindow::updateVolumeSlider (int volume, bool blocked)
   if (blocked)
   {
     ui->m_volume->blockSignals (blocked);
-    ui->m_volume->blockSignals (blocked);
+    ui->m_volume2->blockSignals (blocked);
   }
 
   ui->m_volume->setValue (volume);
@@ -53,7 +53,7 @@ void CMainWindow::updateVolumeSlider (int volume, bool blocked)
   if (blocked)
   {
     ui->m_volume->blockSignals (false);
-    ui->m_volume->blockSignals (false);
+    ui->m_volume2->blockSignals (false);
   }
 }
 
@@ -155,6 +155,7 @@ void CMainWindow::setItemBold (QString const & uri)
   {
     ui->m_contentDirectory->setBold (uri);
     ui->m_queue->setBold (uri);
+    ui->m_playlistContent->setBold (uri);
   }
 }
 
@@ -409,18 +410,28 @@ QList<CDidlItem> CMainWindow::didlItems (QList<QListWidgetItem*> lwItems)
 
 void CMainWindow::currentQueueChanged ()
 {
-  int index = ui->m_queue->boldIndex ();
-  if (index < 0)
+  // Queue empty, make nothing
+  if (ui->m_queue->count () != 0)
   {
-    index = 0;
+    int index = ui->m_queue->boldIndex ();
+    m_cp->clearPlaylist ();
+    if (index >= 0)
+    { // The bold index is not removed. Continue at the same position.
+      if (!m_cp->playlistName ().isEmpty ())
+      { // In case of playlist, reload the playlist en continue at the same position.
+        QListWidgetItem* item     = ui->m_queue->item (index);
+        CPositionInfo    position = CAVTransport (m_cp).getPositionInfo (m_renderer);
+        on_m_queue_itemDoubleClicked (item);
+        QString relTime = position.relTime ();
+        on_m_position_valueChanged (::timeToMS (relTime));
+      }
+    }
+    else
+    { // The bold index is removed. Start at the position 0.
+      QListWidgetItem* item = ui->m_queue->item (0);
+      on_m_queue_itemDoubleClicked (item);
+    }
   }
-
-  m_cp->clearPlaylist ();
-  QListWidgetItem* item     = ui->m_queue->item (index);
-  CPositionInfo    position = CAVTransport (m_cp).getPositionInfo (m_renderer);
-  on_m_queue_itemDoubleClicked (item);
-  QString relTime = position.relTime ();
-  on_m_position_valueChanged (::timeToMS (relTime));
 }
 
 void CMainWindow::updatePlaylistItemCount ()
