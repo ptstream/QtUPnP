@@ -117,6 +117,11 @@ void CMainWindow::rendererAction (QAction* action)
 
       CStateVariable const & var     = m_cp->stateVariable (m_renderer, QString::null, "Volume");
       int                    maximum = static_cast<int>(var.maximum ());
+      if (maximum <= 0)
+      {
+        maximum = 100;
+      }
+
       ui->m_volume->setMaximum (maximum);
       ui->m_volume2->setMaximum (maximum);
 
@@ -175,72 +180,74 @@ void CMainWindow::rendererAction (QAction* action)
 
 void CMainWindow::addContextualActions (QListWidget* lw, QMenu* menu)
 {
-  QList<QListWidgetItem*> selectedItems  = lw->selectedItems ();
-  int                     cSelectedItems = selectedItems.size ();
-
-  menu->clear ();
-  if (lw == ui->m_contentDirectory || lw == ui->m_queue || lw == ui->m_playlistContent)
+  if (lw != nullptr)
   {
-    char const * iconName = !ui->m_provider->isReadOnly () ? "search_cancel" : "search";
-    QString      title    = tr ("Search");
-    QAction*     action   = menu->addAction (::resIcon (iconName), title);
-    action->setData (Search);
-
-    if (cSelectedItems > 0)
+    QList<QListWidgetItem*> selectedItems  = lw->selectedItems ();
+    int                     cSelectedItems = selectedItems.size ();
+    menu->clear ();
+    if (lw == ui->m_contentDirectory || lw == ui->m_queue || lw == ui->m_playlistContent)
     {
-      menu->addSeparator ();
+      char const * iconName = !ui->m_provider->isReadOnly () ? "search_cancel" : "search";
+      QString      title    = tr ("Search");
+      QAction*     action   = menu->addAction (::resIcon (iconName), title);
+      action->setData (Search);
 
-      action = menu->addAction (::resIcon ("replace_queue"), tr ("Replace the queue"));
-      action->setData (ReplaceQueue);
-      action = menu->addAction (::resIcon ("add_queue"), tr ("Add to the queue"));
-      action->setData (AddQueue);
-      action->setEnabled (cSelectedItems > 0);
-
-      menu->addSeparator ();
-
-      action = menu->addAction (::resIcon ("add_playlist"), tr ("Add to a playlist"));
-      action->setData (AddPlaylist);
-
-      menu->addSeparator ();
-
-      action = menu->addAction (::resIcon ("add_favorites"), tr ("Add to favorites"));
-      action->setData (AddFavorites);
-
-      menu->addSeparator ();
-
-      if (lw != ui->m_contentDirectory)
+      if (cSelectedItems > 0)
       {
         menu->addSeparator ();
-        action = menu->addAction (::resIcon ("delete"), tr ("Remove"));
-        action->setData (RemoveTracks);
-      }
-    }
-  }
-  else if (ui->m_myDevice)
-  {
-    QAction* action = menu->addAction (::resIcon ("network16"), tr ("Look for devices"));
-    action->setData (ScanNetwork);
-    if (cSelectedItems == 1)
-    {
-      CMyDeviceBrowserItem* mdbItem = static_cast<CMyDeviceBrowserItem*>(selectedItems.first ());
-      if (mdbItem->isUserPlaylist ())
-      {
-        menu->addSeparator ();
-        action = menu->addAction (::resIcon ("rename"), tr ("Rename"));
-        action->setData (RenamePlaylist);
-        action = menu->addAction (::resIcon ("delete"), tr ("Remove"));
-        action->setData (RemovePlaylist);
-      }
 
-      if (!mdbItem->isContainer ())
-      {
-        QString           playlistName = mdbItem->playlistName ();
-        CPlaylist const & playlist     = m_playlists.value (playlistName);
-        if (!playlist.items ().isEmpty ())
+        action = menu->addAction (::resIcon ("replace_queue"), tr ("Replace the queue"));
+        action->setData (ReplaceQueue);
+        action = menu->addAction (::resIcon ("add_queue"), tr ("Add to the queue"));
+        action->setData (AddQueue);
+        action->setEnabled (cSelectedItems > 0);
+
+        menu->addSeparator ();
+
+        action = menu->addAction (::resIcon ("add_playlist"), tr ("Add to a playlist"));
+        action->setData (AddPlaylist);
+
+        menu->addSeparator ();
+
+        action = menu->addAction (::resIcon ("add_favorites"), tr ("Add to favorites"));
+        action->setData (AddFavorites);
+
+        menu->addSeparator ();
+
+        if (lw != ui->m_contentDirectory)
         {
           menu->addSeparator ();
-          action = menu->addAction (::resIcon ("search16"), tr ("Check playlist"));
-          action->setData (CheckPlaylist);
+          action = menu->addAction (::resIcon ("delete"), tr ("Remove"));
+          action->setData (RemoveTracks);
+        }
+      }
+    }
+    else if (ui->m_myDevice)
+    {
+      QAction* action = menu->addAction (::resIcon ("network16"), tr ("Look for devices"));
+      action->setData (ScanNetwork);
+      if (cSelectedItems == 1)
+      {
+        CMyDeviceBrowserItem* mdbItem = static_cast<CMyDeviceBrowserItem*>(selectedItems.first ());
+        if (mdbItem->isUserPlaylist ())
+        {
+          menu->addSeparator ();
+          action = menu->addAction (::resIcon ("rename"), tr ("Rename"));
+          action->setData (RenamePlaylist);
+          action = menu->addAction (::resIcon ("delete"), tr ("Remove"));
+          action->setData (RemovePlaylist);
+        }
+
+        if (!mdbItem->isContainer ())
+        {
+          QString           playlistName = mdbItem->playlistName ();
+          CPlaylist const & playlist     = m_playlists.value (playlistName);
+          if (!playlist.items ().isEmpty ())
+          {
+            menu->addSeparator ();
+            action = menu->addAction (::resIcon ("search16"), tr ("Check playlist"));
+            action->setData (CheckPlaylist);
+          }
         }
       }
     }
@@ -267,6 +274,10 @@ void CMainWindow::aboutToShowContextualActions ()
 
     case Playlist :
       addContextualActions (ui->m_playlistContent, menu);
+      break;
+
+    case Playing :
+      addContextualActions (nullptr, menu);
       break;
 
     default:
@@ -363,6 +374,7 @@ void CMainWindow::contextualAction (QAction* action)
               if (lw == ui->m_playlistContent || lw == ui->m_queue)
               {
                 static_cast<CPlaylistBrowser*>(lw)->delKey ();
+                ui->m_contextualActions->setEnabled (lw->count () != 0);
               }
               break;
 
