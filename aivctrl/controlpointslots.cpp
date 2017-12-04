@@ -137,7 +137,9 @@ void CMainWindow::eventReady (QStringList const & emitter)
         else if (name == "CurrentTrackDuration")
         {
           int ms = static_cast<int>(timeToMS (variant.toString ()));
+          ui->m_position->blockSignals (true);
           ui->m_position->setMaximum (ms);
+          ui->m_position->blockSignals (false);
         }
         else if (/*name == "AVTransportURI" || */name == "CurrentTrackURI")
         {
