@@ -137,11 +137,12 @@ void CPlaylistBrowser::delKey ()
     QMessageBox::StandardButton btn = QMessageBox::question (this, title, text);
     if (btn == QMessageBox::Yes)
     {
-      emit removeIDs (m_name, ids);
       for (QListWidgetItem* item : items)
       {
         delete item;
       }
+
+      emit removeIDs (m_name, ids);
     }
   }
 }
