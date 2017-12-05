@@ -32,40 +32,37 @@ void CMainWindow::on_m_contentDirectory_itemDoubleClicked (QListWidgetItem* item
   CContentDirectoryBrowserItem* cdItem   = static_cast<CContentDirectoryBrowserItem*>(item);
   CDidlItem const &             didlItem = cdItem->didlItem ();
   CDidlItem::EType              type     = didlItem.type ();
-  if (type != CDidlItem::Unknown)
-  {
-    QString itemID, parentID;
-    int     count    = 0;
-    if (didlItem.isContainer ())
-    { // It is a container.
-      parentID = didlItem.containerParentID ();
-      title    = didlItem.title ();
-      itemID   = didlItem.containerID ();
-      count    = lw->addItems (m_server, itemID);
-      if (count != 0)
-      {
-        lw->scrollToTop ();
-      }
-
-      ui->m_folders->push (ContentDirectory, title, parentID, itemID, lw);
+  QString                       itemID, parentID;
+  int                           count    = 0;
+  if (type == CDidlItem::Unknown || didlItem.isContainer ())
+  { // It is a container (assume CDidlItem::Unknown (AssetUPnP) is a container).
+    parentID = didlItem.containerParentID ();
+    title    = didlItem.title ();
+    itemID   = didlItem.containerID ();
+    count    = lw->addItems (m_server, itemID);
+    if (count != 0)
+    {
+      lw->scrollToTop ();
     }
-    else
-    { // It is an item.
-      count    = lw->count ();
-      QList<CDidlItem> items;
-      items.reserve (count);
-      for (int iItem = 0; iItem < count; ++iItem)
-      {
-        CContentDirectoryBrowserItem* cdItem = static_cast<CContentDirectoryBrowserItem*>(lw->item (iItem));
-        items.push_back (cdItem->didlItem ());
-      }
 
-      ui->m_queue->clear ();
-      ui->m_queue->addItems (items);
-      m_cp->clearPlaylist ();
-      setAVTransport (cdItem);
-      ui->m_stackedWidget->setCurrentIndex (Queue);
+    ui->m_folders->push (ContentDirectory, title, parentID, itemID, lw);
+  }
+  else
+  { // It is an item.
+    count    = lw->count ();
+    QList<CDidlItem> items;
+    items.reserve (count);
+    for (int iItem = 0; iItem < count; ++iItem)
+    {
+      CContentDirectoryBrowserItem* cdItem = static_cast<CContentDirectoryBrowserItem*>(lw->item (iItem));
+      items.push_back (cdItem->didlItem ());
     }
+
+    ui->m_queue->clear ();
+    ui->m_queue->addItems (items);
+    m_cp->clearPlaylist ();
+    setAVTransport (cdItem);
+    ui->m_stackedWidget->setCurrentIndex (Queue);
   }
 
   QApplication::restoreOverrideCursor ();
