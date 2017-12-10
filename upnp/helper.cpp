@@ -158,20 +158,23 @@ QString QtUPnP::buildSystemHeader ()
 
 long long QtUPnP::timeToMS (QString const & time)
 {
-  long long   duration = 0;
-  QStringList hms      = time.split (':');
-  int         size     = hms.size ();
-  if (size > 0)
+  long long duration = 0;
+  if (!time.isEmpty ())
   {
-    duration = static_cast<long long>(hms[size - 1].toDouble ()) * 1000;
-    if (size >= 2)
+    QStringList hms      = time.split (':');
+    int         size     = hms.size ();
+    if (size > 0)
     {
-      unsigned m = hms[size - 2].toUInt ();
-      duration  += m * 60 * 1000;
-      if (size >= 3)
+      duration = static_cast<long long>(hms[size - 1].toDouble ()) * 1000;
+      if (size >= 2)
       {
-        unsigned h = hms[size - 3].toUInt ();
-        duration  += h * 3600 * 1000;
+        unsigned m = hms[size - 2].toUInt ();
+        duration  += m * 60 * 1000;
+        if (size >= 3)
+        {
+          unsigned h = hms[size - 3].toUInt ();
+          duration  += h * 3600 * 1000;
+        }
       }
     }
   }
