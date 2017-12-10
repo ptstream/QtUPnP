@@ -1,6 +1,7 @@
 
 #include "actionmanager.hpp"
 #include "actioninfo.hpp"
+#include "dump.hpp"
 
 USING_UPNP_NAMESPACE
 
@@ -93,6 +94,7 @@ bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo
         message          += info.message () + "\n\n";
         qDebug () << "CActionManager::post:" << message;
         m_lastError.prepend (QString ("(%1) ").arg (statusCode));
+        CDump::dump (message);
       }
     }
 

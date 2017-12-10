@@ -1,4 +1,5 @@
 #include "dump.hpp"
+#include <QTime>
 
 USING_UPNP_NAMESPACE
 
@@ -11,11 +12,12 @@ CDump::CDump (QObject* parent) : QObject (parent)
 
 void CDump::dump (QString const & text)
 {
-  emit m_dump->dumpReady (text);
+  QTime   time = QTime::currentTime ();
+  QString t    = time.toString () + ':' + text + '\n';
+  emit m_dump->dumpReady (t);
 }
 
 void CDump::dump (QByteArray const & bytes)
 {
-  QString text (bytes);
-  emit m_dump->dumpReady (text);
+  dump (QString::fromUtf8 (bytes));
 }

@@ -1,5 +1,6 @@
 #include "xmlh.hpp"
 #include "helper.hpp"
+#include "dump.hpp"
 #include <QBuffer>
 #include <QUrl>
 #include <QDateTime>
@@ -62,25 +63,22 @@ bool CErrorHandler::warning (QXmlParseException const & exception)
 
 void CErrorHandler::errorString (QXmlParseException const & exception)
 {
+  QString text = QString ("XML error; line: %2; column: %3; message: %4\n%5\n")
+                 .arg (exception.lineNumber ()).arg (exception.columnNumber ())
+                 .arg (exception.message ()).arg (m_data.constData ());
   if (!m_fileName.isEmpty())
   {
     QFile file (m_fileName);
     if (file.open (QIODevice::Append | QIODevice::Text))
     {
-      QString text = QString ("%1;XML error; line: %2; column: %3; message: %4\n%5\n")
-                     .arg (QDateTime::currentDateTime ().toString ())
-                     .arg (exception.lineNumber ()).arg (exception.columnNumber ())
-                     .arg (exception.message ()).arg (m_data.constData ());
       file.write (text.toUtf8 ());
       file.close ();
     }
   }
   else
   {
-    qDebug () << "Line: " << exception.lineNumber ();
-    qDebug () << "Column: " << exception.columnNumber ();
-    qDebug () << "Message: " << exception.message ();
-    qDebug () << m_data.constData ();
+    qDebug () << text;
+    CDump::dump (text + '\n');
   }
 }
 

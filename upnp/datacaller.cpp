@@ -1,4 +1,5 @@
 #include "datacaller.hpp"
+#include "dump.hpp"
 
 USING_UPNP_NAMESPACE
 
@@ -39,6 +40,11 @@ QByteArray CDataCaller::callData (QUrl const & url, int timeout)
       if (success)
       {
         data = reply->readAll (); // Get the reply
+      }
+      else
+      {
+        QString text = "CDataCaller::callData:" + url.toString ();
+        CDump::dump (text);
       }
 
       reply->deleteLater (); // Cleanup the reply during the application event loop

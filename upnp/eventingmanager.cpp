@@ -1,5 +1,6 @@
 #include "eventingmanager.hpp"
 #include "helper.hpp"
+#include "dump.hpp"
 #include <QHostAddress>
 
 USING_UPNP_NAMESPACE
@@ -65,6 +66,11 @@ bool CEventingManager::sendRequest (QUrl url, char const * verb, QString const &
     qDebug () << verb << " failed. Response from the server:" << statusCode
               << m_lastError << " from:" << url;
     m_lastError.prepend (QString ("(%1) ").arg (statusCode));
+    QString text ("CEventingManager::sendRequest:");
+    text += verb;
+    text += ':';
+    text += url.toString () + ':' + m_lastError;
+    CDump::dump (text);
   }
 
   reply->deleteLater ();
