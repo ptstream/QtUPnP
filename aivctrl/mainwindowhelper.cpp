@@ -92,7 +92,11 @@ void CMainWindow::updateCurrentPlayling (CDidlItem const & didl,
     ui->m_trackMetadata->setText (texts);
     if (startPlaying)
     {
-      startPositionTimer ();
+      QString duration = didl.duration ();
+      if (::timeToMS (duration) != 0)
+      {
+        startPositionTimer ();
+      }
     }
   }
 
@@ -177,7 +181,6 @@ void CMainWindow::setAVTransport (CContentDirectoryBrowserItem const * item)
   setItemBold (item);
   playingIcon (true);
   updateCurrentPlayling (item, true, true);
-  QApplication::restoreOverrideCursor ();
 }
 
 void CMainWindow::nextItem (bool forward)
