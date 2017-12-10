@@ -36,7 +36,13 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
   connect (ui->m_playlistContent, &CPlaylistBrowser::rowsMoved, this, &CMainWindow::rowsMoved);
   connect (ui->m_playlistContent, &CPlaylistBrowser::removeIDs, this, &CMainWindow::removeIDs);
 
-  connect (new QShortcut (QKeySequence(Qt::CTRL + Qt::Key_F12), this), &QShortcut::activated, this, &CMainWindow::showDump);
+#ifdef QT_OS_WIN
+  QKeySequence ks = QKeySequence(Qt::CTRL + Qt::Key_F12);
+#else
+  QKeySequence ks = QKeySequence(Qt::CTRL + Qt::Key_F11);
+#endif
+  connect (new QShortcut (ks, this), &QShortcut::activated, this, &CMainWindow::showDump);
+
   connect (new QShortcut (QKeySequence::Find, this), &QShortcut::activated, this, &CMainWindow::search);
   connect (new QShortcut (QKeySequence::MoveToPreviousChar, this), &QShortcut::activated, this, &CMainWindow::on_m_previous_clicked);
   connect (new QShortcut (QKeySequence::MoveToNextChar, this), &QShortcut::activated, this, &CMainWindow::on_m_next_clicked);
