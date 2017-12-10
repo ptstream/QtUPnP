@@ -31,6 +31,7 @@ xcopy ..\..\icons\%PRODUCT%48.png %TARGET%
 
 echo ************* Translation
 xcopy ..\..\languages\aivctrl_??.qm "%TARGET%\languages" /Y /I
+xcopy ..\..\languages\*.png "%TARGET%\languages" /Y /I
 
 echo ************* Qt Images plugins
 md "%TARGET%\imageformats"
