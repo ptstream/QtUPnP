@@ -20,7 +20,7 @@ void CPosition::updatePosition (CControlPoint* cp, QString const & renderer)
     { // Bad abs time. Some renderer defines absTime to string and return 2147483647. Try duration from res elems.
       CDidlItem       didlItem = m_positionInfo.didlItem ();
       QString const & duration = didlItem.duration (-1); // Get first elem with property duration.
-      absTimeMS                = !duration.isEmpty () ? static_cast<int>(::timeToMS (duration)) : 1000;
+      absTimeMS                = static_cast<int>(::timeToMS (duration));
       if (absTimeMS <= 0 || absTime > m_maxAbsTime)
       {
         setEnabled (false);
