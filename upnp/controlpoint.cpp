@@ -322,6 +322,7 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
   CActionInfo    actionInfo;
   if (!m_closing)
   {
+    QString        uuid       = device.uuid (); // Save device uuid because it can be deleted during event loop.
     CDevice::EType deviceType = device.type ();
     startNetworkCom (deviceType);
     CActionManager actionManager (m_devices.networkAccessManager ());
@@ -370,8 +371,8 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
       if (success)
       {
         actionInfo.endMessage (); // End the HTTP message.
-        success = actionManager.post (device.uuid (), url, actionInfo, timeout); // Invoke the action.
-        if (success)
+        success = actionManager.post (uuid, url, actionInfo, timeout); // Invoke the action.
+        if (success && m_devices.contains (uuid))
         {
           actionInfo.setSucceeded (success);
 
@@ -473,6 +474,10 @@ CActionInfo CControlPoint::invokeAction (QString const & deviceUUID,
     {
       CService& service = *its;
       actionInfo        = invokeAction (device, service, actionName, args, timeout);
+      if (!m_devices.contains (deviceUUID))
+      {
+        break; // Must be deleted during event loop.
+      }
     }
   }
   else
