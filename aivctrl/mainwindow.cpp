@@ -14,8 +14,6 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
 {
   ui->setupUi (this);
   m_cp = new CControlPoint (this);
-  CUpnpSocket::addSkippedAddresses ("192.168.0.10");
-
   connect (m_cp, SIGNAL(eventReady(QStringList const &)), this, SLOT(eventReady(QStringList const &)));
   connect (m_cp, SIGNAL(upnpError(int, QString const &)), this, SLOT(upnpError(int, QString const &)));
   connect (m_cp, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),
