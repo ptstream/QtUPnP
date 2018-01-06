@@ -162,6 +162,7 @@ CMediaInfo CAVTransport::getMediaInfo (QString const & rendererUUID, unsigned in
   return mediaInfo;
 }
 
+// Single file
 bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem const & item,
                                       int index, unsigned instanceID)
 {
@@ -186,6 +187,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem co
   return actionInfo.succeeded ();
 }
 
+// Playlists
 bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString const & playlistName,
                                       QList<CDidlItem::TPlaylistElem> const & items,
                                       CDidlItem::EPlaylistFormat format, unsigned instanceID)

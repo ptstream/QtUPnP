@@ -48,7 +48,7 @@ USING_UPNP_NAMESPACE
 static const char *s_typeTags[] = { "unknown",
                                     "object.item.imageItem",
                                     "object.item.imageItem.photo",
-                                    "bject.item.audioItem",
+                                    "object.item.audioItem",
                                     "object.item.audioItem.musicTrack",
                                     "object.item.audioItem.audioBroadcast",
                                     "object.item.audioItem.audioBook",
@@ -84,6 +84,11 @@ static const char *s_typeTags[] = { "unknown",
 
 CDidlElem::CDidlElem () : m_d (new SDidlElemData)
 {
+}
+
+CDidlElem::CDidlElem (QString const & value) : m_d (new SDidlElemData)
+{
+  m_d->m_value = value;
 }
 
 CDidlElem::CDidlElem (CDidlElem const & other) : m_d (other.m_d)

@@ -16,7 +16,7 @@ public :
   virtual bool characters (QString const & name);
 
   void save (QString fileName = QString::null);
-  bool restore(QString fileName = QString::null);
+  bool restore (QString fileName = QString::null);
 
   QString standardFilePath ();
 
