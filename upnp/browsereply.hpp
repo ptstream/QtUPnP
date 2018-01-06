@@ -96,7 +96,7 @@ public :
    * \param criteria: The criteria is the CDidlElem name or property.
    * To sort by CDidlElem title, the criteria must be the complet title (e.g. to sort by title, the criteria is "dc:title").
    * To sort by property, the criteria must have the form "name@property".
-   * E.g. To sort by duration, the criteria is res@duration.
+   * E.g. To sort by duration, the criteria is "res@duration".
    * \param dir: Ascending or Descending see ESortDir.
    */
   static void sort (CBrowseReply& reply, QString const & criteria, ESortDir dir = Ascending);
