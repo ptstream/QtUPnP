@@ -54,6 +54,9 @@ public :
   /*! Default constructor. */
   CDidlElem ();
 
+  /*! Constructor from value. */
+  CDidlElem (QString const & value);
+
   /*! Copy constructor. */
   CDidlElem (CDidlElem const & other);
 
