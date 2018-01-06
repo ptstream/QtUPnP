@@ -1,9 +1,9 @@
 Create debian package:
   sudo chmod 755 post*
-  sudo dpkg-deb --build debian aivctrl-1.0.0-beta-1.deb 
+  sudo dpkg-deb --build debian aivctrl-1.0.1.deb 
   
 Install package
-  sudo dpkg -i aivctrl-1.0.0-beta-1.deb
+  sudo dpkg -i aivctrl-1.0.1.deb
   
 Uninstall package
   sudo apt-get remove aivctrl

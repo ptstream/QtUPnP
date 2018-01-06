@@ -10,7 +10,7 @@ DEVEL=/home/$USER/Documents/Development/QtUPnP
 OUTPUT=$DEVEL/$PRODUCT/install/linux64/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
 BINARIES=/home/$USER/Documents/Development/build-$PRODUCT-Desktop_Qt_5_8_0_GCC_64bit-Release
-VERSION=1.0.0
+VERSION=1.0.1
 
 if [ -d $TARGET ]
 then

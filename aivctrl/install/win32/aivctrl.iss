@@ -5,7 +5,7 @@
 #define MyDevelDir "C:\Users\patrice\Documents\Development\"
 
 #define MyAppName "AIVCtrl"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "AIVCtrl an UPnP control point"
 #define MyAppExeName "aivctrl.exe"
 
@@ -20,7 +20,7 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=install-{#MyAppName}-100
+OutputBaseFilename=install-{#MyAppName}-101
 Compression=lzma
 SolidCompression=yes
 UninstallDisplayIcon={app}\{#MyAppName}

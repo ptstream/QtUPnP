@@ -14,7 +14,7 @@
 
 char const * QtUPnP::libraryVersion ()
 {
-  return "1.0";
+  return "1.0.1";
 }
 
 char const * QtUPnP::libraryName ()
