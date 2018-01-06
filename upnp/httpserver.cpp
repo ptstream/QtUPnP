@@ -4,6 +4,8 @@
 #include "xmlhevent.hpp"
 #include <QTcpSocket>
 #include <QDate>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
 
 USING_UPNP_NAMESPACE
 
@@ -12,48 +14,50 @@ CHTTPServer::CHTTPServer (QHostAddress const & address, quint16 port, QObject* p
   bool success = listen (address, port);
   if (success)
   {
+    m_httpsRequest.setSslConfiguration (QSslConfiguration::defaultConfiguration ());
     m_done = true;
   }
 }
 
 CHTTPServer::~CHTTPServer ()
 {
+  abortStreaming ();
 }
 
 void CHTTPServer::incomingConnection (qintptr socketDescriptor)
 {
-  QTcpSocket* socket     = new QTcpSocket (this);
-  m_eventMessage[socket] = QPair<QByteArray, int> (QByteArray (), 0);
+  QTcpSocket* socket = new QTcpSocket (this);
   socket->setSocketDescriptor (socketDescriptor);
-  connect (socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
+  connect (socket, &QTcpSocket::readyRead, this, &CHTTPServer::socketReadyRead);
+  connect (socket, static_cast<TFctSocketError>(&QAbstractSocket::error), this, &CHTTPServer::socketError);
+  connect (socket, &QTcpSocket::disconnected, this, &CHTTPServer::socketDisconnected);
+  connect (socket, &QTcpSocket::bytesWritten, this, &CHTTPServer::socketBytesWritten);
 }
 
-bool CHTTPServer::connectToHost (QTcpSocket* socket, QHostAddress host, quint16 port)
+bool CHTTPServer::connectToHost (QTcpSocket* socket)
 {
-  bool success = socket->state () == QAbstractSocket::ConnectedState;
-  if (!success)
+  bool success = false;
+  if (socket != nullptr)
   {
-    CWaitingLoop connectToHostLoop (1000, QEventLoop::ExcludeUserInputEvents);
-    connect (socket, SIGNAL(connected()), &connectToHostLoop, SLOT(quit()));
-    socket->connectToHost (host, port);
-    connectToHostLoop.exec (QEventLoop::ExcludeUserInputEvents);
     success = socket->state () == QAbstractSocket::ConnectedState;
-  }
-
-  if (success)
-  {
-    socket->waitForBytesWritten (2000);
-    connect (socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
-  }
-  else
-  {
-    socket->deleteLater ();
+    if (!success)
+    {
+      CWaitingLoop connectToHostLoop (1000, QEventLoop::ExcludeUserInputEvents);
+      connect (socket, SIGNAL(connected()), &connectToHostLoop, SLOT(quit()));
+      socket->connectToHost (socket->peerAddress (), socket->peerPort ());
+      connectToHostLoop.exec (QEventLoop::ExcludeUserInputEvents);
+      success = socket->state () == QAbstractSocket::ConnectedState;
+      if (!success)
+      {
+        socket->deleteLater ();
+      }
+    }
   }
 
   return success;
 }
 
-bool CHTTPServer::httpSimpleResponse (QTcpSocket* socket, QHostAddress addressDevice, quint16 portDevice, bool reject)
+bool CHTTPServer::httpSimpleResponse (QTcpSocket* socket, bool reject)
 {
   char const * ok             = !reject ? "HTTP/1.1 200 OK\r\n" : "HTTP/1.1 500 Internal Server Error\r\n";
   char const * date           = "DATE: %1 %2\r\n";
@@ -62,198 +66,174 @@ bool CHTTPServer::httpSimpleResponse (QTcpSocket* socket, QHostAddress addressDe
 
   QString data = ok +
                  QString (date).arg (QDate::currentDate ().toString ("ddd, dd MMM yyyy")).arg (QTime::currentTime ().toString ("hh:mm:ss")) +
-                 QString (host).arg (addressDevice.toString ()).arg (portDevice) +
+                 QString (host).arg (socket->peerAddress ().toString ()).arg (socket->peerPort ()) +
                  content_length;
 
+  QByteArray utf8 = data.toUtf8 ();
+  m_writingSocketSizes.insert (socket, utf8.size ());
+  return sendHttpResponse (socket, utf8);
+}
+
+bool CHTTPServer::accept (QTcpSocket* socket)
+{
+  return httpSimpleResponse (socket, false);
+}
+
+bool CHTTPServer::reject (QTcpSocket* socket)
+{
+  return httpSimpleResponse (socket, true);
+}
+
+bool CHTTPServer::sendHttpResponse (QTcpSocket* socket, char const * bytes, int cBytes)
+{
   bool success = false;
-  if (connectToHost (socket, addressDevice, portDevice))
+  if (socket != nullptr)
   {
-    connect (socket, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
-    QByteArray bdata = data.toUtf8 ();
-    socket->setProperty ("lengthToWrite:", bdata.length ());
-    success = socket->write (bdata) != -1;
-    socket->flush ();
+    success = connectToHost (socket);
+    if (success)
+    {
+      success = socket->write (bytes, cBytes) != -1;
+    }
   }
 
   return success;
 }
 
-bool CHTTPServer::accept (QTcpSocket* socket, QHostAddress addressDevice, quint16 portDevice)
+bool CHTTPServer::sendHttpResponse (QTcpSocket* socket, QByteArray const & bytes)
 {
-  return httpSimpleResponse (socket, addressDevice, portDevice, false);
+  return sendHttpResponse (socket, bytes.constData (), bytes.size ());
 }
 
-bool CHTTPServer::reject (QTcpSocket* socket, QHostAddress addressDevice, quint16 portDevice)
-{
-  return httpSimpleResponse (socket, addressDevice, portDevice, true);
-}
-
-bool CHTTPServer::httpPlaylistResponse (QTcpSocket* socket, QHostAddress address, quint16 port, QByteArray const & response)
-{
-  bool success = false;
-  if (connectToHost (socket, address, port))
-  {
-    connect (socket, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
-    socket->setProperty ("lengthToWrite:", response.length ());
-    success = socket->write (response) != -1;
-    socket->flush ();
-  }
-
-  return success;
-}
-
-void CHTTPServer::parseMessage (CHTTPParser const & httpParser, int headerLength, int contentLength,
-                                QByteArray const & eventMessage, QTcpSocket* socket)
+void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* socket)
 {
   QByteArray const & verb = httpParser.verb ();
-  if (verb == "NOTIFY" &&
-      httpParser.value ("NT") == "upnp:event" &&
-      httpParser.value ("NTS") == "upnp:propchange")
+  if (!verb.isEmpty ())
   {
-    m_vars.clear ();
-    if (contentLength != 0)
+    if (verb == "NOTIFY" &&
+        httpParser.value ("NT") == "upnp:event" &&
+        httpParser.value ("NTS") == "upnp:propchange")
     {
-      QByteArray data = eventMessage.mid (headerLength);
-      CXmlHEvent h (m_vars);
-      h.parse (data);
-
-      QString const lastChange ("LastChange");
-      if (m_vars.contains (lastChange))
+      m_vars.clear ();
+      if (httpParser.contentLength () != 0)
       {
-        data = m_vars.value (lastChange).first.toUtf8 ();
-        if (!data.isEmpty ())
+        QByteArray data = httpParser.message ().mid (httpParser.headerLength ());
+        CXmlHEvent h (m_vars);
+        h.parse (data);
+
+        QString const lastChange ("LastChange");
+        if (m_vars.contains (lastChange))
         {
-          h.setCheckProperty (false);
-          h.parse (data);
+          data = m_vars.value (lastChange).first.toUtf8 ();
+          if (!data.isEmpty ())
+          {
+            h.setCheckProperty (false);
+            h.parse (data);
+          }
+        }
+
+        accept (socket);
+        if (!m_vars.isEmpty ())
+        {
+          emit eventReady (httpParser.sid ());
         }
       }
-
-      accept (socket, socket->peerAddress (), socket->peerPort ());
-      if (!m_vars.isEmpty ())
+      else
       {
-        emit eventReady (httpParser.sid ());
+        reject (socket);
       }
     }
     else
     {
-      reject (socket, socket->peerAddress (), socket->peerPort ());
+      CHTTPParser::EQueryType type = httpParser.queryType ();
+      QByteArray              response;
+      switch (type)
+      {
+        case CHTTPParser::Playlist :
+        {
+          response = headerResponse (m_playlistContent.size (), "audio/x-mpegurl") + m_playlistContent;
+          m_writingSocketSizes.insert (socket, response.size ());
+          sendHttpResponse (socket, response);
+          break;
+        }
+
+        case CHTTPParser::Plugin :
+        {
+          QString request = httpParser.value (verb);
+          emit mediaRequest (request);
+          if (m_httpsRequest.url ().isValid ())
+          {
+            startStreaming (m_httpsRequest, verb, socket);
+          }
+          break;
+        }
+
+        default :
+          qDebug () << "Unhandled http response type";
+          break;
+      }
     }
   }
   else
   {
-    bool       playlist = httpParser.isPlaylistPath ();
-    QByteArray response;
-    if (verb == "GET")
-    {
-      response = getMethodResponse (playlist);
-    }
-    else if (verb == "HEAD")
-    {
-      response = headMethodResponse (playlist);
-    }
-
-    if (!response.isEmpty ())
-    {
-      httpPlaylistResponse (socket, socket->peerAddress (), socket->peerPort (), response);
-    }
-    else
-    {
-      reject (socket, socket->peerAddress (), socket->peerPort ());
-    }
+    qDebug () << "Verb is empty, very strange";
   }
-
-  m_eventMessage.remove (socket);
 }
 
-void CHTTPServer::readyRead ()
+void CHTTPServer::socketReadyRead ()
 {
-  QTcpSocket*   socket       = static_cast<QTcpSocket*>(sender ());
-  TMessageData& messageData  = m_eventMessage[socket];
-  QByteArray&   eventMessage = messageData.first;
-  eventMessage              += socket->readAll ();
-
-  CHTTPParser httpParser (eventMessage);
-  int headerLength = httpParser.headerLength ();
-  if (headerLength > 0)
+  QTcpSocket*  socket       = static_cast<QTcpSocket*>(sender ());
+  CHTTPParser& parser       = m_eventMessages[socket];
+  QByteArray&  eventMessage = parser.message ();
+  while (socket->bytesAvailable () != 0)
   {
-    if (messageData.second == 0)
-    { // To parser the header once.
-      httpParser.parseMessage ();
-      messageData.second = httpParser.contentLength ();
-    }
-
-    int contentLength = messageData.second;
-    if (contentLength >= 0)
-    { // CONTENT-LENGTH header is defined.
-      int messageLength = eventMessage.size ();
-      if (messageLength >= headerLength + contentLength)
-      {
-        parseMessage (httpParser, headerLength, contentLength, eventMessage, socket);
-      }
-    }
-    else
-    { // TRANSFER-ENCODING: chunked is defined; In this case messageData.second < 0 and represent
-      // the current decoded length.
-      messageData.second = messageData.second == -1 ? headerLength : -messageData.second;
-      QByteArray hexaChunkLength;
-      hexaChunkLength.reserve (16);
-      bool ok            = true;
-      int index          = eventMessage.indexOf ("\r\n", messageData.second), chunkLength;
-      while (index != -1 && ok)
-      {
-        int hexaChunkLengthSize = index - messageData.second + 2;
-        hexaChunkLength         = eventMessage.mid (messageData.second, hexaChunkLengthSize).trimmed ();
-        chunkLength             = hexaChunkLength.toUInt (&ok, 16);
-        if (ok)
-        {
-          eventMessage.remove (messageData.second, hexaChunkLengthSize);
-          messageData.second += chunkLength - 1;
-          if (chunkLength == 0)
-          {
-            parseMessage (httpParser, headerLength, messageData.second, eventMessage, socket);
-            break;
-          }
-
-          index = eventMessage.indexOf ("\r\n", messageData.second);
-        }
-      }
-
-      messageData.second = -messageData.second;
+    eventMessage += socket->readAll ();
+    if (parser.parseMessage ())
+    {
+      sendHttpResponse (parser, socket);
     }
   }
 }
 
-void CHTTPServer::bytesWritten (qint64 bytes)
+QString CHTTPServer::formatUUID (QString const & uuid)
 {
-  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
-  qint64      length = socket->property ("lengthToWrite:").toLongLong ();
-  if (length == bytes)
+  QString formattedUUID = uuid;
+  if (formattedUUID.startsWith ("uuid:"))
   {
-    socket->disconnectFromHost ();
+    formattedUUID[4] = '-';
   }
+
+  return formattedUUID;
 }
 
-QString CHTTPServer::playlistBaseName (QString const & name)
+QString CHTTPServer::unformatUUID (QString const & uuid)
 {
-  QString temp = name;
-  return temp.replace (':', '-'); // Replace uuid: by uuid-
+  QString unformattedUUID = uuid;
+  if (unformattedUUID.startsWith ("uuid-"))
+  {
+    unformattedUUID[4] = ':';
+  }
+
+  return unformattedUUID;
+}
+
+QString CHTTPServer::serverListenAddress () const
+{
+  QHostAddress host = serverAddress ();
+  quint16      port = serverPort ();
+  return QString ("http://%1:%2/").arg (host.toString ()).arg (port);
 }
 
 QString CHTTPServer::playlistURI (QString const & name) const
 {
-  QString      temp = playlistBaseName (name);
-  QHostAddress host = serverAddress ();
-  quint16      port = serverPort ();
-  return QString ("http://%1:%2/%3-%4.m3u").arg (host.toString ()).arg (port)
-                                           .arg (temp)
-                                           .arg (QDateTime::currentMSecsSinceEpoch ());
+  return QString ("http://%1:%2/playlist/%3-%4.m3u").arg (serverAddress ().toString ())
+                                                    .arg (serverPort ())
+                                                    .arg (formatUUID (name))
+                                                    .arg (QDateTime::currentMSecsSinceEpoch ());
 }
 
-QString CHTTPServer::audioFileURI (QString const & name) const
+void CHTTPServer::clearPlaylist ()
 {
-  QHostAddress host = serverAddress ();
-  quint16      port = serverPort ();
-  return QString ("http://%1:%2/%3").arg (host.toString ()).arg (port).arg (name);
+  m_playlistName.clear ();
 }
 
 void CHTTPServer::setPlaylistContent (QByteArray const & content)
@@ -271,45 +251,154 @@ QByteArray CHTTPServer::currentTime ()
   return time (QDateTime::currentDateTime ());
 }
 
-QByteArray CHTTPServer::headerResponse (int contentLength, char const * contentType) const
+QByteArray CHTTPServer::headerResponse (qint64 contentLength, char const * contentType) const
 {
-  if (contentType == nullptr)
-  {
-    contentType = "audio/x-mpegurl";
-  }
-
+  QByteArray transfer    = contentLength >= 0 ? "Content-Length: " + QByteArray::number (contentLength) : "Transfer-Encoding: chunked";
   QByteArray currentTime = this->currentTime ();
-  QByteArray header      = "HTTP/1.1 200 OK\r\nServer: UPnP/1.0 dmupnp/1.0.0\r\n\
-Date: " + currentTime + "\r\ntransferMode.dlna.org: Streaming\r\n\
-contentFeatures.dlna.org: DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01700000000000000000000000000000\r\n\
-CACHE-CONTROL: no-cache\r\n\
-PRAGMA: no-cache\r\n\
-Content-Type: ";
-  header += contentType;
-  header += "\r\n\"\
-Accept-Ranges: bytes\r\n\
-Content-Length: " + QByteArray::number (contentLength) + "\r\n\r\n";
+  QByteArray header      = "\
+HTTP/1.1 200 OK\r\n\
+Server: UPnP/1.0 QtUPnP/1.0.0\r\n\
+Date: " + currentTime + "\r\n\
+Cache-control: no-cache\r\n\
+Content-Type: " + contentType + "\r\n\
+Accept-Ranges: bytes\r\n" + transfer + "\r\n\
+TransferMode.dlna.org: Streaming\r\n\
+Connection: close\r\n\r\n";
   return header;
 }
 
-QByteArray CHTTPServer::headMethodResponse (bool internalPlaylist) const
+void CHTTPServer::socketBytesWritten (qint64 bytes)
 {
-  QByteArray response;
-  if (internalPlaylist)
+  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
+  if (m_writingSocketSizes.contains (socket))
   {
-    response = headerResponse (m_playlistContent.size ());
+    int   sizeToWrite = m_writingSocketSizes.value (socket);
+    sizeToWrite      -= bytes;
+    if (sizeToWrite == 0)
+    {
+      socket->disconnectFromHost ();
+      m_writingSocketSizes.remove (socket);
+    }
+    else
+    {
+      m_writingSocketSizes[socket] = sizeToWrite;
+    }
   }
-
-  return response;
 }
 
-QByteArray CHTTPServer::getMethodResponse (bool internalPlaylist) const
+void CHTTPServer::socketDisconnected ()
 {
-  QByteArray response;
-  if (internalPlaylist)
+  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
+  m_eventMessages.remove (socket);
+  socket->deleteLater ();
+  if (socket == m_streamingSocket)
   {
-    response = headerResponse (m_playlistContent.size ()) + m_playlistContent;
+    m_streamingSocket = nullptr;
+    abortStreaming ();
+  }
+}
+
+void CHTTPServer::socketError (QAbstractSocket::SocketError err)
+{
+  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
+  qDebug () << "stocketError:" << err << ' ' << socket->errorString ();
+}
+
+bool CHTTPServer::startStreaming (QNetworkRequest const & request, QString const & method, QTcpSocket* socket)
+{
+  m_startStreaming  = true;
+  bool success      = false;
+  if (method == "GET" || method == "HEAD")
+  {
+    if (m_naMgr == nullptr)
+    {
+      m_naMgr = new QNetworkAccessManager (this);
+    }
+
+    abortStreaming ();
+    m_streamingSocket = socket;
+    m_httpsReply      = method == "HEAD" ? m_naMgr->head (request) : m_naMgr->get (request);
+    m_httpsReply->setReadBufferSize (m_httpsBufferSize);
+    connect (m_httpsReply, static_cast<TFctNetworkReplyError>(&QNetworkReply::error), this, &CHTTPServer::httpsError);
+    connect (m_httpsReply, &QNetworkReply::finished, this, &CHTTPServer::httpsFinished);
+    connect (m_httpsReply, &QNetworkReply::readyRead, this, &CHTTPServer::httpsReadyRead);
+    success = true;
   }
 
-  return response;
+  return success;
 }
+
+void CHTTPServer::httpsError (QNetworkReply::NetworkError err)
+{
+  QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender ());
+  QString        error = QString ("Network reply error:%1->%2->%3")
+                         .arg (err).arg (reply->url ().toString ()).arg (reply->errorString ());
+  qDebug () << "CHTTPServer::httpsError: " << err << " (" << error << ")";
+}
+
+void CHTTPServer::httpsFinished ()
+{
+  httpsReadyRead (); // Pending data if exists.
+  m_httpsReply->deleteLater ();
+  m_httpsReply = nullptr;
+}
+
+void CHTTPServer::httpsReadyRead ()
+{
+  QNetworkReply* reply = static_cast<QNetworkReply*>(sender ());
+  QByteArray     data;
+  if (m_startStreaming)
+  {
+    quint64                          contentLength        = reply->rawHeader ("content-length").toLongLong ();
+    QByteArray                       contentType          = reply->rawHeader ("content-type");
+    qint64                           streamingTotalLength = -1;
+    QNetworkAccessManager::Operation op                   = m_httpsReply->operation ();
+    if (op == QNetworkAccessManager::HeadOperation)
+    {
+      streamingTotalLength = contentLength;
+    }
+
+    data = headerResponse (streamingTotalLength, contentType);
+    if (streamingTotalLength >= 0)
+    {
+      m_writingSocketSizes.insert (m_streamingSocket, data.size ());
+      sendHttpResponse (m_streamingSocket, data);
+      return;
+    }
+
+    m_writingSocketSizes.insert (m_streamingSocket, data.size () + contentLength);
+    m_startStreaming = false;
+  }
+
+  QByteArray httpsData = reply->readAll ();
+  QByteArray chunkSize = QByteArray::number (httpsData.size (), 16);
+  data                += chunkSize + "\r\n" + httpsData + "\r\n";
+  m_writingSocketSizes[m_streamingSocket] += chunkSize.size () + 4;
+  sendHttpResponse (m_streamingSocket, data);
+}
+
+void CHTTPServer::clearStreaming ()
+{
+  if (m_httpsReply != nullptr)
+  {
+    m_httpsReply->deleteLater ();
+    m_httpsReply = nullptr;
+  }
+
+  if (m_streamingSocket != nullptr)
+  {
+    m_streamingSocket->disconnectFromHost ();
+    m_streamingSocket = nullptr;
+  }
+}
+
+void CHTTPServer::abortStreaming ()
+{
+  if (m_httpsReply != nullptr)
+  {
+    m_httpsReply->abort ();
+  }
+
+  clearStreaming ();
+}
+

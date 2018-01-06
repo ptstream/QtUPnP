@@ -24,7 +24,7 @@ void CPlaylistBrowser::setAVTransportURI (CControlPoint* cp, QString const & ren
   CDidlItem::EType              type     = didlItem.type ();
   if (type != CDidlItem::AudioBroadcast && type != CDidlItem::VideoBroadcast && device.playlistStatus () == CDevice::PlaylistHandler)
   {
-    QString  playlistName = CHTTPServer::playlistBaseName (renderer);
+    QString  playlistName = CHTTPServer::formatUUID (renderer);
     int      seekTo       = 0;
     if (cp->playlistName () != playlistName)
     {

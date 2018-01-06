@@ -15,17 +15,36 @@ START_DEFINE_UPNP_NAMESPACE
 class UPNP_API CHTTPParser
 {
 public :
+  enum EQueryType { Unknown,
+                    Playlist,
+                    Plugin,
+                  };
+
+  enum EContentLength { Unreached = -2,
+                        Chunked   = -1,
+                      };
+
   /*! Constructor. */
   CHTTPParser () {}
+
+  /*! Copy constructor. */
+  CHTTPParser (CHTTPParser const & other);
 
   /*! Constructs a parser with the message to parse. */
   CHTTPParser (QByteArray const & message) : m_message (message) {}
 
+  CHTTPParser& operator = (CHTTPParser const & other);
+
+  void setMessage (QByteArray const & message) { m_message = message; }
+
+  int headerLengthReached () const;
+  int headerContentLength () const;
+
   /*! Returns the header length including "\r\n\r\n" at the end. */
-  int headerLength () const;
+  int headerLength () const { return m_headerLength; }
 
   /*! Returns the content length. */
-  int contentLength () const;
+  int contentLength () const { return m_contentLength; }
 
   /*! Returns the value of an header row.
    * \param name: The row name.
@@ -40,22 +59,25 @@ public :
   QByteArray verb () const { return m_verb; }
 
   /*! Parse the response. */
-  void parseMessage ();
-
-  /*! Returns true if the verb value defines a playlist. */
-  bool isPlaylistPath () const { return m_playlistPath; }
+  bool parseMessage();
 
   /*! Returns if the header contains TRANSFER-ENCODING: chunked or CONTENT-LENGTH. */
   bool transferChunked () const;
 
-  /*! Returns true if path defines a playlist. */
-  static bool isPlaylistPath (QString const & path);
+  EQueryType queryType () const { return m_queryType; }
+
+  QByteArray const & message () const { return m_message; }
+  QByteArray& message () { return m_message; }
+
+  /*! Returns the query type from the query. */
+  static EQueryType queryType (QByteArray const & query);
 
 private :
   QByteArray m_message; //!< The response.
   QByteArray m_verb; //!< The verb
   QMap<QByteArray, QByteArray> m_headerElems; //!< The headers map of rows.
-  bool m_playlistPath = false; //!< The verb value is a point a playlist.
+  EQueryType m_queryType = Unknown; //!< Type of query.
+  int m_headerLength = 0, m_contentLength = 0;
 
   static char const * m_playlistSuffixes[]; //!< Play list suffixes (m3u, m3u8...)
 };
