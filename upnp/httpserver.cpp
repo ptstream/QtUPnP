@@ -182,18 +182,15 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
 
 void CHTTPServer::socketReadyRead ()
 {
-  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
-  if (m_eventMessages.contains (socket))
+  QTcpSocket* socket        = static_cast<QTcpSocket*>(sender ());
+  CHTTPParser& parser       = m_eventMessages[socket];
+  QByteArray&  eventMessage = parser.message ();
+  while (socket->bytesAvailable () != 0)
   {
-    CHTTPParser& parser       = m_eventMessages[socket];
-    QByteArray&  eventMessage = parser.message ();
-    while (socket->bytesAvailable () != 0)
+    eventMessage += socket->readAll ();
+    if (parser.parseMessage ())
     {
-      eventMessage += socket->readAll ();
-      if (parser.parseMessage ())
-      {
-        sendHttpResponse (parser, socket);
-      }
+      sendHttpResponse (parser, socket);
     }
   }
 }
@@ -281,7 +278,6 @@ void CHTTPServer::socketBytesWritten (qint64 bytes)
     if (sizeToWrite == 0)
     {
       socket->disconnectFromHost ();
-      m_writingSocketSizes.remove (socket);
     }
     else
     {
@@ -294,6 +290,7 @@ void CHTTPServer::socketDisconnected ()
 {
   QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
   m_eventMessages.remove (socket);
+  m_writingSocketSizes.remove (socket);
   socket->deleteLater ();
   if (socket == m_streamingSocket)
   {
