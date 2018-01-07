@@ -58,8 +58,10 @@ public :
   /*! Returns the verb. */
   QByteArray verb () const { return m_verb; }
 
-  /*! Parse the response. */
-  bool parseMessage();
+  /*! Parse the response.
+   * \return True if the message is complete.
+   */
+  bool parseMessage ();
 
   /*! Returns if the header contains TRANSFER-ENCODING: chunked or CONTENT-LENGTH. */
   bool transferChunked () const;
