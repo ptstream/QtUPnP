@@ -181,15 +181,18 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
 
 void CHTTPServer::socketReadyRead ()
 {
-  QTcpSocket*  socket       = static_cast<QTcpSocket*>(sender ());
-  CHTTPParser& parser       = m_eventMessages[socket];
-  QByteArray&  eventMessage = parser.message ();
-  while (socket->bytesAvailable () != 0)
+  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
+  if (m_eventMessages.contains (socket))
   {
-    eventMessage += socket->readAll ();
-    if (parser.parseMessage ())
+    CHTTPParser& parser       = m_eventMessages[socket];
+    QByteArray&  eventMessage = parser.message ();
+    while (socket->bytesAvailable () != 0)
     {
-      sendHttpResponse (parser, socket);
+      eventMessage += socket->readAll ();
+      if (parser.parseMessage ())
+      {
+        sendHttpResponse (parser, socket);
+      }
     }
   }
 }
