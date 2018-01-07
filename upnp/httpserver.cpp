@@ -28,6 +28,7 @@ void CHTTPServer::incomingConnection (qintptr socketDescriptor)
 {
   QTcpSocket* socket = new QTcpSocket (this);
   socket->setSocketDescriptor (socketDescriptor);
+  m_eventMessages[socket] = CHTTPParser ();
   connect (socket, &QTcpSocket::readyRead, this, &CHTTPServer::socketReadyRead);
   connect (socket, static_cast<TFctSocketError>(&QAbstractSocket::error), this, &CHTTPServer::socketError);
   connect (socket, &QTcpSocket::disconnected, this, &CHTTPServer::socketDisconnected);
