@@ -6,6 +6,7 @@
 #include <QDate>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+#include <QTimer>
 
 USING_UPNP_NAMESPACE
 
@@ -50,6 +51,8 @@ bool CHTTPServer::connectToHost (QTcpSocket* socket)
       success = socket->state () == QAbstractSocket::ConnectedState;
       if (!success)
       {
+        m_eventMessages.remove (socket);
+        m_writingSocketSizes.remove (socket);
         socket->deleteLater ();
       }
     }
@@ -188,10 +191,11 @@ void CHTTPServer::socketReadyRead ()
   while (socket->bytesAvailable () != 0)
   {
     eventMessage += socket->readAll ();
-    if (parser.parseMessage ())
-    {
-      sendHttpResponse (parser, socket);
-    }
+  }
+
+  if (parser.parseMessage ())
+  {
+    sendHttpResponse (parser, socket);
   }
 }
 
