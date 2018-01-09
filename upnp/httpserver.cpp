@@ -198,7 +198,7 @@ void CHTTPServer::socketReadyRead ()
 
   if (parser->parseMessage ())
   {
-    sendHttpResponse (parser, socket);
+    emit httpValidReadMessage (parser, socket);
   }
 }
 
