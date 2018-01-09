@@ -45,7 +45,7 @@ The main fonctionnalities are:
   - And a lot of another things.
   
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
-  - Windows 7 to 10: Download install-AIVCtrl-101.exe and double click on it to install.
+  - Windows 7 to 10: Download install-AIVCtrl-102.exe and double click on it to install.
     Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
   - Kubuntu and Ubuntu: Download aivctrl-1.0.2.deb double click on it to install.
     Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
