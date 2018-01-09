@@ -16,6 +16,7 @@ CHTTPServer::CHTTPServer (QHostAddress const & address, quint16 port, QObject* p
   if (success)
   {
     m_httpsRequest.setSslConfiguration (QSslConfiguration::defaultConfiguration ());
+    connect (this, SIGNAL(httpValidReadMessage(CHTTPParser const *, QTcpSocket*)), this, SLOT(sendHttpResponse(CHTTPParser const *, QTcpSocket*)), Qt::QueuedConnection);
     m_done = true;
   }
 }
@@ -97,6 +98,7 @@ bool CHTTPServer::sendHttpResponse (QTcpSocket* socket, char const * bytes, int 
     if (success)
     {
       success = socket->write (bytes, cBytes) != -1;
+      socket->waitForBytesWritten ();
     }
   }
 
@@ -108,19 +110,19 @@ bool CHTTPServer::sendHttpResponse (QTcpSocket* socket, QByteArray const & bytes
   return sendHttpResponse (socket, bytes.constData (), bytes.size ());
 }
 
-void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* socket)
+void CHTTPServer::sendHttpResponse (CHTTPParser const * httpParser, QTcpSocket* socket)
 {
-  QByteArray const & verb = httpParser.verb ();
+  QByteArray const & verb = httpParser->verb ();
   if (!verb.isEmpty ())
   {
     if (verb == "NOTIFY" &&
-        httpParser.value ("NT") == "upnp:event" &&
-        httpParser.value ("NTS") == "upnp:propchange")
+        httpParser->value ("NT") == "upnp:event" &&
+        httpParser->value ("NTS") == "upnp:propchange")
     {
       m_vars.clear ();
-      if (httpParser.contentLength () != 0)
+      if (httpParser->contentLength () != 0)
       {
-        QByteArray data = httpParser.message ().mid (httpParser.headerLength ());
+        QByteArray data = httpParser->message ().mid (httpParser->headerLength ());
         CXmlHEvent h (m_vars);
         h.parse (data);
 
@@ -135,10 +137,11 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
           }
         }
 
+        QByteArray sid = httpParser->sid (); // Save sid because httpParser must be deleted by accept.
         accept (socket);
         if (!m_vars.isEmpty ())
         {
-          emit eventReady (httpParser.sid ());
+          emit eventReady (sid);
         }
       }
       else
@@ -148,7 +151,7 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
     }
     else
     {
-      CHTTPParser::EQueryType type = httpParser.queryType ();
+      CHTTPParser::EQueryType type = httpParser->queryType ();
       QByteArray              response;
       switch (type)
       {
@@ -162,7 +165,7 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
 
         case CHTTPParser::Plugin :
         {
-          QString request = httpParser.value (verb);
+          QString request = httpParser->value (verb);
           emit mediaRequest (request);
           if (m_httpsRequest.url ().isValid ())
           {
@@ -185,15 +188,15 @@ void CHTTPServer::sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* 
 
 void CHTTPServer::socketReadyRead ()
 {
-  QTcpSocket* socket        = static_cast<QTcpSocket*>(sender ());
-  CHTTPParser& parser       = m_eventMessages[socket];
-  QByteArray&  eventMessage = parser.message ();
+  QTcpSocket*  socket       = static_cast<QTcpSocket*>(sender ());
+  CHTTPParser* parser       = &m_eventMessages[socket];
+  QByteArray&  eventMessage = parser->message ();
   while (socket->bytesAvailable () != 0)
   {
     eventMessage += socket->readAll ();
   }
 
-  if (parser.parseMessage ())
+  if (parser->parseMessage ())
   {
     sendHttpResponse (parser, socket);
   }
@@ -281,7 +284,7 @@ void CHTTPServer::socketBytesWritten (qint64 bytes)
     sizeToWrite      -= bytes;
     if (sizeToWrite == 0)
     {
-      socket->disconnectFromHost ();
+      socket->close ();
     }
     else
     {

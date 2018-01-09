@@ -114,6 +114,13 @@ protected slots :
   /*! Write data to the device. */
   void socketBytesWritten (qint64 bytes);
 
+  /*! Sends the http response (UPnP eventing, playlist manager, streaming https).
+   * This function decode the message and sends the appropriate response.
+   * \param httpParser: The current http parser.
+   * \param socket: The socket for the response.
+   */
+  void sendHttpResponse (CHTTPParser const * httpParser, QTcpSocket* socket);
+
   void httpsError (QNetworkReply::NetworkError err); // Version 1.1
   void httpsFinished (); // Version 1.1
   void httpsReadyRead (); // Version 1.1
@@ -125,15 +132,27 @@ protected :
 signals:
   /*! The signal is emmited when the server ends the decoding. */
   void eventReady (QString const & sid);
-  void mediaRequest (QString request);
+
+  /*! Emitted when http parser in socketReadyRead slot has detected a full message. */
+  void httpValidReadMessage (CHTTPParser const *, QTcpSocket*);
+
+  void mediaRequest (QString request); // Version 1.1
 
 private :
-  /*! Sends the http response (UPnP eventing, playlist manager, streaming https).
-   * This function decode the message and sends the appropriate response.
-   * \param httpParser: The current http parser.
-   * \param socket: The socket for the response.
+  /*! Sends the http response to the renderer.
+   * \param socket: The socket to write the bytes.
+   * \param bytes: Bytes to send.
+   * \return True in case of success.
    */
-  void sendHttpResponse (CHTTPParser const & httpParser, QTcpSocket* socket);
+  bool sendHttpResponse (QTcpSocket* socket, QByteArray const & bytes);
+
+  /*! Sends the http response to the renderer.
+   * \param socket: The socket to write the bytes.
+   * \param bytes: Bytes to send.
+   * \param cBytes: Number of bytes to send.
+   * \return True in case of success.
+   */
+  bool sendHttpResponse (QTcpSocket* socket, char const * bytes, int cBytes);
 
   /*! Connect to device.
    * param socket: Socket to connect.
@@ -159,21 +178,6 @@ private :
    * \return True in case of success.
    */
   bool reject (QTcpSocket* socket);
-
-  /*! Sends the http response to the renderer.
-   * \param socket: The socket to write the bytes.
-   * \param bytes: Bytes to send.
-   * \return True in case of success.
-   */
-  bool sendHttpResponse (QTcpSocket* socket, QByteArray const & bytes);
-
-  /*! Sends the http response to the renderer.
-   * \param socket: The socket to write the bytes.
-   * \param bytes: Bytes to send.
-   * \param cBytes: Number of bytes to send.
-   * \return True in case of success.
-   */
-  bool sendHttpResponse (QTcpSocket* socket, char const * bytes, int cBytes);
 
   /*! Returns the header from the content length and the content type.
    * \param contentLength: The length of the content.
