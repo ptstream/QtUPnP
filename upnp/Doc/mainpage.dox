@@ -188,7 +188,7 @@ With these objects, the arguments and the return values are standard C++ classes
 
 Others functinalities can help the QtUPnP user.
 \li Sorting. Somes servers have no sort capabilities. QtUPnP provides a similar functionality. See CBrowseReply::sort. 
-\li Searching. Somes servers have no seacrch capabilities. QtUPnP provides a similar functionality for the current browse directory.
+\li Searching. Somes servers have no search capabilities. QtUPnP provides a similar functionality for the current browse directory.
 See CBrowseReply:search. 
 
 <h1>Some remarks</h1>
