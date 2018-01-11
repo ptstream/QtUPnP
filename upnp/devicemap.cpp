@@ -90,16 +90,7 @@ CDeviceMap::iterator CDeviceMap::insertDevice (QString const & uuid)
 {
   CDevice device;
   device.setUUID (uuid);
-  iterator itd = insert (uuid, device); // Insert in the map.
-
-  // Inserts the embeded devices also in the map.
-  QList<CDevice>& subDevices = device.subDevices ();
-  for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
-  {
-    insertDevice (*it);
-  }
-
-  return itd;
+  return insert (uuid, device); // Insert in the map.
 }
 
 void CDeviceMap::insertDevice (CDevice& device)
@@ -120,7 +111,7 @@ void CDeviceMap::removeDevice (QString const & uuid)
 bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
 {
   bool success = device.extractServiceComponents (m_naMgr, timeout);
-  if (success)
+  if (success && m_expandEmbeddedDevices)
   {
     QList<CDevice>& subDevices = device.subDevices ();
     for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
@@ -130,7 +121,7 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
       if (success)
       {
         device.setType ();
-        insertDevice (subDevice.uuid ()); // Insert in the map.
+        insertDevice (subDevice); // Insert embended device in the map.
       }
     }
   }

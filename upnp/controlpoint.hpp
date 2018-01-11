@@ -148,15 +148,18 @@ public :
   /*! Returns a const reference of the device map. */
   CDeviceMap const & devices () { return m_devices; }
 
-  /*! Returns a device class reference.
+  /*! Returns the device object reference defined by uuid.
    * \param uuid: Device uuid.
-   * \return The device class reference.
+   * \return The device object reference.
+   * \warning Use this reference for a very short time.
+   * Also the device must absolutly exists. Use CControlpPoint::contains (QString const & uuid)
+   * to check the existence.
    */
   CDevice& device (QString const & uuid) { return m_devices[uuid]; }
 
-  /*! Returns a device class const reference.
+  /*! Returns a device object defined by uuid.
    * \param uuid: Device uuid.
-   * \return The device class const reference.
+   * \return The device object.
    */
   CDevice device (QString const & uuid) const { return this->m_devices.value (uuid); }
 
@@ -312,6 +315,11 @@ public :
 
   /*! Emits the signal networkComEnded. */
   inline void endNetworkCom (CDevice::EType type);
+
+  /*! Expand embedded devices. Embedded devices are also copy in the map and
+   * accessible by CControlPoint::device (Qstring const & uuid).
+   */
+  void setExpandEmbeddedDevices () { m_devices.setExpandEmbeddedDevices (); }
 
   /*! Constant to define a empty list of argument. */
   static QList<CControlPoint::TArgValue> noArgs;

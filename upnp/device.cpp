@@ -686,3 +686,33 @@ bool CDevice::hasProtocol (QString const & protocol, bool exact) const
 
   return found;
 }
+
+CDevice CDevice::subDevice (QString const & uuid) const
+{
+  CDevice subDevice;
+  for (CDevice const & device : m_d->m_subDevices)
+  {
+    if (device.uuid () == uuid)
+    {
+      subDevice = device;
+      break;
+    }
+  }
+
+  return subDevice;
+}
+
+bool CDevice::hasSubDevice (QString const & uuid) const
+{
+  bool success = false;
+  for (CDevice const & device : m_d->m_subDevices)
+  {
+    if (device.uuid () == uuid)
+    {
+      success = true;
+      break;
+    }
+  }
+
+  return success;
+}

@@ -84,11 +84,16 @@ public :
   /*! Set UPnP/AV only. Just AV servers and renderers are handle */
   void setAVOnly () { m_avOnly = true; }
 
+  /*! Expand embedded devices. Embedded devices are also copy in the map and
+   * accessible by CControlPoint::device (Qstring const & uuid).
+   */
+  void setExpandEmbeddedDevices () { m_expandEmbeddedDevices = true; }
+
 protected :
   /*! Inserts a new device. */
   void insertDevice (CDevice& device);
 
-  /*! Inserts a new device.
+  /*! Inserts an empty device.
    * \param uuid: The uuid of the device.
    * \return An iterator of the new device.
    */
@@ -105,6 +110,7 @@ private :
   QMap<QString, int> m_invalidDevices; //!< Invalid devices. The device is invalid when get services fails twice.
   int m_deviceFails = 5; //!< Max number of fails to consider the device invalid.
   bool m_avOnly = false; //!< The discovery is launched from avDiscovery.
+  bool m_expandEmbeddedDevices = false; //!< Embedded devices are also insert in the map.
 };
 
 } // End namespace

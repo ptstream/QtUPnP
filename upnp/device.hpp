@@ -145,6 +145,15 @@ public:
   /*! Returns true if the device is an embedded device. */
   bool isSubDevice () const;
 
+  /*! Returns true if the device contains an embedded device. */
+  bool hasSubDevice (QString const & uuid) const;
+
+  /*! Returns the embedded device object.
+   * \param uuid: Device uuid.
+   * \return The device object.
+   */
+  CDevice subDevice (QString const & uuid) const;
+
   /*! Returns true if protocol has found.
    * \param protocol: Protocol to search.
    * \param exact: Search the exact protocol.
