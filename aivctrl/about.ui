@@ -51,7 +51,7 @@
    <item>
     <widget class="QLabel" name="m_version">
      <property name="text">
-      <string>Version 1.0.2- Copyright (C) 2017</string>
+      <string>Version 1.0.2.b2- Copyright (C) 2017</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
