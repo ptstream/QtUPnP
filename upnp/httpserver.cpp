@@ -112,77 +112,80 @@ bool CHTTPServer::sendHttpResponse (QTcpSocket* socket, QByteArray const & bytes
 
 void CHTTPServer::sendHttpResponse (CHTTPParser const * httpParser, QTcpSocket* socket)
 {
-  QByteArray const & verb = httpParser->verb ();
-  if (!verb.isEmpty ())
+  if (m_eventMessages.contains (socket))
   {
-    if (verb == "NOTIFY" &&
-        httpParser->value ("NT") == "upnp:event" &&
-        httpParser->value ("NTS") == "upnp:propchange")
+    QByteArray const & verb = httpParser->verb ();
+    if (!verb.isEmpty ())
     {
-      m_vars.clear ();
-      if (httpParser->contentLength () != 0)
+      if (verb == "NOTIFY" &&
+          httpParser->value ("NT") == "upnp:event" &&
+          httpParser->value ("NTS") == "upnp:propchange")
       {
-        QByteArray data = httpParser->message ().mid (httpParser->headerLength ());
-        CXmlHEvent h (m_vars);
-        h.parse (data);
-
-        QString const lastChange ("LastChange");
-        if (m_vars.contains (lastChange))
+        m_vars.clear ();
+        if (httpParser->contentLength () != 0)
         {
-          data = m_vars.value (lastChange).first.toUtf8 ();
-          if (!data.isEmpty ())
+          QByteArray data = httpParser->message ().mid (httpParser->headerLength ());
+          CXmlHEvent h (m_vars);
+          h.parse (data);
+
+          QString const lastChange ("LastChange");
+          if (m_vars.contains (lastChange))
           {
-            h.setCheckProperty (false);
-            h.parse (data);
+            data = m_vars.value (lastChange).first.toUtf8 ();
+            if (!data.isEmpty ())
+            {
+              h.setCheckProperty (false);
+              h.parse (data);
+            }
+          }
+
+          QByteArray sid = httpParser->sid (); // Save sid because httpParser must be deleted by accept.
+          accept (socket);
+          if (!m_vars.isEmpty ())
+          {
+            emit eventReady (sid);
           }
         }
-
-        QByteArray sid = httpParser->sid (); // Save sid because httpParser must be deleted by accept.
-        accept (socket);
-        if (!m_vars.isEmpty ())
+        else
         {
-          emit eventReady (sid);
+          reject (socket);
         }
       }
       else
       {
-        reject (socket);
+        CHTTPParser::EQueryType type = httpParser->queryType ();
+        QByteArray              response;
+        switch (type)
+        {
+          case CHTTPParser::Playlist :
+          {
+            response = headerResponse (m_playlistContent.size (), "audio/x-mpegurl") + m_playlistContent;
+            m_writingSocketSizes.insert (socket, response.size ());
+            sendHttpResponse (socket, response);
+            break;
+          }
+
+          case CHTTPParser::Plugin :
+          {
+            QString request = httpParser->value (verb);
+            emit mediaRequest (request);
+            if (m_httpsRequest.url ().isValid ())
+            {
+              startStreaming (m_httpsRequest, verb, socket);
+            }
+            break;
+          }
+
+          default :
+            qDebug () << "Unhandled http response type";
+            break;
+        }
       }
     }
     else
     {
-      CHTTPParser::EQueryType type = httpParser->queryType ();
-      QByteArray              response;
-      switch (type)
-      {
-        case CHTTPParser::Playlist :
-        {
-          response = headerResponse (m_playlistContent.size (), "audio/x-mpegurl") + m_playlistContent;
-          m_writingSocketSizes.insert (socket, response.size ());
-          sendHttpResponse (socket, response);
-          break;
-        }
-
-        case CHTTPParser::Plugin :
-        {
-          QString request = httpParser->value (verb);
-          emit mediaRequest (request);
-          if (m_httpsRequest.url ().isValid ())
-          {
-            startStreaming (m_httpsRequest, verb, socket);
-          }
-          break;
-        }
-
-        default :
-          qDebug () << "Unhandled http response type";
-          break;
-      }
+      qDebug () << "Verb is empty, very strange";
     }
-  }
-  else
-  {
-    qDebug () << "Verb is empty, very strange";
   }
 }
 
