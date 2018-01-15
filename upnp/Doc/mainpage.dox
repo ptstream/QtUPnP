@@ -192,14 +192,13 @@ Others functinalities can help the QtUPnP user.
 See CBrowseReply:search. 
 
 <h1>Some remarks</h1>
-\li QtUPnP is limited at the HTTP protocol. RTSP is not implemented.
+\li QtUPnP is limited at the HTTP protocol.
 \li All ports, exept multicast port, are dynamically selected.
 \li UPnP/AV protocol defines a lot of capabilities. Most of the time, devices implement a subset of these capabilities.
 \li Generally, the UPnP servers implementation seems good. It is not the case with the renderers because
 renderers are sold with their IOS/Android applications. The manufacturers can be used their own APIs and they not accord equal importance
 at the UPnP implementation.
-\li For VirtualBox users, install only 'VirtualBox Bridge Networking' (Do not install 'VirtualBox Host-Only networking').
-Also choose 'Bridge Mode' in the network configuration. it is important to select Bridge Mode not NAT.
+\li For VirtualBox users choose 'Bridge Mode' in the network configuration. it is important to select Bridge Mode not NAT.
 You can also select promiscuous at refused. Sometimes the default card type must be changed.
 
 <h1>Test program</h1>
@@ -229,5 +228,10 @@ This example shows devices, services, actions and event results (see the chupnp 
 \li Stream800 EVM de Streamunlimited.
 \li iEast SoundStream de Sonoé.
 \li Some televisions (e.g Samsung UE55F7000).
+
+<h1>Troubleshooting</h1>
+\li Windows Media Player: Sometimes WMP fails to stream files and thumbnails. Restart the computer (not shutdown) generally solves the problem.
+\li VirtalBox: Before Version 5.2.4 r119785, Wireless fails. Use only Ethernet. Sometimes for this version the network access fails also.
+\li Foobar 2000: In rare cases, Foobar 2000 is not detected correctly. Close it and restart to solve the problem.
 
 */
