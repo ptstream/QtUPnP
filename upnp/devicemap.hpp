@@ -108,7 +108,7 @@ private :
   QStringList m_newDevices; //!< List of new devices.
   QStringList m_lostDevices; //!< List of lost devices.
   QMap<QString, int> m_invalidDevices; //!< Invalid devices. The device is invalid when get services fails twice.
-  int m_deviceFails = 5; //!< Max number of fails to consider the device invalid.
+  int m_deviceFails = 2; //!< Max number of fails to consider the device invalid.
   bool m_avOnly = false; //!< The discovery is launched from avDiscovery.
   bool m_expandEmbeddedDevices = false; //!< Embedded devices are also insert in the map.
 };
