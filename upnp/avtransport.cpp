@@ -178,7 +178,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem co
     args << CControlPoint::TArgValue ("CurrentURIMetaData", item.didl ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     if (!actionInfo.succeeded () && !args[2].second.isEmpty ())
-    { // The server returned an error, try withou metadata.
+    { // The server returned an error, try without metadata.
       args[2].second.clear ();
       actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     }
