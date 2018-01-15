@@ -4,6 +4,9 @@
 CListWidgetBase::CListWidgetBase (QWidget* parent) : QListWidget (parent)
 {
   setTransparentBackGround (this);
+#ifdef Q_OS_LINUX
+  setItemMouseOverColor(this);
+#endif
   connect (this, &CListWidgetBase::itemClicked, this, &CListWidgetBase::saveSelected);
   connect (this, &CListWidgetBase::itemDoubleClicked, this, &CListWidgetBase::saveSelected);
 }

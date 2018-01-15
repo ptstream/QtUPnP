@@ -1,6 +1,7 @@
 #include "widgethelper.hpp"
 #include <QDialog>
 #include <QDir>
+#include <QListWidget>
 
 static QDir s_iconDirRes (":/icons");
 static QString s_iconSuffixRes (".png");
@@ -15,6 +16,15 @@ void setTransparentBackGround (QWidget* widget)
     palette.setColor (QPalette::Base, color);
     widget->setPalette (palette);
   }
+}
+
+void setItemMouseOverColor (QListWidget* widget)
+{
+  QPalette palette           = widget->palette ();
+  QColor   itemSelectedColor = palette.color(QPalette::Highlight);
+  itemSelectedColor.setAlpha (164);
+  QString  styleSheet = QString ("QListView::item:hover {background: #%1;}").arg (itemSelectedColor.rgba (), 0, 16);
+  widget->setStyleSheet (styleSheet);
 }
 
 void removeWindowContextHelpButton (QDialog* dialog)

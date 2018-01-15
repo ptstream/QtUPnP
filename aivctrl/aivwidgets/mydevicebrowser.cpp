@@ -144,6 +144,9 @@ void CMyDeviceBrowserItem::setCount (int count)
 CMyDeviceBrowser::CMyDeviceBrowser (QWidget* parent) : QListWidget (parent)
 {
   setTransparentBackGround (this);
+#ifdef Q_OS_LINUX
+  setItemMouseOverColor(this);
+#endif
   connect (new QShortcut (QKeySequence (Qt::Key_Delete), this), &QShortcut::activated, this, &CMyDeviceBrowser::delKey);
   connect (new QShortcut (QKeySequence (Qt::Key_Escape), this), &QShortcut::activated, this, &CMyDeviceBrowser::clearSelection);
   connect (new QShortcut (QKeySequence (Qt::Key_Return), this), &QShortcut::activated, this, &CMyDeviceBrowser::keyReturn);

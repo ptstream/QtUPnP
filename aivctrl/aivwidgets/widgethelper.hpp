@@ -4,6 +4,7 @@
 #include <QIcon>
 
 class QWidget;
+class QListWidget;
 class QDialog;
 class QStringList;
 class QString;
@@ -18,6 +19,9 @@ class QString;
 
 /*! Sets backgroung widget transparent. */
 void setTransparentBackGround (QWidget* widget);
+
+/*! Sets item mouse over color. */
+void setItemMouseOverColor (QListWidget* widget);
 
 /*! Removes the windows context help button. */
 void removeWindowContextHelpButton (QDialog* dialog);
@@ -55,5 +59,7 @@ void setIconSuffixRes (QString const & suffix);
  * and so on.
  */
 QString updateName (QString name, QStringList const & existingNames);
+
+
 
 #endif // WIDGETHELPER_HPP
