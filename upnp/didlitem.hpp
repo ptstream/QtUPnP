@@ -100,6 +100,9 @@ public :
   /*! Returns true if the value and the property are equal. */
   bool isEqual (CDidlElem const & other) const;
 
+  /*! Returns the value of a property. */
+  QString propValue (QString const & name) const;
+
 private :
   QSharedDataPointer<SDidlElemData> m_d; //!< Shared data pointer.
 };
@@ -288,7 +291,7 @@ public:
 
   /*! Returns true if the item element is a container.
      A container has a type less equal videoProgram.
-  */
+   */
   bool isContainer () const;
 
   /*! Returns the list of res uri elements.
@@ -299,9 +302,9 @@ public:
   QStringList uris (ESortType sort = SortRes) const;
 
   /*! Returns res uri element.
-   * \param index: The index of res element.
+   * \param index: The index of res element. A value of -1 return the last uri.
    * \param sort: Must be NoSort or SortRes.
-  */
+   */
   QString uri (int index, ESortType sort = SortRes) const;
 
   /*! Returns the list of albumArtURIs.
@@ -316,7 +319,7 @@ public:
   /*! Returns AlbumArtURI uri element.
    * \param index: The index of albumArtURI element. Index=-1 returns the last uri.
    * \param sort: Must be NoSort or SortAlbumArt.
-  */
+   */
   QString albumArtURI (int index, ESortType sort = SortAlbumArt) const;
 
   /*! Returns the element in form of DIDL_Lite xml tag. */
@@ -463,17 +466,20 @@ public:
   static bool isContainer (EType type);
 
   /*! Returns the playlist data.
-   * \param elems: The playlist elements.
+   * \param elems: The playlist elements
    * \param format: The format.
    * \return The number of items in the playlist.
    */
    static QByteArray buildsPlaylist (QList<TPlaylistElem> const & elems, EPlaylistFormat format);
 
+   static QString protocolInfoValue (QString const & protocolInfo, QString const & paramName);
+   static bool isResConverted (QString const & protocolInfo);
+
   /*! Returns the human readable of the element. */
   QStringList dump () const;
 
 private :
-  typedef QPair<unsigned, CDidlElem> TQE; //!< Pair of quality and CDidlElem. Used to sort elem;
+  typedef QPair<quint64, CDidlElem> TQE; //!< Pair of quality and CDidlElem. Used to sort elem;
 
   /*! Returns the values for a tag. e.g. value of <res> or <albumArtURI>. */
   QStringList stringValues (char const * tag) const;

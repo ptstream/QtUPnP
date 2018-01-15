@@ -174,6 +174,11 @@ bool CDidlElem::isEqual (CDidlElem const & other) const
   return equal;
 }
 
+QString CDidlElem::propValue (QString const & name) const
+{
+  return m_d->m_props.value (name);
+}
+
 CDidlItem::CDidlItem () : m_d (new SDidlItemData)
 {
 }
@@ -198,53 +203,64 @@ CDidlItem& CDidlItem::operator = (CDidlItem const & other)
 
 int CDidlItem::sortResElems (QList<CDidlElem>& elems)
 {
-  QList<TQE> qes;
-  qes.reserve (elems.size ());
-  for (CDidlElem const & elem : elems)
+  if (elems.size () > 1)
   {
-    TMProps const & props    = elem.props ();
-    unsigned        iQuality = 0;
-    QString         quality  = props.value ("resolution");
-    if (!quality.isEmpty ())
+    QList<TQE> qes;
+    qes.reserve (elems.size ());
+    for (CDidlElem const & elem : elems)
     {
-      QStringList xy = quality.split ('x');
-      if (xy.size () == 2)
-      {
-        iQuality         = xy[0].toUInt () * xy[1].toUInt ();
-        QString protocol = props.value ("protocolInfo");
-        if (protocol.indexOf ("video") != -1)
-        {
-          iQuality |= 0x80000000;
-        }
-      }
-    }
-    else
-    {
-      quality = props.value ("bitrate");
+      TMProps const & props    = elem.props ();
+      quint64         iQuality = 0;
+      QString         quality  = props.value ("resolution");
       if (!quality.isEmpty ())
       {
-        iQuality = quality.toUInt ();
+        QStringList xy = quality.split ('x');
+        if (xy.size () == 2)
+        {
+          iQuality         = xy[0].toUInt () * xy[1].toUInt ();
+          QString protocol = props.value ("protocolInfo");
+          if (protocol.indexOf ("video") != -1)
+          {
+            iQuality |= 0x4000000000000000;
+            if (!isResConverted (protocol))
+            {
+              iQuality |= 0x8000000000000000;
+            }
+          }
+        }
+      }
+      else
+      {
+        quality = props.value ("bitrate");
+        if (!quality.isEmpty ())
+        {
+          iQuality = quality.toUInt ();
+        }
+
+        QString protocol = props.value ("protocolInfo");
+        if (protocol.indexOf ("audio") != -1)
+        {
+          iQuality |= 0x1000000000000000;
+          if (!isResConverted (protocol))
+          {
+            iQuality |= 0x2000000000000000;
+          }
+        }
       }
 
-      QString protocol = props.value ("protocolInfo");
-      if (protocol.indexOf ("audio") != -1)
-      {
-        iQuality |= 0x40000000;
-      }
+      TQE qe (iQuality, elem);
+      qes.push_back (qe);
     }
 
-    TQE qe (iQuality, elem);
-    qes.push_back (qe);
+    std::sort (qes.begin (), qes.end (), [](TQE const & a, TQE const & b) {return a.first > b.first; });
+    elems.clear ();
+    for (TQE const & qe : qes)
+    {
+      elems << qe.second;
+    }
   }
 
-  std::sort (qes.begin (), qes.end (), [](TQE const & a, TQE const & b) {return a.first > b.first; });
-  elems.clear ();
-  for (TQE const & qe : qes)
-  {
-    elems << qe.second;
-  }
-
-  return qes.size ();
+  return elems.size ();
 }
 
 int CDidlItem::sortAlbumArtURIs (QList<CDidlElem>& elems)
@@ -873,7 +889,36 @@ CDidlItem CDidlItem::mix (CDidlItem const & item1, CDidlItem const & item2)
     }
   }
 
-
   return item;
 }
 
+QString CDidlItem::protocolInfoValue (QString const & protocolInfo, QString const & paramName)
+{
+  QString value;
+  if (!protocolInfo.isEmpty ())
+  {
+    QStringList                 params  = protocolInfo.split (';');
+    QStringList::const_iterator it      = params.cbegin (), endParam = params.cend ();
+    for (; it != endParam; ++it)
+    {
+      QString param = (*it).trimmed ();
+      if (param.startsWith (paramName))
+      {
+        int index = param.indexOf ('=');
+        if (index != -1)
+        {
+          value = param.mid (index + 1).trimmed ();
+          break;
+        }
+      }
+    }
+  }
+
+  return value;
+}
+
+bool CDidlItem::isResConverted (QString const & protocolInfo)
+{
+  QString ciParam = protocolInfoValue (protocolInfo, "DLNA.ORG_CI");
+  return ciParam == '1';
+}
