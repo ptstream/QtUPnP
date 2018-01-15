@@ -180,18 +180,16 @@ QString CXmlH::removeNameSpace (QString name)
   return name;
 }
 
-
 QString CXmlH::ampersandHandler (QString const & data)
 {
   QChar const      ampersand        = QLatin1Char ('&');
-  QString          ampersandCodes[] = { "&amp;", "&gt;", "&lt;", "&apos;", "&quot;" };
-  QChar            replacements[]   = { '&',     '>',    '<',     '\'',    '"' };
+  QString          ampersandCodes[] = { "&gt;", "&lt;", "&apos;", "&quot;" };
+  QChar            replacements[]   = { '>',    '<',     '\'',    '"' };
   QString          dataCoded;
   int              length = data.length ();
   int              cAmpersandCodes = sizeof (ampersandCodes) / sizeof (QString);
 
   dataCoded.reserve (length + 50);
-
   for (int i = 0; i < length; ++i)
   {
     QChar c = data.at (i);
@@ -213,7 +211,8 @@ QString CXmlH::ampersandHandler (QString const & data)
       }
       else
       {
-        dataCoded.append ("%26");
+//        dataCoded.append ("%26");
+        dataCoded.append ("&amp;");
       }
     }
     else
