@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin version="1.0.0">
+ <name>googledrive</name>
+ <uuid>uuid:6a9ab8a8-f496-451b-8a86-1a146ed92aac</uuid>
+ <oauth2>
+  <id0>rZ651lUvk13104yvBVnppOaah8CAHPlOkFZBYzIaI4B3FvF9KL6wB78T5NwQwqqqlumpp+9zniL1IzIGQHlM7ttd7z6jQ7Z/af/L9EJLHb6W6amn73OeIvUjMgZAeUzu</id0>
+  <id1>aQjk7vKfxRtZXy3w/HyOboffie2SE6AEqTgvFQopGrc=</id1>
+ </oauth2>
+</plugin>
+
