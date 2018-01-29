@@ -8,9 +8,10 @@ QByteArray CDidlItem::m3u (QList<TPlaylistElem> const & playlistElems)
   QByteArray content ("#EXTM3U\r\n");
   for (TPlaylistElem const & playlistElem : playlistElems)
   {
-    QList<CDidlElem> const & resElems = playlistElem.first.values ("res");
+    QList<CDidlElem> resElems = playlistElem.first.values ("res");
     if (!resElems.isEmpty ())
     {
+      CDidlItem::sortResElems (resElems);
       int              index    = playlistElem.second;
       if (index < 0 || index >= resElems.size ())
       {
