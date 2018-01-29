@@ -2,36 +2,47 @@
 #include <QTimerEvent>
 #include <QResizeEvent>
 #include <QPainter>
+#include <QDateTime>
 #include <QDebug>
 
 CNetworkProgress::CNetworkProgress (char const * name, QWidget* parent) : QWidget (parent)
 {
   setObjectName (name);
   m_timer.setInterval (m_timerInteval);
+  m_fresholdTimer.setInterval (1000);
+  m_fresholdTimer.setSingleShot (true);
   connect (&m_timer, &QTimer::timeout, this, &CNetworkProgress::timeout);
-  m_y2           = m_waveWidth / 2;
-  m_y4           = m_waveWidth / 4;
   m_lastPosition = width () / 2;
+  connect (&m_fresholdTimer, &QTimer::timeout, this, &CNetworkProgress::fresholdTimerTimeout);
 }
 
 void CNetworkProgress::CNetworkProgress::start ()
 {
-  if (!m_timer.isActive ())
+  if (!static_cast<QWidget*>(parent ())->isHidden () && !m_fresholdTimer.isActive ())
   {
     m_position = m_lastPosition;
     m_timer.start ();
     update ();
+    m_fresholdTimer.start ();
   }
 }
 
 void CNetworkProgress::CNetworkProgress::stop ()
 {
-  if (!m_skipStop)
+  if (!static_cast<QWidget*>(parent ())->isHidden () && !m_fresholdTimer.isActive ())
   {
     m_lastPosition = m_position;
+    m_position     = 0;
     m_timer.stop ();
-    m_position = 0;
     update ();
+  }
+}
+
+void CNetworkProgress::fresholdTimerTimeout ()
+{
+  if (!static_cast<QWidget*>(parent ())->isHidden () && m_timer.isActive ())
+  {
+    stop ();
   }
 }
 
@@ -42,7 +53,6 @@ void CNetworkProgress::paintEvent (QPaintEvent*)
   painter.setRenderHint (QPainter::Antialiasing);
 
   QPen pen = painter.pen ();
-  pen.setWidth (2);
   pen.setColor (QColor (60, 60, 255));
   painter.setPen (pen);
 
@@ -53,10 +63,39 @@ void CNetworkProgress::paintEvent (QPaintEvent*)
   if (m_position != 0)
   {
     int position = m_inverted ? width () - m_position : m_position;
-    path.lineTo (position - m_y2, y);
-    path.lineTo (position - m_y4, y - m_waveWidth);
-    path.lineTo (position + m_y4, y + m_waveWidth);
-    path.lineTo (position + m_y2, y);
+     switch (m_type)
+    {
+      case Wave :
+      {
+        int w2 = m_waveWidth / 2;
+        int w4 = m_waveWidth / 4;
+        path.lineTo (position - w2, y);
+        path.lineTo (position - w4, y - m_waveWidth);
+        path.lineTo (position + w4, y + m_waveWidth);
+        path.lineTo (position + w2, y);
+        break;
+      }
+
+      case Binary :
+      {
+        QString value = QString::number (qrand () % m_binaryValue, 2);
+        QFont   font  = this->font ();
+        QFontMetrics fm (font);
+        int          w = fm.width (value) / 2;
+        path.lineTo (position - w, y);
+        path.addText (position - w, y, font, value);
+        path.moveTo (position + w, y);
+        break;
+      }
+
+      default :
+      {
+        int w2 = m_waveWidth / 2;
+        path.lineTo (position - w2, y);
+        path.moveTo (position + w2, y);
+        break;
+      }
+    }
   }
 
   path.lineTo (width (), y);
