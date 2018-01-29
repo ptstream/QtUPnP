@@ -46,7 +46,7 @@ typedef void (QAbstractSocket::*TFctSocketError) (QAbstractSocket::SocketError);
  * \li UPnP events.
  * For UPnP events, Notify verb is used. The event content describes the values of state variables.
  *
- * \Playlists
+ * Playlists
  * For renderers using playlists, because setAVTransportURI use only a single url, the playlist
  * content is sent to the renderer using http server. The transport url is the playlist name.
  *
