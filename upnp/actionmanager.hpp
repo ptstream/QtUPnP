@@ -19,7 +19,7 @@ class UPNP_API CActionManager : public QEventLoop
   Q_OBJECT
 
 public :
-  enum ETime { Timeout = 10000 }; //!< HTTP request timeout in ms (5s).
+  enum ETime { Timeout = 30000 }; //!< HTTP request timeout in ms (30s).
 
   /*! Default constructor. */
   CActionManager (QObject* parent = nullptr);

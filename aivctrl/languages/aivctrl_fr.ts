@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../about.ui" line="54"/>
-        <source>Version 1.0.0 - Copyright (C) 2017</source>
+        <source>Version 1.1.0- Copyright (C) 2017-2018</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -69,30 +69,26 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
 <context>
     <name>CMainWindow</name>
     <message>
+        <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.ui" line="234"/>
         <source>AIVCtrl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
-        <source>AIVCtrl (beta 1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="377"/>
-        <location filename="../mainwindowhelper.cpp" line="463"/>
+        <location filename="../mainwindow.ui" line="380"/>
+        <location filename="../mainwindowhelper.cpp" line="491"/>
         <source>Servers</source>
         <translation type="unfinished">Serveurs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="556"/>
-        <location filename="../mainwindow.ui" line="942"/>
+        <location filename="../mainwindow.ui" line="636"/>
+        <location filename="../mainwindow.ui" line="1022"/>
         <source>Mute or listen</source>
         <translation type="unfinished">Muet ou Ecouter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="576"/>
-        <location filename="../mainwindow.ui" line="962"/>
+        <location filename="../mainwindow.ui" line="656"/>
+        <location filename="../mainwindow.ui" line="1042"/>
         <source>Volume</source>
         <translation type="unfinished">Volume</translation>
     </message>
@@ -102,75 +98,110 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Listes de lecture</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="594"/>
+        <location filename="../mainwindow.ui" line="334"/>
+        <source>Local playlists. Theses playlists are stored on your computer, phone...</source>
+        <translation type="unfinished">Listes de lecture. Ces listes de lectures sont stockées dans votre ordinateur, téléphone, ...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="405"/>
+        <source>Local servers</source>
+        <translation type="unfinished">Serveurs locaux</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="445"/>
+        <source>Cloud</source>
+        <translation type="unfinished">Nuage</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="470"/>
+        <source>Remote servers</source>
+        <translation type="unfinished">Serveurs distants</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="511"/>
+        <source>Content directory of the current server </source>
+        <translation type="unfinished">Contenu du dossier du server courant</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="552"/>
+        <source>Current queue</source>
+        <translation type="unfinished">File d&apos;attente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="596"/>
+        <source>Current plyalist</source>
+        <translation type="unfinished">Liste de lecture courante</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="674"/>
         <source>Current cover</source>
         <translation type="unfinished">Vignette courante</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="612"/>
+        <location filename="../mainwindow.ui" line="692"/>
         <source>Favorites</source>
         <translation type="unfinished">Favoris</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="644"/>
+        <location filename="../mainwindow.ui" line="724"/>
         <source>Title, album and artist</source>
         <translation type="unfinished">Titre, album et artist</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="663"/>
+        <location filename="../mainwindow.ui" line="743"/>
         <source>Rank in the queue</source>
         <translation type="unfinished">Rang dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="666"/>
+        <location filename="../mainwindow.ui" line="746"/>
         <source>0/0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="677"/>
+        <location filename="../mainwindow.ui" line="757"/>
         <source>Repeat all, repeat one or disable repeat</source>
         <translation type="unfinished">Repéter tout, repéter une, supprimer répéter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="697"/>
-        <location filename="../mainwindow.ui" line="972"/>
+        <location filename="../mainwindow.ui" line="777"/>
+        <location filename="../mainwindow.ui" line="1052"/>
         <source>Previous item in the queue</source>
         <translation type="unfinished">Element précédent dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="717"/>
-        <location filename="../mainwindow.ui" line="992"/>
+        <location filename="../mainwindow.ui" line="797"/>
+        <location filename="../mainwindow.ui" line="1072"/>
         <source>Play, pause, stop</source>
         <translation type="unfinished">Jouer, pause, stop</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="737"/>
+        <location filename="../mainwindow.ui" line="817"/>
         <source>Nexst item in the queue</source>
         <translation type="unfinished">Element suivant dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="757"/>
+        <location filename="../mainwindow.ui" line="837"/>
         <source>Enable or disable shuffle</source>
         <translation type="unfinished">Activer ou désactiver la lecture aléatoire</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="781"/>
+        <location filename="../mainwindow.ui" line="861"/>
         <source>Time from start</source>
         <translation type="unfinished">Temps écoulé depuis le début</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="784"/>
-        <location filename="../mainwindow.ui" line="804"/>
+        <location filename="../mainwindow.ui" line="864"/>
+        <location filename="../mainwindow.ui" line="884"/>
         <source>0:00:00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="791"/>
+        <location filename="../mainwindow.ui" line="871"/>
         <source>Position in the item</source>
         <translation type="unfinished">Position dans l&apos;élément écouté</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="801"/>
+        <location filename="../mainwindow.ui" line="881"/>
         <source>Item duration or remaining time</source>
         <translation type="unfinished">Durée de l&apos;élément ou temps restant</translation>
     </message>
@@ -205,27 +236,27 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Commandes contextuelles</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="873"/>
+        <location filename="../mainwindow.ui" line="953"/>
         <source>Current playing</source>
         <translation type="unfinished">Lecture en cours</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="898"/>
+        <location filename="../mainwindow.ui" line="978"/>
         <source>Current renderer name</source>
         <translation type="unfinished">Nom du lecteur courant</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="911"/>
+        <location filename="../mainwindow.ui" line="991"/>
         <source>Current title</source>
         <translation type="unfinished">Titre courant</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1012"/>
+        <location filename="../mainwindow.ui" line="1092"/>
         <source>Next item in the queue</source>
         <translation type="unfinished">Prochain élément dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1032"/>
+        <location filename="../mainwindow.ui" line="1112"/>
         <source>Choose a renderer</source>
         <translation type="unfinished">Choix d&apos;un lecteur</translation>
     </message>
@@ -240,118 +271,118 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Lecteur courant</translation>
     </message>
     <message>
-        <location filename="../mainwindowhelper.cpp" line="379"/>
+        <location filename="../mainwindowhelper.cpp" line="397"/>
         <source>Scan: </source>
         <translation type="unfinished">Parcourir : </translation>
     </message>
     <message>
-        <location filename="../mainwindowhelper.cpp" line="463"/>
+        <location filename="../mainwindowhelper.cpp" line="491"/>
         <source>Server</source>
         <translation type="unfinished">Serveur</translation>
     </message>
     <message>
-        <location filename="../mainwindowhelper.cpp" line="464"/>
+        <location filename="../mainwindowhelper.cpp" line="492"/>
         <source> and </source>
         <translation type="unfinished"> et </translation>
     </message>
     <message>
-        <location filename="../mainwindowhelper.cpp" line="465"/>
+        <location filename="../mainwindowhelper.cpp" line="493"/>
         <source>Renderer</source>
         <translation type="unfinished">Lecteur</translation>
     </message>
     <message>
-        <location filename="../mainwindowhelper.cpp" line="465"/>
+        <location filename="../mainwindowhelper.cpp" line="493"/>
         <source>Renderers</source>
         <translation type="unfinished">Lecteurs</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="185"/>
+        <location filename="../popupmenus.cpp" line="189"/>
         <source>Search</source>
         <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="193"/>
+        <location filename="../popupmenus.cpp" line="197"/>
         <source>Replace the queue</source>
         <translation type="unfinished">Remplacer la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="195"/>
+        <location filename="../popupmenus.cpp" line="199"/>
         <source>Add to the queue</source>
         <translation type="unfinished">Ajouter à la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="201"/>
+        <location filename="../popupmenus.cpp" line="205"/>
         <source>Add to a playlist</source>
         <translation type="unfinished">Ajouter à une liste de lecture</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="206"/>
+        <location filename="../popupmenus.cpp" line="210"/>
         <source>Add to favorites</source>
         <translation type="unfinished">Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="214"/>
-        <location filename="../popupmenus.cpp" line="231"/>
+        <location filename="../popupmenus.cpp" line="218"/>
+        <location filename="../popupmenus.cpp" line="235"/>
         <source>Remove</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="221"/>
+        <location filename="../popupmenus.cpp" line="225"/>
         <source>Look for devices</source>
         <translation type="unfinished">Recherche des serveurs et lecteurs</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="229"/>
+        <location filename="../popupmenus.cpp" line="233"/>
         <source>Rename</source>
         <translation type="unfinished">Renommer</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="242"/>
+        <location filename="../popupmenus.cpp" line="246"/>
         <source>Check playlist</source>
         <translation type="unfinished">Tester la liste de lecture</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="412"/>
+        <location filename="../popupmenus.cpp" line="422"/>
         <source>Abort</source>
         <translation type="unfinished">Abandonner</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="414"/>
+        <location filename="../popupmenus.cpp" line="424"/>
         <source>Check playlist...</source>
         <translation type="unfinished">Tester la liste de lecture...</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="453"/>
+        <location filename="../popupmenus.cpp" line="463"/>
         <source>Update playlist...</source>
         <translation type="unfinished">Mettre à jour  la liste de lecture...</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="497"/>
+        <location filename="../popupmenus.cpp" line="507"/>
         <source>Updates: </source>
         <translation type="unfinished">Mise à jour : </translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="498"/>
+        <location filename="../popupmenus.cpp" line="508"/>
         <source> Fails: </source>
         <translation type="unfinished">Echouer : </translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="553"/>
+        <location filename="../popupmenus.cpp" line="563"/>
         <source>Settings</source>
         <translation type="unfinished">Paramètres</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="553"/>
+        <location filename="../popupmenus.cpp" line="563"/>
         <source>Language</source>
         <translation type="unfinished">Langue</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="553"/>
+        <location filename="../popupmenus.cpp" line="563"/>
         <source>About</source>
         <translation type="unfinished">A propos</translation>
     </message>
     <message>
-        <location filename="../variousslots.cpp" line="49"/>
+        <location filename="../variousslots.cpp" line="52"/>
         <source>Queue</source>
         <translation type="unfinished">File d&apos;attente</translation>
     </message>
@@ -359,6 +390,34 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <location filename="../mainwindow.cpp" line="62"/>
         <source>Start look for servers and renderers</source>
         <translation type="unfinished">Démarrage de la recherche des serveurs et lecteurs</translation>
+    </message>
+</context>
+<context>
+    <name>COAuth2</name>
+    <message>
+        <location filename="../../upnp/oauth2.cpp" line="104"/>
+        <source>Connection</source>
+        <translation type="unfinished">Connection</translation>
+    </message>
+    <message>
+        <location filename="../../upnp/oauth2.cpp" line="107"/>
+        <source>You can close your browser</source>
+        <translation type="unfinished">Vous pouvez fermer votre navigateur</translation>
+    </message>
+    <message>
+        <location filename="../../upnp/oauth2.cpp" line="108"/>
+        <source>Due to the browser security policy, this button may not work. Use standard close application.</source>
+        <translation type="unfinished">A cause de la politique de sécurité de votre navigateur, ce bouton peut ne pas fonctionner. Vous pouvez utiliser la procédure de fermeture standard.</translation>
+    </message>
+    <message>
+        <location filename="../../upnp/oauth2.cpp" line="161"/>
+        <source>Connected.</source>
+        <translation type="unfinished">Connecté.</translation>
+    </message>
+    <message>
+        <location filename="../../upnp/oauth2.cpp" line="165"/>
+        <source>Connection fails.</source>
+        <translation type="unfinished">La connection à echouée.</translation>
     </message>
 </context>
 <context>
@@ -407,37 +466,62 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Paramètres</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="38"/>
+        <location filename="../settings.ui" line="35"/>
+        <source>Show or hide the visualization of network communications. </source>
+        <translation type="unfinished">Voir ou cacher la visualisation des commications réseaux.</translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="41"/>
         <source>Show network communications</source>
         <translation type="unfinished">Afficher les communications réseau</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="59"/>
+        <location filename="../settings.ui" line="55"/>
+        <source>To update playlists with invalid entries, use the server features if they exist. The update can be faster but lead to errors.</source>
+        <translation type="unfinished">Pour mettre à jour les listes de lectures contenant des entrées invalides, utiliser les capacités du server si elles existent. La mise à jour peut-être plus rapide mais provoquer des erreurs.</translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="65"/>
+        <source>May reduce the network trafic, but also create some operating erreors.</source>
+        <translation type="unfinished">Peut réduire le traffic réseau, mais aussi provoquer quelques disfonctionnement.</translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="68"/>
         <source>UPnP events only</source>
         <translation type="unfinished">Utiliser les évennements UPnP seulement</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="88"/>
+        <location filename="../settings.ui" line="75"/>
+        <source>Don&apos;t use playlists capabilities of renderer. Use only basic UPnP functions.</source>
+        <translation type="unfinished">Ne pas utiliser la capaciter du lecteur à gérer des listes de lecture. Utiliser seulement des capacités basique UPnP.</translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="78"/>
+        <source>Don&apos;t use playlists for renderers</source>
+        <translation type="unfinished">Ne pas utiliser les listes de lecture pour les lecteur</translation>
+    </message>
+    <message>
+        <location filename="../settings.ui" line="107"/>
         <source>Restore the default seetings</source>
         <translation type="unfinished">Restaurer les paramètres par défaut</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="91"/>
+        <location filename="../settings.ui" line="110"/>
         <source>Reset</source>
         <translation type="unfinished">Remettre les valeurs par défaut</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="111"/>
+        <location filename="../settings.ui" line="130"/>
         <source>Ok</source>
         <translation type="unfinished">Accepter</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="118"/>
+        <location filename="../settings.ui" line="137"/>
         <source>Cancel</source>
         <translation type="unfinished">Annuler</translation>
     </message>
     <message>
-        <location filename="../settings.ui" line="52"/>
+        <location filename="../settings.ui" line="58"/>
         <source>Use server search for playlist checking</source>
         <translation type="unfinished">Utiliser la recherche définie par les serveurs pour tester les listes de lecture</translation>
     </message>
@@ -445,7 +529,7 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../aivwidgets/contentdirectorybrowser.cpp" line="99"/>
+        <location filename="../aivwidgets/contentdirectorybrowser.cpp" line="100"/>
         <location filename="../aivwidgets/devicebrowser.cpp" line="46"/>
         <source>Unknown</source>
         <translation type="unfinished">Inconnu</translation>
@@ -476,47 +560,47 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Nouvelle liste de lecture vidéo</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="201"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="204"/>
         <source>Audio playlists</source>
         <translation type="unfinished">Listes de lecture audio</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="205"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="208"/>
         <source>Audio favorites</source>
         <translation type="unfinished">Favoris audio</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="209"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="212"/>
         <source>Image playlists</source>
         <translation type="unfinished">Listes de lecture d&apos;images</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="213"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="216"/>
         <source>Image favorites</source>
         <translation type="unfinished">Images favorites</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="362"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="365"/>
         <source>Confirm playlist removing</source>
         <translation type="unfinished">Confirmer la suppression de la liste de lecture</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="217"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="220"/>
         <source>Video playlists</source>
         <translation type="unfinished">Listes de lecture de vidéos</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/mydevicebrowser.cpp" line="221"/>
+        <location filename="../aivwidgets/mydevicebrowser.cpp" line="224"/>
         <source>Video favorites</source>
         <translation type="unfinished">Favoris vidéo</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/playlistbrowser.cpp" line="125"/>
+        <location filename="../aivwidgets/playlistbrowser.cpp" line="130"/>
         <source>Confirm removing</source>
         <translation type="unfinished">Confirmer la suppression</translation>
     </message>
     <message>
-        <location filename="../aivwidgets/playlistbrowser.cpp" line="133"/>
+        <location filename="../aivwidgets/playlistbrowser.cpp" line="138"/>
         <source> more...</source>
         <translation type="unfinished">plus...</translation>
     </message>

@@ -2,6 +2,7 @@
 #include "controlpoint.hpp"
 #include "actioninfo.hpp"
 #include "../upnp/waitingloop.hpp"
+#include "../upnp/plugin.hpp"
 
 USING_UPNP_NAMESPACE
 
@@ -167,18 +168,20 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, CDidlItem co
                                       int index, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   CActionInfo actionInfo;
-  QString     uri = replace127_0_0_1 (item.uri (index));
+  QString uri = item.uri (index);
   if (!uri.isEmpty ())
   {
+    uri = replace127_0_0_1 (uri); // WMP problem.
     QList<CControlPoint::TArgValue> args;
     args.reserve (3);
     args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
     args << CControlPoint::TArgValue ("CurrentURI", uri);
-    args << CControlPoint::TArgValue ("CurrentURIMetaData", item.didl ());
+    args << CControlPoint::TArgValue ("CurrentURIMetaData",item.didl ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     if (!actionInfo.succeeded () && !args[2].second.isEmpty ())
-    { // The server returned an error, try without metadata.
+    { // The server returned an error, try withou metadata.
       args[2].second.clear ();
       actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     }
@@ -193,6 +196,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
                                       CDidlItem::EPlaylistFormat format, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   bool        success = false;
   CActionInfo actionInfo;
   if (m_cp->setPlaylistContent (items, format) != 0)
@@ -217,6 +221,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
 bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString const & uri, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   CActionInfo actionInfo;
   if (!uri.isEmpty ())
   {
@@ -288,6 +293,10 @@ bool CAVTransport::setPPS (QString const & rendererUUID, QString const & actionN
   {
     args << CControlPoint::TArgValue ("Speed", "1");
   }
+  else if (actionName == "Stop")
+  {
+    m_cp->abortStreaming ();
+  }
 
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, actionName, args);
   return actionInfo.succeeded ();
@@ -311,6 +320,7 @@ bool CAVTransport::stop (QString const & rendererUUID, unsigned instanceID)
 bool CAVTransport::next (QString const & rendererUUID, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   QList<CControlPoint::TArgValue> args;
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "Next", args);
@@ -320,6 +330,7 @@ bool CAVTransport::next (QString const & rendererUUID, unsigned instanceID)
 bool CAVTransport::previous (QString const & rendererUUID, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   QList<CControlPoint::TArgValue> args;
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "Previous", args);
@@ -347,6 +358,7 @@ bool CAVTransport::seek (QString const & rendererUUID, QString const & timePosit
 bool CAVTransport::seek (QString const & rendererUUID, int iTrack, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   QList<CControlPoint::TArgValue> args;
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));

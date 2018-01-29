@@ -29,6 +29,9 @@ copy %BINARIES%\%PRODUCT%\release\%PRODUCT%.exe %TARGET%
 copy %BINARIES%\upnp\release\QtUPnP.dll %TARGET%
 xcopy ..\..\icons\%PRODUCT%48.png %TARGET%
 
+echo ************* Plugins files
+xcopy %BINARIES%\%PRODUCT%\release\plugins\*.* %TARGET%\plugins\*.*
+
 echo ************* Translation
 xcopy ..\..\languages\aivctrl_??.qm "%TARGET%\languages" /Y /I
 xcopy ..\..\languages\*.png "%TARGET%\languages" /Y /I

@@ -22,10 +22,10 @@ public:
 
 protected :
   /*! Sets the flag m_mousePressed at true. */
-  virtual void mousePressEvent (QEvent *);
+  virtual void mousePressEvent (QMouseEvent* event);
 
   /*! Sets the flag m_mousePressed at false. */
-  virtual void mouseReleaseEvent (QEvent *);
+  virtual void mouseReleaseEvent (QMouseEvent* event);
 
 protected :
   bool m_mousePressed = false; //!< Flag m_mousePressed.

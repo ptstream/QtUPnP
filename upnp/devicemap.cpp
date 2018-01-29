@@ -12,6 +12,7 @@ CDeviceMap::CDeviceMap ()
   QHostAddress address = CUpnpSocket::localHostAddress ();
   m_httpServer         = new CHTTPServer (address, 0, nullptr);
   m_naMgr              = new QNetworkAccessManager ();
+  m_httpServer->setNetworkAccessManager (m_naMgr);
 }
 
 CDeviceMap::~CDeviceMap ()

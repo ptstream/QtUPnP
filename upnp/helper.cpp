@@ -14,7 +14,7 @@
 
 char const * QtUPnP::libraryVersion ()
 {
-  return "1.0.3";
+  return "1.1.0";
 }
 
 char const * QtUPnP::libraryName ()
@@ -115,10 +115,8 @@ QVector<QtUPnP::SIp4TableElem> QtUPnP::ip4NetTable ()
 
 QString QtUPnP::applicationFolder ()
 {
-  QStringList args = QCoreApplication::arguments ();
-  QFileInfo   fileInfo (args[0]);
-  QString folder = fileInfo.absolutePath ();
-  return folder;
+  QFileInfo fileInfo (QCoreApplication::applicationFilePath ());
+  return fileInfo.absolutePath ();
 }
 
 QString QtUPnP::buildSystemHeader ()
@@ -307,6 +305,18 @@ bool QtUPnP::isDuration (QString const & s)
 {
   QRegExp re ("((\\d+:)?\\d{1,2}:\\d{1,2}(\\.\\d+)?)"); // 13:12:42.126 - 13:12:42
   return re.exactMatch (s);
+}
+
+QString QtUPnP::httpContentType (QString const & dlnaProtocolInfo)
+{
+  QString contentType;
+  QStringList elems = dlnaProtocolInfo.split (':');
+  if (elems.size () > 2)
+  {
+    contentType = elems[2];
+  }
+
+  return contentType;
 }
 
 void QtUPnP::xmlDump (QByteArray const & data, QString folder)

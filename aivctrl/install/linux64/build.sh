@@ -10,7 +10,7 @@ DEVEL=/home/$USER/Documents/Development/QtUPnP
 OUTPUT=$DEVEL/$PRODUCT/install/linux64/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
 BINARIES=/home/$USER/Documents/Development/build-$PRODUCT-Desktop_Qt_5_8_0_GCC_64bit-Release
-VERSION=1.0.3
+VERSION=1.1.0
 
 if [ -d $TARGET ]
 then
@@ -38,6 +38,10 @@ echo Copy binary files
 cp $BINARIES/$PRODUCT/$PRODUCT $TARGET/$PRODUCT
 cp ../../icons/*48.png $TARGET
 cp $DEVEL/$PRODUCT/install/linux64/$PRODUCT $TARGET/$PRODUCT.run
+
+echo Copy plugins files
+mkdir $TARGET/plugins
+cp $BINARIES/$PRODUCT/plugins/*.* $TARGET/plugins
 
 echo Copy translation files
 mkdir $TARGET/languages

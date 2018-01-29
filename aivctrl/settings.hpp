@@ -14,6 +14,7 @@ public:
   enum EIndex { ShowNetworkCom,
                 UseSearchForCheckPlaylist,
                 UPnPEventsOnly,
+                DontUsePlaylists,
                 LastIndex,
               };
 

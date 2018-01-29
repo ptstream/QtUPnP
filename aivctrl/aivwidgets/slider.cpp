@@ -1,19 +1,28 @@
 #include "slider.hpp"
 #include <QStyleOptionSlider>
+#include <QMouseEvent>
+#include <QProxyStyle>
+#include <QDebug>
 
 CSlider::CSlider (QWidget* parent) : QSlider (parent)
 {
   setTracking (false);
 }
 
-void CSlider::mousePressEvent (QEvent *)
+void CSlider::mousePressEvent (QMouseEvent* event)
 {
+  QSlider::mousePressEvent (event);
   m_mousePressed = true;
+  // Very important because the slider can enter in an infinit loop.
+  setRepeatAction (QAbstractSlider::SliderNoAction);
 }
 
-void CSlider::mouseReleaseEvent (QEvent *)
+void CSlider::mouseReleaseEvent (QMouseEvent* event)
 {
+  QSlider::mouseReleaseEvent (event);
   m_mousePressed = false;
+  // Very important because the slider can enter in an infinit loop.
+  setRepeatAction (QAbstractSlider::SliderNoAction);
 }
 
 void CSlider::jumpToMousePosition (int action)
@@ -22,15 +31,14 @@ void CSlider::jumpToMousePosition (int action)
   {
     QStyleOptionSlider opt;
     opt.initFrom (this);
-    QRect sr = style ()->subControlRect (QStyle::CC_Slider, &opt, QStyle::SC_SliderHandle, this);
-
-    QPoint localMousePos = mapFromGlobal (QCursor::pos ());
-    float normalizedPosition;
+    QRect  sr = style ()->subControlRect (QStyle::CC_Slider, &opt, QStyle::SC_SliderHandle, this);
+    float  normalizedPosition;
+    QPoint localPos = mapFromGlobal (QCursor::pos ());
     if (orientation () == Qt::Vertical)
     {
-      float halfHandleHeight = (0.5f * sr.height ()) + 0.5f;
+      float  halfHandleHeight = (0.5f * sr.height ()) + 0.5f;
       int height             = this->height ();
-      int   adaptedPosY      = height - localMousePos.y ();
+      int   adaptedPosY      = height - localPos.y ();
       if (adaptedPosY < halfHandleHeight)
       {
         adaptedPosY = halfHandleHeight;
@@ -47,7 +55,7 @@ void CSlider::jumpToMousePosition (int action)
     else
     {
       float halfHandleWidth = (0.5f * sr.width ()) + 0.5f;
-      int   adaptedPosX     = localMousePos.x ();
+      int   adaptedPosX     = localPos.x ();
       if (adaptedPosX < halfHandleWidth)
       {
         adaptedPosX = halfHandleWidth;

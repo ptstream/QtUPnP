@@ -1,0 +1,19 @@
+#ifndef GOOGLEDRIVE_GLOBAL_HPP
+#define GOOGLEDRIVE_GLOBAL_HPP
+
+#include <QtCore/qglobal.h>
+
+#ifdef _OS_WIN
+
+#if defined(GOOGLEDRIVE_LIBRARY)
+#define GOOGLEDRIVESHARED_EXPORT Q_DECL_EXPORT
+#else
+#define GOOGLEDRIVESHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+
+#else
+#define GOOGLEDRIVESHARED_EXPORT
+#endif
+
+#endif // GOOGLEDRIVE_GLOBAL_HPP

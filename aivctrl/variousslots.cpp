@@ -207,7 +207,7 @@ void CMainWindow::search ()
 void CMainWindow::networkComStarted (CDevice::EType type)
 {
   CNetworkProgress* progress = networkProgress (type);
-  if (progress != nullptr && progress != nullptr)
+  if (progress != nullptr)
   {
     progress->start ();
   }
@@ -216,7 +216,7 @@ void CMainWindow::networkComStarted (CDevice::EType type)
 void CMainWindow::networkComEnded (CDevice::EType type)
 {
   CNetworkProgress* progress = this->networkProgress (type);
-  if (progress != nullptr && !progress->hasSkipStop ())
+  if (progress != nullptr)
   {
     progress->stop ();
   }

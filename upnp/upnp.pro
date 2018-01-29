@@ -10,10 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QMAKE_CXXFLAGS += -std=c++11
 
-
 TARGET = qtupnp
 TEMPLATE = lib
-
 
 win32 {
     DEFINES += UPNP_EXPORTS _WIN32_WINNT=0x0600
@@ -66,7 +64,10 @@ SOURCES += \
     didlitem_playlist.cpp \
     httpserver.cpp \
     pixmapcache.cpp \
-    dump.cpp
+    dump.cpp \
+    plugin.cpp \
+    oauth2.cpp \
+    aesencryption.cpp
 
 HEADERS +=\
         upnp_global.hpp \
@@ -113,4 +114,15 @@ HEADERS +=\
     xmlhaction.hpp \
     httpserver.hpp \
     pixmapcache.hpp \
-    dump.hpp
+    dump.hpp \
+    plugin.hpp \
+    oauth2.hpp \
+    aesencryption.h \
+    aes256.h
+
+
+USEHIDDENFILE=$$(HIDDENFILES)
+equals(USEHIDDENFILE,"1") {
+  DEFINES += HIDDENFILES=1
+}
+

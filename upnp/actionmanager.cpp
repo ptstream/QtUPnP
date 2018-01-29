@@ -75,7 +75,7 @@ bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo
 
     m_error     = QNetworkReply::NoError;
     int idTimer = startTimer (timeout);
-    int retCode = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
+    int retCode = exec (QEventLoop::ExcludeUserInputEvents/* | QEventLoop::ExcludeSocketNotifiers*/);
     success     =  retCode == 0 && m_error == QNetworkReply::NoError;
     killTimer (idTimer);
     if (success)

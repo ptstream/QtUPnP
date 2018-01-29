@@ -30,7 +30,19 @@ void CMainWindow::on_m_position_valueChanged (int position)
     searchAction (false);
     QTime   time         = QTime (0, 0).addMSecs (position);
     QString timePosition = time.toString ("hh:mm:ss");
+
+    bool restart = false;
+    if (m_positionTimer.isActive ())
+    {
+      restart = true;
+      m_positionTimer.stop ();
+    }
+
     CAVTransport (m_cp).seek (m_renderer, timePosition);
+    if (restart)
+    {
+      startPositionTimer ();
+    }
   }
 }
 
@@ -48,6 +60,7 @@ void CMainWindow::on_m_volume2_actionTriggered (int action)
 
 void CMainWindow::on_m_position_actionTriggered (int action)
 {
+  CSlider* slider = static_cast<CSlider*>(sender ());
   searchAction (false);
-  static_cast<CSlider*>(sender ())->jumpToMousePosition (action);
+  slider->jumpToMousePosition (action);
 }

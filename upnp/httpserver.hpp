@@ -39,16 +39,29 @@ typedef void (QNetworkReply::*TFctNetworkReplyError) (QNetworkReply::NetworkErro
 /*! Defines type for QTcpSocket::connect function. */
 typedef void (QAbstractSocket::*TFctSocketError) (QAbstractSocket::SocketError);
 
-/*! \brief A partial HTTP server used by UPnP events and playlist manager.
+/*! \brief A partial HTTP server used by UPnP events, playlist manager and streaming server.
  *
- * This class manages only HTTP header verb "NOTIFY" of UPnP events and "HEAD" and "GET" to send the plalists
- * content.
+ * This class manages only HTTP header verb "NOTIFY" of UPnP events and "HEAD" and "GET".
+ *
+ * \li UPnP events.
+ * For UPnP events, Notify verb is used. The event content describes the values of state variables.
+ *
+ * \Playlists
+ * For renderers using playlists, because setAVTransportURI use only a single url, the playlist
+ * content is sent to the renderer using http server. The transport url is the playlist name.
+ *
+ * \li Streaming server
+ * The streaming server replace the https server. Once the renderer asks a data (audio, video, image)
+ * a https request is sent to the https server. The https reply is converted in a http reply and sent
+ * to the renderer.
  */
 class UPNP_API CHTTPServer : public QTcpServer
 {
   Q_OBJECT
 
 public :
+//  enum EStreamingState { UnknowStreamingState, InitStreaming, StartStreaming, StreamingInProgress };
+
   /*! Defines type for QTcpSocket::byWritten function. */
   typedef QPair<qint64, qint64> TMWritingLength;
 
@@ -62,6 +75,8 @@ public :
 
   /*! Returns true if the server was built correctly. */
   bool isDone () const { return m_done; }
+
+  void setNetworkAccessManager (QNetworkAccessManager* naMgr) { m_naMgr = naMgr; }
 
   /*! Builds an uri from a playlist name.
    * \param name: The playlist name.
@@ -119,7 +134,8 @@ protected slots :
    * \param httpParser: The current http parser.
    * \param socket: The socket for the response.
    */
-  void sendHttpResponse (CHTTPParser const * httpParser, QTcpSocket* socket);
+  void sendResponse (CHTTPParser const * httpParser, QTcpSocket* socket);
+  void streamBlock ();
 
   void httpsError (QNetworkReply::NetworkError err); // Version 1.1
   void httpsFinished (); // Version 1.1
@@ -136,7 +152,16 @@ signals:
   /*! Emitted when http parser in socketReadyRead slot has detected a full message. */
   void httpValidReadMessage (CHTTPParser const *, QTcpSocket*);
 
+  /*! Ready to stream a bock of data. */
+  void streamingReady (); // Version 1.1
+
+  /*! Emitted when the didlitem contains an url managed by a plugin. */
   void mediaRequest (QString request); // Version 1.1
+
+  void serverComStarted ();
+  void serverComEnded ();
+  void rendererComStarted ();
+  void rendererComEnded ();
 
 private :
   /*! Sends the http response to the renderer.
@@ -183,10 +208,23 @@ private :
    * \param contentLength: The length of the content.
    * \param contentType: The content type. It is th UPnP item format.
    * E.g. for an audio playlist the format is "audio/x-mpegurl".
+   * \return The http header.
+   */
+  QByteArray headerResponse (qint64 contentLength, QByteArray const & contentType = QByteArray ()) const;
+
+  /*! Returns the header from the https reply.
+   * \param reply: The https server reply.
+   * \param headers: Mandatory header.
+   * \return The http header.
+   */
+  QByteArray streamingHeaderResponse (QNetworkReply const * reply, QList<QPair<QByteArray, QByteArray>> const & headers) const;
+
+  /*! Starts the streaming. A head or get request is sent to the http server.
+   * \param request: The request to send.
+   * \param method: Head or get method.
+   * \param socket: The incomming socket.
    * \return True in case of success.
    */
-  QByteArray headerResponse (qint64 contentLength, char const * contentType = nullptr) const;
-
   bool startStreaming (QNetworkRequest const & request, QString const & method, QTcpSocket* socket); // Version 1.1
 
   /*! Formats the HTTP date and time for the header.
@@ -208,13 +246,17 @@ private :
   TMEventVars m_vars; //!< The map of variables modified by the UPnP event.
   mutable QByteArray m_playlistContent; //!< The formatted playlist.
   QString m_playlistName; //!< The current playlist name.
-  QNetworkAccessManager* m_naMgr = nullptr; //!< The streaming network access manager.
-  QTcpSocket* m_streamingSocket = nullptr; // Version 1.1
-  QNetworkReply* m_httpsReply = nullptr; // Version 1.1
-  QNetworkRequest m_httpsRequest; // Version 1.1
-  int m_httpsBufferSize = 2041; // Version 1.1
-  bool m_startStreaming = true; // Version 1.1
-  QByteArray m_chunkSize; // Version 1.1
+  int m_connectToHostTimeout = 2000; // 2s
+
+  QNetworkAccessManager* m_naMgr = nullptr; //!< The https network access manager.
+  QTcpSocket* m_streamingSocket = nullptr; //!< The socket open by the renderer.
+  QNetworkReply* m_httpsReply = nullptr; //!< The reply of the https server.
+  QNetworkRequest m_httpsRequest; //!< The request to send to the https server.
+  int m_httpsBufferSize; //!< The https buffer size to limit the amount of data in memory.
+  int m_httpsReadDataTimeout; //!< Wait to have https data to stream a new block. Very smal delay.
+  int m_httpsReadDataWaitingRetry; //!< Number of waits. Total waiting time id approximativly m_httpsReadDataTimeout x m_httpsReadDataWaitingRetry.
+  bool m_readyReadConnected = false; //!< In case of very small amount of data, the slot readyRead is not emitted just finished.
+  QByteArray m_streamingResponseBuffer; //!< Intermediat buffer between https read and straming to renderer.
 };
 
 } // End namespace

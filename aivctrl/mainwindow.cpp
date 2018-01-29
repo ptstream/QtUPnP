@@ -34,11 +34,7 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
   connect (ui->m_playlistContent, &CPlaylistBrowser::rowsMoved, this, &CMainWindow::rowsMoved);
   connect (ui->m_playlistContent, &CPlaylistBrowser::removeIDs, this, &CMainWindow::removeIDs);
 
-#ifdef QT_OS_WIN
-  QKeySequence ks = QKeySequence(Qt::CTRL + Qt::Key_F12);
-#else
   QKeySequence ks = QKeySequence(Qt::CTRL + Qt::Key_F11);
-#endif
   connect (new QShortcut (ks, this), &QShortcut::activated, this, &CMainWindow::showDump);
 
   connect (new QShortcut (QKeySequence::Find, this), &QShortcut::activated, this, &CMainWindow::search);
@@ -64,6 +60,7 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
   addHomePopupMenu ();
   ui->m_stackedWidget->setCurrentIndex (Home);
   ui->m_provider->setText (tr ("Start look for servers and renderers"));
+  loadPlugins ();
   m_idDicoveryTimer = startTimer (500);
 }
 

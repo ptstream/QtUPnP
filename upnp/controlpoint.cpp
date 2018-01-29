@@ -4,7 +4,10 @@
 #include "actioninfo.hpp"
 #include "multicastsocket.hpp"
 #include "unicastsocket.hpp"
+#include "plugin.hpp"
 #include "dump.hpp"
+#include <QDir>
+#include <QLibrary>
 
 USING_UPNP_NAMESPACE
 
@@ -24,6 +27,7 @@ CControlPoint::CControlPoint (QObject* parent) : QObject (parent)
 #endif
     m_newDevicesDetectedTimer.setInterval (TIMEOUT);
     connect (&m_newDevicesDetectedTimer, SIGNAL(timeout()), this, SLOT(newDevicesDetected()));
+    loadPlugins ();
   }
 }
 
@@ -81,7 +85,13 @@ bool CControlPoint::initialize ()
     if (m_unicastSocket != nullptr)
     {
       m_unicastSocketLocal = initializeUnicast (QHostAddress ("127.0.0.1"), "UnicastSocketLocal");
-      connect (m_devices.httpServer (), SIGNAL(eventReady(QString const &)), this, SLOT(updateEventVars(QString const &)));
+      CHTTPServer* server = m_devices.httpServer ();
+      connect (server, &CHTTPServer::eventReady, this, &CControlPoint::updateEventVars);
+      connect (server, &CHTTPServer::mediaRequest, this, &CControlPoint::mediaRequest);
+      connect (server, &CHTTPServer::serverComStarted, this, &CControlPoint::serverComStarted);
+      connect (server, &CHTTPServer::serverComEnded, this, &CControlPoint::serverComEnded);
+      connect (server, &CHTTPServer::rendererComStarted, this, &CControlPoint::rendererComStarted);
+      connect (server, &CHTTPServer::rendererComEnded, this, &CControlPoint::rendererComEnded);
       done = true;
     }
   }
@@ -171,11 +181,6 @@ void CControlPoint::readDatagrams ()
   QByteArray const & datagrams = socket->readDatagrams ();
   if (!datagrams.isEmpty () && datagrams.endsWith ("\r\n\r\n"))
   {
-//    if (datagrams.startsWith ("HTTP"))
-//    {
-//      CDump::dump (datagrams);
-//    }
-
     socket->decodeDatagram ();
     m_newDevicesDetectedTimer.start ();
   }
@@ -204,20 +209,20 @@ void CControlPoint::newDevicesDetected ()
   {
     if (m_level == 1)
     {
-      QStringList& lostDevices = m_devices.lostDevices ();
+      QStringList lostDevices = m_devices.lostDevices ();
       for (QString const & device : lostDevices)
       {
         emit lostDevice (device);
       }
 
-      QStringList& newDevices = m_devices.newDevices ();
-      for (QString const & device : m_devices.newDevices ())
+      QStringList newDevices = m_devices.newDevices ();
+      for (QString const & device : newDevices)
       {
         emit newDevice (device);
       }
 
-      lostDevices.clear ();
-      newDevices.clear ();
+      m_devices.lostDevices ().clear ();
+      m_devices.newDevices ().clear ();
     }
   }
 
@@ -324,7 +329,6 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
   {
     QString        uuid       = device.uuid (); // Save device uuid because it can be deleted during event loop.
     CDevice::EType deviceType = device.type ();
-    startNetworkCom (deviceType);
     CActionManager actionManager (m_devices.networkAccessManager ());
     connect (&actionManager, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),
              this, SLOT(networkAccessManager(QString const &, QNetworkReply::NetworkError, QString const &)));
@@ -371,7 +375,9 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
       if (success)
       {
         actionInfo.endMessage (); // End the HTTP message.
+        startNetworkCom (deviceType);
         success = actionManager.post (uuid, url, actionInfo, timeout); // Invoke the action.
+        endNetworkCom (deviceType);
         if (success && m_devices.contains (uuid))
         {
           actionInfo.setSucceeded (success);
@@ -426,8 +432,6 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
     {
       unknownAction (actionName, device, service);
     }
-
-    endNetworkCom (deviceType);
   }
 
   return actionInfo;
@@ -508,9 +512,8 @@ bool CControlPoint::subscribe (QString const & deviceUUID, int renewalDelay, int
   {
     CDevice&       device = m_devices[deviceUUID];
     CDevice::EType type   = device.type ();
-    startNetworkCom (type);
+    networkComStarted (type);
     success = m_devices.subscribe (device, renewalDelay, requestTimeout);
-    endNetworkCom (type);
     if (success)
     {
       QTimer* timer = new QTimer;
@@ -520,6 +523,8 @@ bool CControlPoint::subscribe (QString const & deviceUUID, int renewalDelay, int
       connect (timer, SIGNAL(timeout()), this, SLOT(renewalTimeout()));
       m_subcriptionTimers.insert (deviceUUID, TSubscriptionTimer (timer, requestTimeout));
     }
+
+    networkComEnded (type);
   }
 
   return success;
@@ -531,7 +536,6 @@ void CControlPoint::unsubscribe (QString const & deviceUUID, int requestTimeout)
   {
     CDevice&       device = m_devices[deviceUUID];
     CDevice::EType type   = device.type ();
-    startNetworkCom (type);
     QTimer* timer = m_subcriptionTimers.value (deviceUUID).first;
     if (timer != nullptr)
     {
@@ -539,8 +543,9 @@ void CControlPoint::unsubscribe (QString const & deviceUUID, int requestTimeout)
       m_subcriptionTimers.remove (deviceUUID);
     }
 
+    networkComStarted (type);
     m_devices.unsubscribe (device, requestTimeout);
-    endNetworkCom (type);
+    networkComEnded (type);
   }
 }
 
@@ -550,11 +555,11 @@ void CControlPoint::renewSubscribe (QString const & deviceUUID, int requestTimeo
   {
     CDevice&       device = m_devices[deviceUUID];
     CDevice::EType type   = device.type ();
-    startNetworkCom (type);
+    networkComStarted (type);
     m_devices.renewSubscribe (device, requestTimeout);
+    networkComEnded (type);
     QTimer* timer = m_subcriptionTimers.value (deviceUUID).first;
     timer->start ();
-    endNetworkCom (type);
   }
 }
 
@@ -641,6 +646,18 @@ QString CControlPoint::playlistURI (QString const & name) const
   if (server != nullptr)
   {
     uri = server->playlistURI (name);
+  }
+
+  return uri;
+}
+
+QString CControlPoint::serverListenAddress () const
+{
+  QString             uri;
+  CHTTPServer const * server = httpServer ();
+  if (server != nullptr)
+  {
+    uri = server->serverListenAddress ();
   }
 
   return uri;
@@ -807,3 +824,156 @@ QString CControlPoint::deviceUUID (QString const & uri, CDevice::EType type) con
 
   return deviceUUID;
 }
+
+void CControlPoint::loadPlugins ()
+{
+  QString appFolder = ::applicationFolder ();
+  QDir    folder (appFolder);
+  if (folder.exists () && folder.cd ("plugins"))
+  {
+    QStringList            names = folder.entryList (QDir::Files | QDir::NoDotAndDotDot);
+    QMap<QString, QString> files;
+    foreach (QString const & name, names)
+    {
+      QString   filePath = folder.absoluteFilePath (name);
+      QFileInfo fi (filePath);
+      if (!fi.isSymLink ())
+      {
+        QString suffix = fi.suffix ().toLower ();
+        if (suffix == "so" || suffix.toLower () == "dll")
+        { // It is .dll or .so files.
+          QFunctionPointer fct = QLibrary::resolve (filePath, "pluginObject");
+          if (fct != nullptr)
+          {
+            CPlugin::TFctPluginObject pluginObject = reinterpret_cast<CPlugin::TFctPluginObject>(fct);
+            CPlugin*                  plugin       = (*pluginObject) ();
+            if (plugin != nullptr)
+            {
+              plugin->setName (fi.baseName ());
+              QString const & uuid = plugin->uuid ();
+              m_plugins.insert (uuid, plugin);
+              files.insert (uuid, filePath);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // For each plugins get image and authentification files.
+    for (QMap<QString, QString>::const_iterator it = files.cbegin (), end = files.cend (); it != end; ++it)
+    {
+      QString const & uuid   = it.key ();
+      QString         file   = it.value ();
+      CPlugin*        plugin = m_plugins.value (uuid);
+      if (plugin != nullptr)
+      {
+        int index = file.lastIndexOf ('.');
+        if (index != -1)
+        {
+          file.truncate (index);
+          file += ".png";
+          if (QFile::exists (file))
+          {
+            plugin->setPixmap (file);
+          }
+          else
+          {
+            file.truncate (index);
+            file += ".jpg";
+            if (QFile::exists (file))
+            {
+              plugin->setPixmap (file);
+            }
+          }
+
+          file.truncate (index);
+          file += ".ids";
+          if (QFile::exists (file))
+          {
+            plugin->restoreAuth (file);
+          }
+        }
+      }
+    }
+  }
+}
+
+QStringList CControlPoint::plugins () const
+{
+  QStringList uuids;
+  uuids.reserve (20);
+  for (QMap<QString, CPlugin*>::const_iterator it = m_plugins.cbegin (), end = m_plugins.end (); it != end; ++it)
+  {
+    uuids.append (it.key ());
+  }
+
+  return uuids;
+}
+
+CPlugin* CControlPoint::plugin (QString const & uuid)
+{
+  return m_plugins.value (uuid);
+}
+
+void CControlPoint::mediaRequest (QString request)
+{
+  bool success = false;
+  request.remove ("/plugin/");
+  int index = request.indexOf ('/');
+  if (index != -1)
+  {
+    QString uuid = request.left (index);
+    if (!uuid.isEmpty ())
+    {
+      request = request.mid (index + 1);
+      if (!request.isEmpty ())
+      {
+        uuid            = CHTTPServer::unformatUUID (uuid);
+        CPlugin* plugin = m_plugins.value (uuid);
+        if (plugin != nullptr)
+        {
+          QNetworkRequest nreq = plugin->mediaRequest (request);
+          httpServer ()->setStreamingRequest (nreq);
+          success = nreq.url ().isValid ();
+        }
+      }
+    }
+  }
+
+  if (!success)
+  {
+    request.clear ();
+  }
+}
+
+void CControlPoint::abortStreaming ()
+{
+  CHTTPServer* server = httpServer ();
+  if (server != nullptr)
+  {
+    server->abortStreaming ();
+  }
+}
+
+void CControlPoint::rendererComStarted ()
+{
+  emit networkComStarted (CDevice::MediaRenderer);
+}
+
+void CControlPoint::rendererComEnded ()
+{
+  emit networkComEnded (CDevice::MediaRenderer);
+}
+
+void CControlPoint::serverComStarted ()
+{
+  emit networkComStarted (CDevice::MediaServer);
+}
+
+void CControlPoint::serverComEnded ()
+{
+  emit networkComEnded (CDevice::MediaServer);
+}
+
+

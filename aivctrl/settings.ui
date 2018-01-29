@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
-    <height>98</height>
+    <width>280</width>
+    <height>117</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,6 +31,9 @@
    </property>
    <item>
     <widget class="QCheckBox" name="m_networkCom">
+     <property name="toolTip">
+      <string>Show or hide the visualization of network communications. </string>
+     </property>
      <property name="toolTipDuration">
       <number>-5</number>
      </property>
@@ -48,6 +51,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="m_search">
+     <property name="toolTip">
+      <string>To update playlists with invalid entries, use the server features if they exist. The update can be faster but lead to errors.</string>
+     </property>
      <property name="text">
       <string>Use server search for playlist checking</string>
      </property>
@@ -55,8 +61,21 @@
    </item>
    <item>
     <widget class="QCheckBox" name="m_eventOnly">
+     <property name="toolTip">
+      <string>May reduce the network trafic, but also create some operating erreors.</string>
+     </property>
      <property name="text">
       <string>UPnP events only</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="m_playlists">
+     <property name="toolTip">
+      <string>Don't use playlists capabilities of renderer. Use only basic UPnP functions.</string>
+     </property>
+     <property name="text">
+      <string>Don't use playlists for renderers</string>
      </property>
     </widget>
    </item>

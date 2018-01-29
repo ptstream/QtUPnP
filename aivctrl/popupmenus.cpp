@@ -88,92 +88,80 @@ void CMainWindow::rendererAction (QAction* action)
   QString renderer = action->data ().toString ();
   if (m_renderer != renderer)
   {
-    CNetworkProgress* networkProgress = nullptr;
-    if (m_status.hasStatus (ShowNetworkCom))
+    // Juste to update variables. Normally eventing must update correctly variable.
+    // If protocols is empty the renderer not able to receive or send data. May be it is off or crashed.
+    QVector<QStringList> protocols = CConnectionManager (m_cp).getProtocolInfos (renderer);
+    if (!protocols.isEmpty ())
     {
-      networkProgress = this->networkProgress (CDevice::MediaRenderer);
-      if (networkProgress != nullptr)
+      if (!m_renderer.isEmpty ())
       {
-        networkProgress->setSkipStop (true);
-        networkProgress->start ();
-      }
-    }
-
-    if (!m_renderer.isEmpty ())
-    {
-      m_cp->unsubscribe (m_renderer);
-    }
-
-    m_renderer             = renderer;
-    CDevice const & device = m_cp->device (renderer);
-    QString         name   = device.name ();
-    ui->m_rendererName->setText (name);
-    ui->m_rendererName->setToolTip (name);
-    ui->m_renderer->setIcon (action->icon ());
-    if (!m_status.hasStatus (UPnPEventsOnly))
-    {
-      m_cp->clearPlaylist ();
-      CConnectionManager (m_cp).getProtocolInfos (renderer); //Juste to update variables. Normally eventing must update correctly variable.
-
-      CStateVariable const & var     = m_cp->stateVariable (m_renderer, QString::null, "Volume");
-      int                    maximum = static_cast<int>(var.maximum ());
-      if (maximum <= 0)
-      {
-        maximum = 100;
+        m_cp->unsubscribe (m_renderer);
       }
 
-      ui->m_volume->setMaximum (maximum);
-      ui->m_volume2->setMaximum (maximum);
+      m_renderer             = renderer;
+      CDevice const & device = m_cp->device (renderer);
+      QString         name   = device.name ();
+      ui->m_rendererName->setText (name);
+      ui->m_rendererName->setToolTip (name);
+      ui->m_renderer->setIcon (action->icon ());
+      if (!m_status.hasStatus (UPnPEventsOnly))
+      {
+        m_cp->clearPlaylist ();
+        CStateVariable const & var     = m_cp->stateVariable (m_renderer, QString::null, "Volume");
+        int                    maximum = static_cast<int>(var.maximum ());
+        if (maximum <= 0)
+        {
+          maximum = 100;
+        }
 
-      CRenderingControl rc (m_cp);
-      int volume = rc.getVolume (m_renderer);
-      updateVolumeSlider (volume, true);
+        ui->m_volume->setMaximum (maximum);
+        ui->m_volume2->setMaximum (maximum);
 
-      bool mute = rc.getMute (m_renderer);
-      muteIcon (mute);
+        CRenderingControl rc (m_cp);
+        int volume = rc.getVolume (m_renderer);
+        updateVolumeSlider (volume, true);
 
-      CAVTransport avt (m_cp);
-      CTransportSettings transportSettings = avt.getTransportSettings (m_renderer);
-      m_playMode                           = playMode (transportSettings.playMode ());
-      applyPlayMode ();
+        bool mute = rc.getMute (m_renderer);
+        muteIcon (mute);
 
-      CTransportInfo transportInfo = avt.getTransportInfo (m_renderer);
-      bool playing = transportInfo.currentTransportState () == "PLAYING";
-      playingIcon (playing);
+        CAVTransport avt (m_cp);
+        CTransportSettings transportSettings = avt.getTransportSettings (m_renderer);
+        m_playMode                           = playMode (transportSettings.playMode ());
+        applyPlayMode ();
 
-      // First try to get informations from GetMediaInfo action.
-      CMediaInfo mediaInfo     = avt.getMediaInfo (m_renderer);
-      CDidlItem  didlMediaInfo = mediaInfo.currentURIDidlItem ();
-      if (didlMediaInfo.albumArtURIs ().isEmpty ())
-      { // No albumArt, try to get informations from GetPositionInfo action.
-        CPositionInfo positionInfo     = avt.getPositionInfo (m_renderer);
-        CDidlItem     didlPositionInfo = positionInfo.didlItem ();
-        didlMediaInfo                  = CDidlItem::mix (didlMediaInfo, didlPositionInfo);
+        CTransportInfo transportInfo = avt.getTransportInfo (m_renderer);
+        bool playing = transportInfo.currentTransportState () == "PLAYING";
+        playingIcon (playing);
+
+        // First try to get informations from GetMediaInfo action.
+        CMediaInfo mediaInfo     = avt.getMediaInfo (m_renderer);
+        CDidlItem  didlMediaInfo = mediaInfo.currentURIDidlItem ();
         if (didlMediaInfo.albumArtURIs ().isEmpty ())
-        { // No albumArt, try to get informations from current queue.
-          QString uri = didlMediaInfo.uri (0);
-          if (!uri.isEmpty ())
-          {
-            CDidlItem didlItem = ui->m_queue->didlItem (uri);
-            didlMediaInfo      = CDidlItem::mix (didlMediaInfo, didlItem);
-            if (didlMediaInfo.albumArtURIs ().isEmpty ())
-            { // No albumArt, try to get informations from current content directory.
-              didlItem      = ui->m_contentDirectory->didlItem (uri);
-              didlMediaInfo = CDidlItem::mix (didlMediaInfo, didlItem);
+        { // No albumArt, try to get informations from GetPositionInfo action.
+          CPositionInfo positionInfo     = avt.getPositionInfo (m_renderer);
+          CDidlItem     didlPositionInfo = positionInfo.didlItem ();
+          didlMediaInfo                  = CDidlItem::mix (didlMediaInfo, didlPositionInfo);
+          if (didlMediaInfo.albumArtURIs ().isEmpty ())
+          { // No albumArt, try to get informations from current queue.
+            QString uri = didlMediaInfo.uri (0);
+            if (!uri.isEmpty ())
+            {
+              CDidlItem didlItem = ui->m_queue->didlItem (uri);
+              didlMediaInfo      = CDidlItem::mix (didlMediaInfo, didlItem);
+              if (didlMediaInfo.albumArtURIs ().isEmpty ())
+              { // No albumArt, try to get informations from current content directory.
+                didlItem      = ui->m_contentDirectory->didlItem (uri);
+                didlMediaInfo = CDidlItem::mix (didlMediaInfo, didlItem);
+              }
             }
           }
         }
+
+        updateCurrentPlayling (didlMediaInfo, playing, true);
       }
 
-      updateCurrentPlayling (didlMediaInfo, playing, true);
-    }
-
-    m_cp->subscribe (renderer);
-    if (networkProgress != nullptr)
-    {
+      m_cp->subscribe (renderer);
       setComRendererIcon ();
-      networkProgress->setSkipStop (false);
-      networkComEnded (CDevice::MediaRenderer);
     }
   }
 }
@@ -579,6 +567,7 @@ void CMainWindow::homeAction (QAction* action)
       EStatus status[] = { ShowNetworkCom,
                            UseSearchForCheckPlaylist,
                            UPnPEventsOnly,
+                           UPnPPlaylistDisabled,
                          };
 
       bool flags[CSettings::LastIndex];
@@ -601,6 +590,9 @@ void CMainWindow::homeAction (QAction* action)
             m_status.remStatus (status[index]);
           }
         }
+
+        ui->m_queue->setDisableUPnPPlaylist (m_status.hasStatus (UPnPPlaylistDisabled));
+        ui->m_networkProgress->setHidden (!m_status.hasStatus (ShowNetworkCom));
       }
       break;
     }

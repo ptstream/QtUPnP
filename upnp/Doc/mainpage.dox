@@ -63,7 +63,7 @@ class MainWindow : public QMainWindow
 protected :
   virtual void closeEvent (QCloseEvent*); // Mandatory
  
-procted slots :
+protected slots :
   void discover (); // Mandatory if you use a timer to launch the discovery.
   void newDevice (QString const & uuid); // Mandatory. To browse the new device detected.
   void lostDevice (QString const & uuid); // Mandatory. To remove the lost device.

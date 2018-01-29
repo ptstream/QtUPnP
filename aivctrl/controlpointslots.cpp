@@ -125,6 +125,11 @@ void CMainWindow::eventReady (QStringList const & emitter)
         {
           QString state = variant.toString ();
           // Asume PLAYING follow TRANSITIONING because some renderers send only TRANSITIONING.
+//          if (state == "STOPPED")
+//          {
+//            m_cp->abortStreaming ();
+//          }
+
           bool playing = state == "PLAYING" || state == "TRANSITIONING";
           playingIcon (playing);
           togglePositionTimer (playing);

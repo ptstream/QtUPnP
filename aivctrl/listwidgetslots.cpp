@@ -1,5 +1,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include "../upnp/plugin.hpp"
 
 USING_UPNP_NAMESPACE
 
@@ -14,6 +15,26 @@ void CMainWindow::on_m_servers_itemClicked (QListWidgetItem* item)
   ui->m_contentDirectory->addItems (m_server, rootID);
   ui->m_stackedWidget->setCurrentIndex (ContentDirectory);
   ui->m_folders->push (Home, device.name (), QString::null, rootID, ui->m_servers);
+  ui->m_provider->setText (ui->m_serverLabel->text ());
+  if (m_status.hasStatus (ShowNetworkCom))
+  {
+    setComServerIcon ();
+  }
+
+  QApplication::restoreOverrideCursor ();
+}
+
+void CMainWindow::on_m_cloud_itemClicked (QListWidgetItem* item)
+{
+  QApplication::setOverrideCursor (Qt::WaitCursor);
+  ui->m_cloud->clearSelection ();
+  QString const      rootID ("0");
+  CCloudBrowserItem* cbItem = static_cast<CCloudBrowserItem*>(item);
+  CPlugin const *    plugin = cbItem->plugin ();
+  m_server                  = plugin->uuid ();
+  ui->m_contentDirectory->addItems (m_server, rootID);
+  ui->m_stackedWidget->setCurrentIndex (ContentDirectory);
+  ui->m_folders->push (Home, plugin->friendlyName (), QString::null, rootID, ui->m_servers);
   ui->m_provider->setText (ui->m_serverLabel->text ());
   if (m_status.hasStatus (ShowNetworkCom))
   {

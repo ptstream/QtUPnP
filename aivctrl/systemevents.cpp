@@ -1,8 +1,10 @@
 #include "mainwindow.hpp"
+#include "helper.hpp"
 #include "ui_mainwindow.h"
 #include "session.hpp"
 #include "aivwidgets/widgethelper.hpp"
 #include "../upnp/avtransport.hpp"
+#include "../upnp/plugin.hpp"
 #include <QMenu>
 
 USING_UPNP_NAMESPACE
@@ -108,9 +110,9 @@ void CMainWindow::timerEvent (QTimerEvent* event)
 
 void CMainWindow::closeEvent (QCloseEvent* event)
 {
+  CContentDirectoryBrowser::stopIconUpdateTimer ();
   searchAction (false);
   savePlaylists (m_playlists);
-  CContentDirectoryBrowser::stopIconUpdateTimer ();
   m_positionTimer.stop ();
   if (m_cp != nullptr)
   {
@@ -118,6 +120,16 @@ void CMainWindow::closeEvent (QCloseEvent* event)
                       ui->m_absTime->isChecked (), normalGeometry (), windowState (),
                       m_language, m_status.status ());
     session.save ();
+
+    QDir        dir (::appDataDirectory ());
+    QStringList uuids = m_cp->plugins ();
+    for (QString const & uuid : uuids)
+    {
+      CPlugin* plugin   = m_cp->plugin (uuid);
+      QString  fileName = dir.absoluteFilePath (plugin->name () + ".ids");
+      plugin->saveAuth (fileName);
+    }
+
     m_cp->close ();
   }
 

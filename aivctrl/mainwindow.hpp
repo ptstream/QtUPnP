@@ -42,6 +42,7 @@ public:
                  CollapseAudioPlaylist     = 0x00000010, //!< Collapse or expang audio playlist.
                  CollapseImagePlaylist     = 0x00000020, //!< Collapse or expang image playlist.
                  CollapseVideoPlaylist     = 0x00000040, //!< Collapse or expang video playlist.
+                 UPnPPlaylistDisabled      = 0x00000080, //!< The UPnP playlists are disable. Use SetAVTransportURI.
                };
 
   /*! Stacked widget index. */
@@ -107,6 +108,7 @@ protected slots :
   // ListWidgets
   /*! Server QListWidget item clicked. */
   void on_m_servers_itemClicked (QListWidgetItem* item);
+  void on_m_cloud_itemClicked (QListWidgetItem* item);
 
   /*! Server content directory QListWidget item double clicked. */
   void on_m_contentDirectory_itemDoubleClicked (QListWidgetItem* item);
@@ -369,6 +371,9 @@ private :
 
   /*! The current server has changed, update the current communication server icon. */
   void setComServerIcon ();
+
+  /*! Creates plugin items in ui->m_cloud. */
+  void loadPlugins ();
 
   /*! The current renderer has changed, update the current communication renderer icon. */
   void setComRendererIcon ();

@@ -6,6 +6,7 @@
 #include "aivwidgets/networkprogress.hpp"
 #include "aivwidgets/widgethelper.hpp"
 #include "../upnp/avtransport.hpp"
+#include "../upnp/plugin.hpp"
 #include <QMenu>
 
 USING_UPNP_NAMESPACE
@@ -304,24 +305,24 @@ void CMainWindow::applyLastSession ()
     m_status.setStatus (session.status ());
   }
 
-  m_status.addStatus (ShowNetworkCom);
-  if (m_status.hasStatus (ShowNetworkCom))
-  {
-    CNetworkProgress* m_controlPointRenderer = new CNetworkProgress ("m_controlPointRenderer", this);
-    ui->m_comNetworkLayout->insertWidget (2, m_controlPointRenderer);
+  ui->m_queue->setDisableUPnPPlaylist (m_status.hasStatus (UPnPPlaylistDisabled));
 
-    CNetworkProgress* m_controlPointServer = new CNetworkProgress ("m_controlPointServer", this);
-    m_controlPointServer->setInverted (true);
-    ui->m_comNetworkLayout->insertWidget (1, m_controlPointServer);
-    m_cp->validateNetworkCom (true);
-  }
-  else
-  {
-    delete ui->m_comRenderer;
-    delete ui->m_comServer;
-    delete ui->m_comControlPoint;
-  }
+  CNetworkProgress* controlPointRenderer = new CNetworkProgress ("m_controlPointRenderer", this);
+  ui->m_comNetworkLayout->insertWidget (2, controlPointRenderer);
 
+  CNetworkProgress* controlPointServer = new CNetworkProgress ("m_controlPointServer", this);
+  controlPointServer->setInverted (true);
+  ui->m_comNetworkLayout->insertWidget (1, controlPointServer);
+
+  m_cp->validateNetworkCom (true);
+
+  QFont font = ui->m_servers->font ();
+  controlPointRenderer->setFont (font);
+  controlPointServer->setFont (font);
+  controlPointRenderer->setType (CNetworkProgress::Binary);
+  controlPointServer->setType (CNetworkProgress::Binary);
+
+  ui->m_networkProgress->setHidden (!m_status.hasStatus (ShowNetworkCom));
   m_playMode = static_cast<EPlayMode>(session.playMode ());
   applyPlayMode ();
   restorePlaylists (m_playlists);
@@ -352,6 +353,15 @@ void CMainWindow::applyLastSession ()
   }
 
   updatePlaylistItemCount ();
+
+  QDir        dir (::appDataDirectory ());
+  QStringList uuids = m_cp->plugins ();
+  for (QString const & uuid : uuids)
+  {
+    CPlugin* plugin = m_cp->plugin (uuid);
+    QString  fileName = dir.absoluteFilePath (plugin->name () + ".ids");
+    plugin->restoreAuth (fileName);
+  }
 }
 
 void CMainWindow::rotateIcon ()
@@ -530,7 +540,17 @@ void CMainWindow::setComRendererIcon ()
 
 void CMainWindow::setComServerIcon ()
 {
-  QPixmap pxm = ui->m_servers->icon (m_server).pixmap (ui->m_comServer->size ());
+  QPixmap         pxm;
+  CPlugin const * plugin = m_cp->plugin (m_server);
+  if (plugin == nullptr)
+  {
+    pxm = ui->m_servers->icon (m_server).pixmap (ui->m_comServer->size ());
+  }
+  else
+  {
+    pxm = plugin->pixmap ();
+  }
+
   if (pxm.isNull())
   {
     pxm = QPixmap (::resIconFullPath ("server"));
@@ -538,3 +558,14 @@ void CMainWindow::setComServerIcon ()
 
   ui->m_comServer->setPixmap (pxm);
 }
+
+void CMainWindow::loadPlugins ()
+{
+  QStringList uuids = m_cp->plugins ();
+  for (QStringList::const_iterator it = uuids.cbegin (), end = uuids.end (); it != end; ++it)
+  {
+    CPlugin const * plugin = m_cp->plugin (*it);
+    ui->m_cloud->addItem (plugin);
+  }
+}
+

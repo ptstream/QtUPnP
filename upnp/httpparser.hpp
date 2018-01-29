@@ -33,11 +33,16 @@ public :
   /*! Constructs a parser with the message to parse. */
   CHTTPParser (QByteArray const & message) : m_message (message) {}
 
+  /*! Equal operator. */
   CHTTPParser& operator = (CHTTPParser const & other);
 
+  /*! Sets the current message. */
   void setMessage (QByteArray const & message) { m_message = message; }
 
+  /*! Returns the header length when it is complet otherwize return 0. */
   int headerLengthReached () const;
+
+  /*! Returns the content length. */
   int headerContentLength () const;
 
   /*! Returns the header length including "\r\n\r\n" at the end. */
@@ -58,6 +63,12 @@ public :
   /*! Returns the verb. */
   QByteArray verb () const { return m_verb; }
 
+  /*! Returns the header elements. */
+  QMap<QByteArray, QByteArray> const & headerElems () const { return m_headerElems; }
+
+  /*! Returns the number of header elements. */
+  int headerElemsCount () const { return m_headerElems.size (); }
+
   /*! Parse the response.
    * \return True if the message is complete.
    */
@@ -68,7 +79,10 @@ public :
 
   EQueryType queryType () const { return m_queryType; }
 
+  /*! Returns a constante reference on the current message. */
   QByteArray const & message () const { return m_message; }
+
+  /*! Returns a reference on the current message. */
   QByteArray& message () { return m_message; }
 
   /*! Returns the query type from the query. */

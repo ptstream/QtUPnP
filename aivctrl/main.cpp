@@ -1,6 +1,5 @@
 #include "mainwindow.hpp"
 #include <QApplication>
-#include "../upnp/helper.hpp"
 
 int main(int argc, char *argv[])
 {

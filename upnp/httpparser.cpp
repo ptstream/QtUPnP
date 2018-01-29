@@ -77,7 +77,6 @@ bool CHTTPParser::parseMessage ()
       QList<QByteArray> rows;
       rows.reserve (15);
       rows = header.split ('\r');
-
       QByteArray name, value;
       for (QByteArray const row : rows)
       {

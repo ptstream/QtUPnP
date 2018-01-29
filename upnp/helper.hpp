@@ -89,6 +89,9 @@ bool UPNP_API isDuration (QString const & s);
 /*! Return the nearest int. */
 inline int UPNP_API nearestInt (float val) { return static_cast<int>(val < 0 ? val - 0.5f : val + 0.5f); }
 
+/*! Returns the http mime type from the UPnP protocol info. */
+QString UPNP_API httpContentType (QString const & dlnaProtocolInfo);
+
 /*! \brief  Write data in QtUPnP-dump.xml file.
  *
  * \param data: The data to write.*

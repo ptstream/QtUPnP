@@ -1,6 +1,7 @@
 #include "contentdirectorybrowser.hpp"
 #include "widgethelper.hpp"
 #include "../upnp/pixmapcache.hpp"
+#include "../upnp/plugin.hpp"
 #include <QScrollBar>
 #include <QShortcut>
 
@@ -58,10 +59,17 @@ void CContentDirectoryBrowserItem::updateIcon (CControlPoint* cp, CPixmapCache* 
 
     if (pxm.isNull ())
     {
-      cp->startNetworkCom (CDevice::MediaServer);
-      QByteArray pxmBytes = cp == nullptr ? CDataCaller ().callData (uri, m_albumArtURITimeout) :
-                                            cp->callData (uri, m_albumArtURITimeout);
-      cp->endNetworkCom (CDevice::MediaServer);
+      if (!uri.isEmpty ())
+      {
+        cp->networkComStarted (CDevice::MediaServer);
+      }
+
+      QByteArray pxmBytes = cp->callData (uri, m_albumArtURITimeout);
+      if (!uri.isEmpty ())
+      {
+        cp->networkComEnded (CDevice::MediaServer);
+      }
+
       if (!pxmBytes.isEmpty ())
       {
         if (cache != nullptr)
@@ -160,9 +168,18 @@ int CContentDirectoryBrowser::addItems (QString const & server,
   }
 
   clear ();
-  CContentDirectory cd (m_cp);
-  CBrowseReply reply = cd.browse (server, id, type, filter, startingIndex,
-                                  requestedCount, sortCriteria);
+  CBrowseReply reply;
+  CPlugin*     plugin = m_cp->plugin (server);
+  if (plugin != nullptr)
+  {
+    reply = plugin->browse (id, type, filter, startingIndex, requestedCount, sortCriteria);
+  }
+  else
+  {
+    CContentDirectory cd (m_cp);
+    reply = cd.browse (server, id, type, filter, startingIndex, requestedCount, sortCriteria);
+  }
+
   int numberReturned = reply.numberReturned ();
   if (numberReturned != 0)
   {
@@ -260,24 +277,28 @@ void CContentDirectoryBrowser::stopIconUpdateTimer ()
 
 void CContentDirectoryBrowser::setBold (QString const & uri)
 {
-  for (int iItem = 0, end = count (); iItem < end; ++iItem)
+  if (!uri.isEmpty ())
   {
-    CContentDirectoryBrowserItem* item = static_cast<CContentDirectoryBrowserItem*>(this->item (iItem));
-    CDidlItem const &             didl = item->didlItem ();
-    QFont                         font = item->font ();
-    if (didl.uri (0) == uri)
+    for (int iItem = 0, end = count (); iItem < end; ++iItem)
     {
-      if (!font.bold ())
+      CContentDirectoryBrowserItem* item   = static_cast<CContentDirectoryBrowserItem*>(this->item (iItem));
+      CDidlItem const &             didl   = item->didlItem ();
+      QFont                         font   = item->font ();
+      QString                       didURI = didl.uri (0);
+      if (!didURI.isEmpty () && uri.endsWith (didURI)) // endsWith for plugins.
       {
-        font.setBold (true);
-        item->setFont (font);
-        scrollToItem (item);
+        if (!font.bold ())
+        {
+          font.setBold (true);
+          item->setFont (font);
+          scrollToItem (item);
+        }
       }
-    }
-    else if (font.bold ())
-    {
-      font.setBold (false);
-      item->setFont (font);
+      else if (font.bold ())
+      {
+        font.setBold (false);
+        item->setFont (font);
+      }
     }
   }
 }

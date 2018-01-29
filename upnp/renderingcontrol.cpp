@@ -34,6 +34,7 @@ int CRenderingControl::getVolume (QString const & rendererUUID, QString const & 
 bool CRenderingControl::selectPreset (QString const & rendererUUID, QString const & preset, unsigned instanceID)
 {
   Q_ASSERT (m_cp != nullptr);
+  m_cp->abortStreaming ();
   QList<CControlPoint::TArgValue> args;
   args.reserve (2);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));

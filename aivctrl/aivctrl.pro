@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     aivwidgets/position.cpp \
     aivwidgets/slider.cpp \
     aivwidgets/textmetadata.cpp \
-    aivwidgets/widgethelper.cpp
+    aivwidgets/widgethelper.cpp \
+    aivwidgets/cloudbrowser.cpp
 
 HEADERS  += mainwindow.hpp \
     helper.hpp \
@@ -67,7 +68,8 @@ HEADERS  += mainwindow.hpp \
     aivwidgets/position.hpp \
     aivwidgets/slider.hpp \
     aivwidgets/textmetadata.hpp \
-    aivwidgets/widgethelper.hpp
+    aivwidgets/widgethelper.hpp \
+    aivwidgets/cloudbrowser.hpp
 
 FORMS    += mainwindow.ui \
     playlistchoice.ui \

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>402</width>
-    <height>601</height>
+    <width>387</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -330,6 +330,15 @@
         </item>
         <item>
          <widget class="CMyDeviceBrowser" name="m_myDevice">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>2</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Local playlists. Theses playlists are stored on your computer, phone...</string>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -398,6 +407,86 @@
         </item>
         <item>
          <widget class="CDeviceBrowser" name="m_servers">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Local servers</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="gridSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="uniformItemSizes">
+           <bool>false</bool>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="Line" name="line_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="m_cloudLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Cloud</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="CCloudBrowser" name="m_cloud">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Remote servers</string>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -436,6 +525,9 @@
         </property>
         <item>
          <widget class="CContentDirectoryBrowser" name="m_contentDirectory">
+          <property name="toolTip">
+           <string>Content directory of the current server </string>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -474,6 +566,9 @@
         </property>
         <item>
          <widget class="CPlaylistBrowser" name="m_queue">
+          <property name="toolTip">
+           <string>Current queue</string>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -515,6 +610,9 @@
         </property>
         <item>
          <widget class="CPlaylistBrowser" name="m_playlistContent">
+          <property name="toolTip">
+           <string>Current plyalist</string>
+          </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -1101,6 +1199,11 @@
    <class>CMyDeviceBrowser</class>
    <extends>QListWidget</extends>
    <header>aivwidgets/mydevicebrowser.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>CCloudBrowser</class>
+   <extends>QListWidget</extends>
+   <header location="global">aivwidgets/cloudbrowser.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -1,5 +1,7 @@
 #include "playlistbrowser.hpp"
 #include "../upnp/avtransport.hpp"
+#include "../upnp/plugin.hpp"
+#include "../upnp/dump.hpp"
 #include <QShortcut>
 #include <QMessageBox>
 
@@ -20,9 +22,9 @@ void CPlaylistBrowser::setAVTransportURI (CControlPoint* cp, QString const & ren
   CDevice const & device = cp->device (renderer);
 
   CContentDirectoryBrowserItem* cdItem   = static_cast<CContentDirectoryBrowserItem*>(item (itemRow));
-  CDidlItem const &             didlItem = cdItem->didlItem ();
+  CDidlItem                     didlItem = cdItem->didlItem ();
   CDidlItem::EType              type     = didlItem.type ();
-  if (type != CDidlItem::AudioBroadcast && type != CDidlItem::VideoBroadcast && device.playlistStatus () == CDevice::PlaylistHandler)
+  if (!m_disableUPnPPlaylist && type != CDidlItem::AudioBroadcast && type != CDidlItem::VideoBroadcast && device.playlistStatus () == CDevice::PlaylistHandler)
   {
     QString  playlistName = CHTTPServer::formatUUID (renderer);
     int      seekTo       = 0;
@@ -34,8 +36,9 @@ void CPlaylistBrowser::setAVTransportURI (CControlPoint* cp, QString const & ren
 
       for (int iItem = 0; iItem < cItems; ++iItem)
       {
-        CContentDirectoryBrowserItem* itemIItem = static_cast<CContentDirectoryBrowserItem*>(item (iItem));
-        CDidlItem const &             didlItem  = itemIItem->didlItem ();
+        CContentDirectoryBrowserItem* itemIItem  = static_cast<CContentDirectoryBrowserItem*>(item (iItem));
+        CDidlItem                     didlItem   = itemIItem->didlItem ();
+        replaceNoHttpScheme (didlItem);
         playlistElems.push_back (CDidlItem::TPlaylistElem (didlItem, 0));
         if (iItem == itemRow)
         {
@@ -43,19 +46,20 @@ void CPlaylistBrowser::setAVTransportURI (CControlPoint* cp, QString const & ren
         }
       }
 
-      avt.setAVTransportURI (renderer, playlistName, playlistElems);
+      avt.setAVTransportURI (renderer, playlistName, playlistElems); // For a playlist.
       avt.waitForAVTransportURI (renderer, seekTo);
     }
     else
     {
-      seekTo = itemRow;
+      seekTo = itemRow + 1;
     }
 
     avt.seek (renderer, seekTo);
   }
   else
   {
-    avt.setAVTransportURI (renderer, didlItem);
+    replaceNoHttpScheme (didlItem);
+    avt.setAVTransportURI (renderer, didlItem); // For a single file.
   }
 
   CTransportInfo  info  = avt.getTransportInfo (renderer);
@@ -86,7 +90,8 @@ void CPlaylistBrowser::setNextAVTransportURI (CControlPoint* cp, QString const &
     if (iItem < cItems - 1)
     {
       CContentDirectoryBrowserItem* cdItem   = static_cast<CContentDirectoryBrowserItem*>(item (iItem + 1));
-      CDidlItem const &             didlItem = cdItem->didlItem ();
+      CDidlItem                     didlItem = cdItem->didlItem ();
+      replaceNoHttpScheme (didlItem);
       CAVTransport (cp).setNextAVTransportURI (renderer, didlItem);
     }
   }
@@ -143,6 +148,35 @@ void CPlaylistBrowser::delKey ()
       }
 
       emit removeIDs (m_name, ids);
+    }
+  }
+}
+
+void CPlaylistBrowser::replaceNoHttpScheme (CDidlItem& didlItem)
+{
+  if (!m_directStreamHTTPS)
+  {
+    QUrl url (didlItem.uri (0));
+    if (url.scheme () != "http") // Assume http protocol is handled by the renderer.
+    { // Probably https
+      CDidlElem const & didlElem   = didlItem.value ("aivctrl:plugin");
+      QString           pluginUUID = didlElem.value ();
+      if (!pluginUUID.isEmpty ())
+      {
+        CPlugin* plugin = m_cp->plugin (pluginUUID);
+        if (plugin != nullptr)
+        {
+          pluginUUID         = CHTTPServer::formatUUID (pluginUUID);
+          QString   uri      = m_cp->serverListenAddress () + "plugin" + '/' + pluginUUID + '/' + didlItem.uri (0);
+          CDidlElem didlElem = didlItem.value ("res");
+          didlElem.setValue (uri);
+          didlItem.replace ("res", didlElem);
+        }
+      }
+      else
+      {
+        // To do other cases.
+      }
     }
   }
 }
