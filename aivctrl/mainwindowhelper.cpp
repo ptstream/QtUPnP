@@ -304,6 +304,10 @@ void CMainWindow::applyLastSession ()
     m_language  = session.language ();
     m_status.setStatus (session.status ());
   }
+  else
+  {
+    m_status.addStatus (ShowNetworkCom);
+  }
 
   ui->m_queue->setDisableUPnPPlaylist (m_status.hasStatus (UPnPPlaylistDisabled));
 
