@@ -471,7 +471,7 @@ QString CDidlItem::albumArtURI (int index, ESortType sort) const
   return uri;
 }
 
-QString CDidlItem::didl () const
+QString CDidlItem::didl (bool percentEncodeing) const
 {
   QByteArray xml;
   QBuffer    buffer (&xml);
@@ -528,7 +528,7 @@ QString CDidlItem::didl () const
   }
 
   stream.writeEndElement (); // End <DIDL_Lite>
-  return toPercentEncodeing (xml);
+  return percentEncodeing ? toPercentEncodeing (xml) : xml;
 }
 
 QStringList CDidlItem::dump () const
@@ -647,6 +647,57 @@ QString CDidlItem::toPercentEncodeing (QByteArray const & notCoded)
   }
 
   return encoded;
+}
+
+QString CDidlItem::percentDecoding (QString const & encoded)
+{
+  int     len = encoded.length ();
+  QString decoded;
+  decoded.reserve (len);
+  int i = 0;
+  while (i < len)
+  {
+    QChar c = encoded.at (i);
+    if (c == '&')
+    {
+      if (i + 3 < len && encoded.at (i + 2) == 't' && encoded.at (i + 3) == ';')
+      {
+        if (encoded.at (i + 1) == 'g')
+        {
+          i += 3;
+          c  = '>';
+        }
+        else if (encoded.at (i + 1) == 'l')
+        {
+          i += 3;
+          c  = '<';
+        }
+      }
+      else if (i + 4 < len && encoded.at (i + 1) == 'a' && encoded.at (i + 2) == 'm' && encoded.at (i + 3) == 'p' && encoded.at (i + 4) == ';')
+      {
+        i += 4;
+        c  = '&';
+      }
+      else if (i + 5 < len)
+      {
+        if (encoded.at (i + 1) == 'a' && encoded.at (i + 2) == 'p' && encoded.at (i + 3) == 'o' && encoded.at (i + 4) == 's' && encoded.at (i + 5) == ';')
+        {
+          i += 5;
+          c  = '\'';
+        }
+        else if (encoded.at (i + 1) == 'q' && encoded.at (i + 2) == 'u' && encoded.at (i + 3) == 'o' && encoded.at (i + 4) == 't' && encoded.at (i + 5) == ';')
+        {
+          i += 5;
+          c  = '"';
+        }
+      }
+    }
+
+    decoded.push_back (c);
+    ++i;
+  }
+
+  return decoded;
 }
 
 QString CDidlItem::id () const

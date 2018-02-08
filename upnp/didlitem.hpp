@@ -323,7 +323,7 @@ public:
   QString albumArtURI (int index, ESortType sort = SortAlbumArt) const;
 
   /*! Returns the element in form of DIDL_Lite xml tag. */
-  QString didl () const;
+  QString didl (bool percentEncodeing = true) const;
 
   /*! Clear all content. */
   void clear ();
@@ -455,10 +455,15 @@ public:
    */
   static int sortAlbumArtURIs (QList<CDidlElem>& elems);
 
-  /*! Returns an UTF-8 encoded copy of not coded in format UTF-8.
-   * not coded <, >, ", ' are percent encoded.
+  /*! Returns the encoded copy.
+   * Characters <, >, ", ' are percent encoded.
    */
   static QString toPercentEncodeing (QByteArray const & notCoded);
+
+  /*! Returns the decoded copy.
+   * Characters percent encoded are replace by <, >, ", '
+   */
+  static QString percentDecoding (QString const & encoded);
 
   /*! Returns true if the item element is a container. A container has a type less equal videoProgram.
    * \param type: Container type. See CDidlItem::EType.

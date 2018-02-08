@@ -26,18 +26,19 @@ bool CXmlHPlaylist::characters (QString const & name)
 {
   if (!m_stack.isEmpty () && !name.trimmed ().isEmpty ())
   {
+    QString         s   = CDidlItem::percentDecoding (name);
     QString const & tag = m_stack.top ();
     if (tag == "title")
     {
       QString tagParent = this->tagParent ();
       if (tagParent == "playlist")
       {
-        m_name = name;
+        m_name = s;
       }
       else
       {
         CDidlElem elem;
-        elem.setValue (name);
+        elem.setValue (s);
         m_playlist.items ().last ().insert ("dc:title", elem);
       }
     }
@@ -47,26 +48,26 @@ bool CXmlHPlaylist::characters (QString const & name)
       if (!item.elems ().contains ("res"))
       {
         CDidlElem elem;
-        elem.setValue (name);
+        elem.setValue (s);
         item.insert ("res", elem);
       }
       else
       {
         CDidlElem elem = m_playlist.items ().last ().elems ().value ("res");
-        elem.setValue (name);
+        elem.setValue (s);
         item.replace ("res", elem);
       }
     }
     else if (tag == "album")
     {
       CDidlElem elem;
-      elem.setValue (name);
+      elem.setValue (s);
       m_playlist.items ().last ().insert ("upnp:album", elem);
     }
     else if (tag == "duration")
     {
       CDidlItem& item     = m_playlist.items ().last ();
-      QString    duration = QTime (0, 0).addMSecs (name.toInt ()).toString ("hh:mm:ss.zzz");
+      QString    duration = QTime (0, 0).addMSecs (s.toInt ()).toString ("hh:mm:ss.zzz");
       if (!item.elems ().contains ("res"))
       {
         CDidlElem elem;
@@ -83,28 +84,28 @@ bool CXmlHPlaylist::characters (QString const & name)
     else if (tag == "image")
     {
       CDidlElem elem;
-      elem.setValue (name);
+      elem.setValue (s);
       m_playlist.items ().last ().insert ("upnp:albumArtURI", elem);
     }
     else if (tag == "aivctrl:nrTracks")
     {
-      m_playlist.items ().reserve (name.toInt ());
+      m_playlist.items ().reserve (s.toInt ());
     }
     else if (tag == "aivctrl:playlistType")
     {
-      m_playlist.setType (static_cast<CPlaylist::EType>(name.toInt ()));
+      m_playlist.setType (static_cast<CPlaylist::EType>(s.toInt ()));
     }
     else if (tag == "aivctrl:upnpID")
     {
       CDidlElem elem = m_playlist.items ().last ().elems ().value ("item");
-      elem.addProp ("item", name);
+      elem.addProp ("item", s);
       m_playlist.items ().last ().replace ("item", elem);
     }
     else if (tag == "meta")
     {
       CDidlItem& item = m_playlist.items ().last ();
       CXmlHDidlLite didLite;
-      item = CDidlItem::mix (didLite.firstItem (name), item);
+      item = CDidlItem::mix (didLite.firstItem (s), item);
     }
   }
 

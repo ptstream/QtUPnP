@@ -272,7 +272,7 @@ void CPlaylist::saveItem (QXmlStreamWriter& stream, CDidlItem const & item)
   xmlWriteInt64 ("duration", duration);     // ... duration
 
   // Metadata. DIDL-LITE form.
-  QString didlLite = item.didl ();
+  QString didlLite = item.didl (false);
   stream.writeStartElement ("meta"); // ... meta
   stream.writeAttribute ("rel", "http://www.upnp.org/schemas/av/didl-lite.xsd");
   stream.writeCharacters (didlLite);
@@ -354,9 +354,13 @@ void CPlaylist::simplify ()
       {
         for (int j = i + 1; j < count; ++j)
         {
-          if (checkedElems[i].value () == checkedElems[j].value ())
+          QString const & vi = checkedElems[i].value ();
+          QString const & vj = checkedElems[j].value ();
+          if (vi == vj)
           {
-            if (checkedElems[i].props ().size () <= checkedElems[j].props ().size ())
+            int si = checkedElems[i].props ().size ();
+            int sj = checkedElems[j].props ().size ();
+            if (si <= sj)
             {
               rem = true;
               elems.remove (elemNames[k], checkedElems[i]);
