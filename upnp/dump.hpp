@@ -36,7 +36,7 @@ public:
   static void dump (QByteArray const & bytes);
 
 signals:
-  /*! The signam. */
+  /*! The signal. */
   void dumpReady (QString const & text);
 
 private :
