@@ -9,7 +9,7 @@ CNetworkProgress::CNetworkProgress (char const * name, QWidget* parent) : QWidge
 {
   setObjectName (name);
   m_timer.setInterval (m_timerInteval);
-  m_fresholdTimer.setInterval (1000);
+  m_fresholdTimer.setInterval (250);
   m_fresholdTimer.setSingleShot (true);
   connect (&m_timer, &QTimer::timeout, this, &CNetworkProgress::timeout);
   m_lastPosition = width () / 2;
