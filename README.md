@@ -7,12 +7,11 @@ For a better description, unzip /upnp/docs/html.zip and choose index.html.
 
 Build the framework and the test program need to install QT5. QtUPnP has been coded from:
   - Windows "qt-opensource-windows-x86-mingw530-5.8.0.exe" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
-    The built version is a 32 bits. It runs from Windows 7 to Windows 10 32 or 64 bits. 
-    It has been tested on Windows 10 32 and 64 bits.
+    A 32 bits is built. It runs from Windows 7 to Windows 10 32 or 64 bits. 
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
-    The built version is a 64 bits. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
+    A 64 bits is built. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
     The actual pro file creates a static library.
 
 The framework use only QT API, no other system dependent API.
@@ -45,11 +44,11 @@ The main fonctionnalities are:
   - And a lot of another things.
   
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
-  - Windows 7 to 10: Download install-AIVCtrl-102.exe and double click on it to install.
+  - Windows 7 to 10: Download install-AIVCtrl-1.1.2.exe and double click on it to install.
     Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
-  - Kubuntu and Ubuntu: Download aivctrl-1.0.2.deb double click on it to install.
+  - Kubuntu and Ubuntu: Download aivctrl-1.1.2.deb double click on it to install.
     Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
-  - All Linux: Download aivctrl-1.0.2.zip for a manual installation.
+  - All Linux: Download aivctrl-1.1.2.zip for a manual installation.
     Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).)
   - Documentation in English and French.
   

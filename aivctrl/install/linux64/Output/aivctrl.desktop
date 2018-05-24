@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=1.0
+Version=1.1.2
 Name=AIVCtrl
 GenericName=AIVCtrl
 Exec=/usr/bin/aivctrl/aivctrl

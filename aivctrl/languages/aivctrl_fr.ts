@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../about.ui" line="54"/>
-        <source>Version 1.1.0- Copyright (C) 2017-2018</source>
+        <source>Version 1.1.2- Copyright (C) 2017-2018</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -75,20 +75,20 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="380"/>
+        <location filename="../mainwindow.ui" line="386"/>
         <location filename="../mainwindowhelper.cpp" line="491"/>
         <source>Servers</source>
         <translation type="unfinished">Serveurs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="636"/>
-        <location filename="../mainwindow.ui" line="1022"/>
+        <location filename="../mainwindow.ui" line="654"/>
+        <location filename="../mainwindow.ui" line="1046"/>
         <source>Mute or listen</source>
         <translation type="unfinished">Muet ou Ecouter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="656"/>
-        <location filename="../mainwindow.ui" line="1042"/>
+        <location filename="../mainwindow.ui" line="674"/>
+        <location filename="../mainwindow.ui" line="1066"/>
         <source>Volume</source>
         <translation type="unfinished">Volume</translation>
     </message>
@@ -98,110 +98,110 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Listes de lecture</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="334"/>
+        <location filename="../mainwindow.ui" line="340"/>
         <source>Local playlists. Theses playlists are stored on your computer, phone...</source>
         <translation type="unfinished">Listes de lecture. Ces listes de lectures sont stockées dans votre ordinateur, téléphone, ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="405"/>
+        <location filename="../mainwindow.ui" line="417"/>
         <source>Local servers</source>
         <translation type="unfinished">Serveurs locaux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="445"/>
+        <location filename="../mainwindow.ui" line="457"/>
         <source>Cloud</source>
         <translation type="unfinished">Nuage</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="470"/>
+        <location filename="../mainwindow.ui" line="488"/>
         <source>Remote servers</source>
         <translation type="unfinished">Serveurs distants</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="511"/>
+        <location filename="../mainwindow.ui" line="529"/>
         <source>Content directory of the current server </source>
         <translation type="unfinished">Contenu du dossier du server courant</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="552"/>
+        <location filename="../mainwindow.ui" line="570"/>
         <source>Current queue</source>
         <translation type="unfinished">File d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="596"/>
+        <location filename="../mainwindow.ui" line="614"/>
         <source>Current plyalist</source>
         <translation type="unfinished">Liste de lecture courante</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="674"/>
+        <location filename="../mainwindow.ui" line="803"/>
         <source>Current cover</source>
         <translation type="unfinished">Vignette courante</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="692"/>
+        <location filename="../mainwindow.ui" line="688"/>
         <source>Favorites</source>
         <translation type="unfinished">Favoris</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="724"/>
+        <location filename="../mainwindow.ui" line="720"/>
         <source>Title, album and artist</source>
         <translation type="unfinished">Titre, album et artist</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="743"/>
+        <location filename="../mainwindow.ui" line="745"/>
         <source>Rank in the queue</source>
         <translation type="unfinished">Rang dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="746"/>
+        <location filename="../mainwindow.ui" line="748"/>
         <source>0/0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="757"/>
+        <location filename="../mainwindow.ui" line="821"/>
         <source>Repeat all, repeat one or disable repeat</source>
         <translation type="unfinished">Repéter tout, repéter une, supprimer répéter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="777"/>
-        <location filename="../mainwindow.ui" line="1052"/>
+        <location filename="../mainwindow.ui" line="841"/>
+        <location filename="../mainwindow.ui" line="1076"/>
         <source>Previous item in the queue</source>
         <translation type="unfinished">Element précédent dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="797"/>
-        <location filename="../mainwindow.ui" line="1072"/>
+        <location filename="../mainwindow.ui" line="861"/>
+        <location filename="../mainwindow.ui" line="1096"/>
         <source>Play, pause, stop</source>
         <translation type="unfinished">Jouer, pause, stop</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="817"/>
+        <location filename="../mainwindow.ui" line="881"/>
         <source>Nexst item in the queue</source>
         <translation type="unfinished">Element suivant dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="837"/>
+        <location filename="../mainwindow.ui" line="901"/>
         <source>Enable or disable shuffle</source>
         <translation type="unfinished">Activer ou désactiver la lecture aléatoire</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="861"/>
+        <location filename="../mainwindow.ui" line="759"/>
         <source>Time from start</source>
         <translation type="unfinished">Temps écoulé depuis le début</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="864"/>
-        <location filename="../mainwindow.ui" line="884"/>
+        <location filename="../mainwindow.ui" line="762"/>
+        <location filename="../mainwindow.ui" line="782"/>
         <source>0:00:00</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="871"/>
+        <location filename="../mainwindow.ui" line="769"/>
         <source>Position in the item</source>
         <translation type="unfinished">Position dans l&apos;élément écouté</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="881"/>
+        <location filename="../mainwindow.ui" line="779"/>
         <source>Item duration or remaining time</source>
         <translation type="unfinished">Durée de l&apos;élément ou temps restant</translation>
     </message>
@@ -236,27 +236,27 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Commandes contextuelles</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="953"/>
+        <location filename="../mainwindow.ui" line="977"/>
         <source>Current playing</source>
         <translation type="unfinished">Lecture en cours</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="978"/>
+        <location filename="../mainwindow.ui" line="1002"/>
         <source>Current renderer name</source>
         <translation type="unfinished">Nom du lecteur courant</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="991"/>
+        <location filename="../mainwindow.ui" line="1015"/>
         <source>Current title</source>
         <translation type="unfinished">Titre courant</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1092"/>
+        <location filename="../mainwindow.ui" line="1116"/>
         <source>Next item in the queue</source>
         <translation type="unfinished">Prochain élément dans la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1112"/>
+        <location filename="../mainwindow.ui" line="1136"/>
         <source>Choose a renderer</source>
         <translation type="unfinished">Choix d&apos;un lecteur</translation>
     </message>
@@ -296,88 +296,88 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">Lecteurs</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="189"/>
+        <location filename="../popupmenus.cpp" line="179"/>
         <source>Search</source>
         <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="197"/>
+        <location filename="../popupmenus.cpp" line="187"/>
         <source>Replace the queue</source>
         <translation type="unfinished">Remplacer la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="199"/>
+        <location filename="../popupmenus.cpp" line="189"/>
         <source>Add to the queue</source>
         <translation type="unfinished">Ajouter à la file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="205"/>
+        <location filename="../popupmenus.cpp" line="195"/>
         <source>Add to a playlist</source>
         <translation type="unfinished">Ajouter à une liste de lecture</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="210"/>
+        <location filename="../popupmenus.cpp" line="200"/>
         <source>Add to favorites</source>
         <translation type="unfinished">Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="218"/>
-        <location filename="../popupmenus.cpp" line="235"/>
+        <location filename="../popupmenus.cpp" line="208"/>
+        <location filename="../popupmenus.cpp" line="225"/>
         <source>Remove</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="225"/>
+        <location filename="../popupmenus.cpp" line="215"/>
         <source>Look for devices</source>
         <translation type="unfinished">Recherche des serveurs et lecteurs</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="233"/>
+        <location filename="../popupmenus.cpp" line="223"/>
         <source>Rename</source>
         <translation type="unfinished">Renommer</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="246"/>
+        <location filename="../popupmenus.cpp" line="236"/>
         <source>Check playlist</source>
         <translation type="unfinished">Tester la liste de lecture</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="422"/>
+        <location filename="../popupmenus.cpp" line="412"/>
         <source>Abort</source>
         <translation type="unfinished">Abandonner</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="424"/>
+        <location filename="../popupmenus.cpp" line="414"/>
         <source>Check playlist...</source>
         <translation type="unfinished">Tester la liste de lecture...</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="463"/>
+        <location filename="../popupmenus.cpp" line="453"/>
         <source>Update playlist...</source>
         <translation type="unfinished">Mettre à jour  la liste de lecture...</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="507"/>
+        <location filename="../popupmenus.cpp" line="497"/>
         <source>Updates: </source>
         <translation type="unfinished">Mise à jour : </translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="508"/>
+        <location filename="../popupmenus.cpp" line="498"/>
         <source> Fails: </source>
         <translation type="unfinished">Echouer : </translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="563"/>
+        <location filename="../popupmenus.cpp" line="553"/>
         <source>Settings</source>
         <translation type="unfinished">Paramètres</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="563"/>
+        <location filename="../popupmenus.cpp" line="553"/>
         <source>Language</source>
         <translation type="unfinished">Langue</translation>
     </message>
     <message>
-        <location filename="../popupmenus.cpp" line="563"/>
+        <location filename="../popupmenus.cpp" line="553"/>
         <source>About</source>
         <translation type="unfinished">A propos</translation>
     </message>
@@ -387,7 +387,7 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
         <translation type="unfinished">File d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="64"/>
         <source>Start look for servers and renderers</source>
         <translation type="unfinished">Démarrage de la recherche des serveurs et lecteurs</translation>
     </message>
@@ -529,7 +529,7 @@ QUALITÉ MARCHANDE ET ADAPTATION À UN USAGE PARTICULIER.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../aivwidgets/contentdirectorybrowser.cpp" line="100"/>
+        <location filename="../aivwidgets/contentdirectorybrowser.cpp" line="107"/>
         <location filename="../aivwidgets/devicebrowser.cpp" line="46"/>
         <source>Unknown</source>
         <translation type="unfinished">Inconnu</translation>
