@@ -8,6 +8,8 @@
 #include "../upnp/dump.hpp"
 #include <QMenu>
 #include <QShortcut>
+#include <QDesktopWidget>
+
 USING_UPNP_NAMESPACE
 
 CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::CMainWindow)
@@ -102,6 +104,12 @@ void CMainWindow::initWidgets ()
 
   defIcons = serverIcons ();
   ui->m_servers->setDefaultIcons (defIcons);
+  QRect rec = QApplication::desktop()->screenGeometry ();
+  if (rec.height () < 800)
+  {
+    ui->m_cover->setMaximumHeight (128);
+  }
+
   ui->m_cover->setDefaultPixmapName ("audio_file_big");
   setIconSize ();
 

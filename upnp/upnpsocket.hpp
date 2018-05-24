@@ -105,6 +105,9 @@ public :
   /*! Adds IPV4 addresses to ignore (see above). */
   static void addSkippedAddresses (QByteArray const & addr) { m_skippedAddresses.append (addr); }
 
+  /*! Clear the list of IP Addresses to ignored. */
+  static void clearSkippedAddresses () { m_skippedAddresses.clear (); }
+
   /*! Returns the list of uuid to ignored. */
   static QList<QByteArray> const & skippedUUIDs () { return m_skippedUUIDs; }
 
@@ -114,6 +117,9 @@ public :
    * "uuid=gatewaydevice" is valid.
    */
   static void addSkippedUUID (QByteArray const & uuid);
+
+  /*! Clear the list of device uuids to ignored. */
+  static void clearSkippedUUID () { m_skippedUUIDs.clear (); }
 
   /*! Returns the local host address.
    * This function returns the local host address of the first interface and different of 127.0.0.1.

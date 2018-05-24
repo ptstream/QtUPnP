@@ -971,5 +971,5 @@ QString CDidlItem::protocolInfoValue (QString const & protocolInfo, QString cons
 bool CDidlItem::isResConverted (QString const & protocolInfo)
 {
   QString ciParam = protocolInfoValue (protocolInfo, "DLNA.ORG_CI");
-  return ciParam == '1';
+  return !ciParam.isEmpty () && ciParam[0] == '1';
 }

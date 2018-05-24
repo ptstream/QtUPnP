@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>387</width>
-    <height>575</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -275,7 +275,7 @@
     <item>
      <widget class="QStackedWidget" name="m_stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="m_pHome">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -286,13 +286,13 @@
          <number>2</number>
         </property>
         <property name="topMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -515,13 +515,13 @@
          <number>2</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="CContentDirectoryBrowser" name="m_contentDirectory">
@@ -556,13 +556,13 @@
          <number>2</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="CPlaylistBrowser" name="m_queue">
@@ -600,13 +600,13 @@
          <number>2</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="CPlaylistBrowser" name="m_playlistContent">
@@ -635,13 +635,13 @@
          <number>2</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>2</number>
         </property>
         <property name="bottomMargin">
-         <number>2</number>
+         <number>0</number>
         </property>
         <property name="spacing">
          <number>2</number>
@@ -680,28 +680,6 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0">
-         <widget class="CCover" name="m_cover">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Current cover</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="aivctrl.qrc">:/icons/audio_file_big.png</pixmap>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
@@ -735,7 +713,7 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>75</height>
+              <height>66</height>
              </size>
             </property>
             <property name="toolTip">
@@ -757,6 +735,12 @@
           </item>
           <item>
            <widget class="QLabel" name="m_rank">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="toolTip">
              <string>Rank in the queue</string>
             </property>
@@ -766,6 +750,68 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="4" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="m_relTime">
+            <property name="toolTip">
+             <string>Time from start</string>
+            </property>
+            <property name="text">
+             <string>0:00:00</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="CPosition" name="m_position">
+            <property name="toolTip">
+             <string>Position in the item</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="m_absTime">
+            <property name="toolTip">
+             <string>Item duration or remaining time</string>
+            </property>
+            <property name="text">
+             <string>0:00:00</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="CCover" name="m_cover">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Current cover</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="aivctrl.qrc">:/icons/audio_file_big.png</pixmap>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item row="3" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -863,46 +909,6 @@
               <width>32</width>
               <height>32</height>
              </size>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLabel" name="m_relTime">
-            <property name="toolTip">
-             <string>Time from start</string>
-            </property>
-            <property name="text">
-             <string>0:00:00</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="CPosition" name="m_position">
-            <property name="toolTip">
-             <string>Position in the item</string>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="m_absTime">
-            <property name="toolTip">
-             <string>Item duration or remaining time</string>
-            </property>
-            <property name="text">
-             <string>0:00:00</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
             </property>
             <property name="autoRaise">
              <bool>true</bool>

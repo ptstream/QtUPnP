@@ -45,7 +45,7 @@ bool CSession::characters (QString const & name)
   }
   else if (tag == "remainingTime")
   {
-    m_remainingTime = name == '1';
+    m_remainingTime = !name.isEmpty () && name[0] == '1';
   }
   else if (tag == "left")
   {
