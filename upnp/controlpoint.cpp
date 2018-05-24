@@ -8,6 +8,7 @@
 #include "dump.hpp"
 #include <QDir>
 #include <QLibrary>
+#include <QCoreApplication>
 
 USING_UPNP_NAMESPACE
 
@@ -33,6 +34,8 @@ CControlPoint::CControlPoint (QObject* parent) : QObject (parent)
 
 CControlPoint::~CControlPoint ()
 {
+  CUpnpSocket::clearSkippedAddresses ();
+  CUpnpSocket::clearSkippedUUID ();
   if (!m_closing)
   {
     close ();
@@ -193,7 +196,10 @@ void CControlPoint::newDevicesDetected ()
   int          cRemainingDatagrams = 0;
   for (CUpnpSocket* socket : sockets)
   {
-    cRemainingDatagrams += socket->datagram ().size ();
+    if (socket != nullptr)
+    {
+      cRemainingDatagrams += socket->datagram ().size ();
+    }
   }
 
 
@@ -289,19 +295,25 @@ QList<CUpnpSocket::SNDevice> CControlPoint::ndevices () const
   CUpnpSocket*                 sockets[] = { m_unicastSocket, m_unicastSocketLocal, m_multicastSocket, m_multicastSocket6 };
   for (CUpnpSocket* socket : sockets)
   {
-    cDevices += socket->devices ().size ();
+    if (socket != nullptr)
+    {
+      cDevices += socket->devices ().size ();
+    }
   }
 
   devices.reserve (cDevices);
   for (CUpnpSocket* socket : sockets)
   {
-    QList<CUpnpSocket::SNDevice> const & socketDevices = socket->devices ();
-    for (CUpnpSocket::SNDevice const & device : socketDevices)
+    if (socket != nullptr)
     {
-      devices.push_back (device);
-    }
+      QList<CUpnpSocket::SNDevice> const & socketDevices = socket->devices ();
+      for (CUpnpSocket::SNDevice const & device : socketDevices)
+      {
+        devices.push_back (device);
+      }
 
-    socket->resetDevices ();
+      socket->resetDevices ();
+    }
   }
 
   return devices;
@@ -976,4 +988,48 @@ void CControlPoint::serverComEnded ()
   emit networkComEnded (CDevice::MediaServer);
 }
 
+QList<QPair<QString, QUrl>> CControlPoint::devicesFinding () const
+{
+  QList<QPair<QString, QUrl>> pairs;
+  pairs.reserve (m_devices.size ());
+  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  {
+    CDevice const & device = *it;
+    pairs.append (QPair<QString, QUrl> (device.uuid (), device.url ()));
+  }
 
+  return pairs;
+}
+
+int CControlPoint::extractDevices (QList<QPair<QString, QUrl>> const & pairs, bool oneByOne, int timeout)
+{
+  QList<CUpnpSocket::SNDevice> ndevs;
+  int                          cDevices = 0;
+  if (oneByOne)
+  {
+    for (CUpnpSocket::SNDevice const & ndev : ndevs)
+    {
+      QList<CUpnpSocket::SNDevice> ndevTemp;
+      ndevTemp.append (ndev);
+      cDevices += m_devices.extractDevicesFromNotify (ndevTemp, timeout);
+      QCoreApplication::sendPostedEvents ();
+      QCoreApplication::processEvents ();
+    }
+  }
+  else
+  {
+    ndevs.reserve (pairs.size ());
+    for (QPair<QString, QUrl> const & pair : pairs)
+    {
+      CUpnpSocket::SNDevice ndev;
+      ndev.m_type = CUpnpSocket::SNDevice::Response;
+      ndev.m_url  = pair.second;
+      ndev.m_uuid = pair.first;
+      ndevs.append (ndev);
+    }
+
+    cDevices = m_devices.extractDevicesFromNotify (ndevs, timeout);
+  }
+
+  return cDevices;
+}

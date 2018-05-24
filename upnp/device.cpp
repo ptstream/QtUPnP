@@ -716,3 +716,30 @@ bool CDevice::hasSubDevice (QString const & uuid) const
 
   return success;
 }
+
+void CDevice::setSubscribtionDisabled (QStringList const & ids, bool disable)
+{
+  bool enable = !disable;
+  for (QString const & id : ids)
+  {
+    if (m_d->m_services.contains (id))
+    {
+      m_d->m_services[id].setEvented (enable);
+    }
+  }
+}
+
+QStringList CDevice::eventedServices () const
+{
+  QStringList ids;
+  for (TMServices::const_iterator its = m_d->m_services.cbegin (), end = m_d->m_services.cend (); its != end; ++its)
+  {
+    CService const & service = its.value ();
+    if (service.isEvented ())
+    {
+      ids << its.key ();
+    }
+  }
+
+  return ids;
+}

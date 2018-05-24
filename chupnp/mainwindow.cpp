@@ -2,6 +2,9 @@
 #include "helper.hpp"
 #include "ui_mainwindow.h"
 #include <QProgressBar>
+#include <QStandardPaths>
+#include <QFileInfo>
+#include <QDir>
 
 USING_UPNP_NAMESPACE
 
@@ -38,6 +41,7 @@ CMainWindow::~CMainWindow ()
 
 void CMainWindow::closeEvent (QCloseEvent*)
 {
+  saveDevices ();
   m_cp->close ();
 }
 
@@ -310,4 +314,52 @@ QTreeWidgetItem* CMainWindow::insertItem (QTreeWidgetItem* parentItem, CDevice c
   }
 
   return item;
+}
+
+void CMainWindow::saveDevices ()
+{
+  if (m_storeDevices)
+  {
+    QList<QPair<QString, QUrl>> devices = m_cp->devicesFinding ();
+    QStringList                 dirs    = QStandardPaths::standardLocations (QStandardPaths::TempLocation);
+    QFileInfo                   fi (QDir (dirs.first ()), "QtUPnPDevices");
+    QFile file (fi.absoluteFilePath ());
+    file.open (QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream ts (&file);
+    for (QPair<QString, QUrl> const & device : devices)
+    {
+      ts << device.first << ',' << device.second.toString () << '\n';
+    }
+
+    file.close ();
+  }
+}
+
+void CMainWindow::restoreDevices ()
+{
+  if (m_storeDevices)
+  {
+    QList<QPair<QString, QUrl>> devices;
+    QStringList                 dirs = QStandardPaths::standardLocations (QStandardPaths::TempLocation);
+    QFileInfo                   fi (QDir (dirs.first ()), "QtUPnPDevices");
+    QFile file (fi.absoluteFilePath ());
+    file.open (QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream ts (&file);
+    for (;;)
+    {
+      QString     line = ts.readLine ();
+      QStringList data = line.split (',');
+      if (data.size () == 2)
+      {
+        devices.append (QPair<QString, QUrl> (data[0], QUrl (data[1])));
+      }
+      else
+      {
+        break;
+      }
+    }
+
+    m_cp->extractDevices (devices);
+    file.close ();
+  }
 }

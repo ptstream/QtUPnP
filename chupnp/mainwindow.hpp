@@ -122,6 +122,8 @@ private :
   void search (QTreeWidgetItem* item, QString const & criteria);
   void updateTree (QTreeWidgetItem* item, CBrowseReply const & reply, EItemType type);
   void insertDidlElems (CItem* item);
+  void saveDevices ();
+  void restoreDevices ();
 
 private:
   Ui::CMainWindow* ui;
@@ -137,6 +139,7 @@ private:
   QBrush m_itemBrush; //!< Default QTreeWidgetItem color
   int  m_version = 100; //!< Version of this code.
   CPixmapCache m_pxmCache; //!< Cache of pixmaps.
+  bool m_storeDevices = false; //!< Store the current devices for future used. In case of true SaveDevices is called in close event, and restoreDevices is call at start up.
 };
 
 #endif // MAINWINDOW_HPP

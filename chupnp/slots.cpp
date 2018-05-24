@@ -352,5 +352,6 @@ void CMainWindow::timeout ()
 {
   m_timer.stop ();
   m_initRunning = false;
+  restoreDevices ();
   on_m_rescan_triggered ();
 }

@@ -321,6 +321,39 @@ public:
   /*! Extracts the services components. */
   bool extractServiceComponents (QNetworkAccessManager* naMgr, int timeout = CDataCaller::Timeout);
 
+  /*! Sets disabled the subscribtion for a list of services.
+   * Assume a renderer have two no standard services named:
+   * - urn:schemas-company-com:serviceId:X_ServiceManager
+   * - urn:schemas-company-com:serviceId:X_GroupService
+   *
+   * These service identifiers can be retreave using eventedServices function.
+   *
+   * Assume also your have a slot newDevice connected at the newDevice signal of the control point (cp).
+   * In this slot the code below disable the subscribtion at these services.
+   * \code
+   * void YourClass::newDevice (QString const & uuid)
+   * {
+   *   CDevice& device = cp->device (uuid);
+   *   .....
+   *   CDevice::EType type = device.type ();
+   *   if (type == CDevice::MediaRenderer)
+   *   {
+   *     QStringList ids;
+   *     ids <<  "urn:schemas-company-com:serviceId:X_ServiceManager";
+   *     ids << "urn:schemas-company-com:serviceId:X_GroupService";
+   *     d.setSubscribtionDisabled (serviceIds);
+   *   }
+   * }
+   * \endcode
+   *
+   * The function CControlPoint::subscribe will skip these services for subscribtion.
+   * you will not receive UPnP events from these services.
+   */
+  void setSubscribtionDisabled (QStringList const & ids, bool disable = true);
+
+  /*! Returns the list of services which support eventing. */
+  QStringList eventedServices () const;
+
 private:
   QSharedDataPointer<SDeviceData> m_d; //!< Shared data pointer.
 };
