@@ -8,6 +8,7 @@
 #include <QNetworkRequest>
 #include <QFileInfo>
 #include <cstring>
+#include <array>
 
 USING_UPNP_NAMESPACE
 

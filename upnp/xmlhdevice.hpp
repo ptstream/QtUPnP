@@ -2,6 +2,7 @@
 #define XMLH_DEVICE_HPP
 
 #include "xmlh.hpp"
+#include <array>
 
 START_DEFINE_UPNP_NAMESPACE
 
