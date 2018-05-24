@@ -1,0 +1,13 @@
+Version 1.1.2
+- Improvements
+  * Subscribe at a only a subset of evented services. It is possible to disable some services for subscription.
+    It is to limit the number of unused UPnP events in case of many devices.
+  * Get the current list of devices to store it on disk (to simplify the discovery in case of known devices).
+  * Restore the previous list of devices before discovery (to simplify the discovery in case of known devices).
+  * Add MacOS support.
+  * Add Rasbian support (tested on a Raspberry PI3 using QT 5.7).
+
+- Bugs  
+  * Add some code protections when IPV6 is not valid (detected on certain MacOS).
+
+  
