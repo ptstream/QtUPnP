@@ -46,10 +46,13 @@ The main fonctionnalities are:
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
   - Windows 7 to 10: Download install-AIVCtrl-1.1.2.exe and double click on it to install.
     Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
-  - Kubuntu and Ubuntu: Download aivctrl-1.1.2.deb double click on it to install.
+  - Kubuntu and Ubuntu x86: Download aivctrl-1.1.2.deb double click on it to install.
     Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
-  - All Linux: Download aivctrl-1.1.2.zip for a manual installation.
+  - All Linux x86: Download aivctrl-1.1.2.zip for a manual installation.
     Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).)
+  - Raspbian: Download aivctrl-pi3-1.1.2.deb. See raspberry-pi3-installation-notes.txt at the same https address.
+    Tested on Raspberry PI3 with Raspbian Stretch.
+    You can also install manually using aivctrl-pi3-1.1.2.zip. Just unpack in a folder after install qt5. 
   - Documentation in English and French.
   
 Some hardware or software devices are tested :

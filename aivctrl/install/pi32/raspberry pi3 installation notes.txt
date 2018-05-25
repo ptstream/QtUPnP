@@ -1,0 +1,15 @@
+                  Raspberry PI3 installation
+
+* Install Qt5.7 packages
+  sudo apt-get install qt5-default
+  
+* Intall the aivctrl package
+  sudo dpkg -i aivctrl-pi3-<version>.deb
+
+An entry is created in your multimedia sub-menu.
+
+Your can install manually in any folder by using the aivctrl-pi3-<version>.zip file.
+
+To uninstall the package
+  sudo apt-get remove aivctrl
+  

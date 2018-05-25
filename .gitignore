@@ -6,3 +6,4 @@
 aivctrl/install/linux64/Output/debian/usr/bin/aivctrl
 aivctrl/install/win32/build
 aivctrl/install/win32/Output/*.exe
+aivctrl/install/pi32/Output/debian/usr/bin/aivctrl

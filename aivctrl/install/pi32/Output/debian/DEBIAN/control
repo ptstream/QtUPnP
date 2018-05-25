@@ -1,0 +1,12 @@
+Source: AIVCtrl
+Package: AIVCtrl
+Version: 1.1.2
+Section: base
+Priority: optional
+Architecture: all
+Maintainer: PTaravel
+Homepage: https://github.com/ptstream/QtUPnP
+Installed-Size: 60000
+Description: AIVCtrl control point.
+ AIVCtrl is an UPnP/AV control point will provide methods to browse a media server's content and will perform all the necessary tasks to enable a renderer to playback the selected tracks, playlist...
+
