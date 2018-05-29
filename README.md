@@ -20,7 +20,9 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
     To build QtUPnP install QT5.7 and QtCreator on your Raspberry PI3.
 	  * sudo apt-get install qt5-default
       * sudo apt-get install qtcreator
+	  
 	For me it worked but another solution is possible.
+	
 	  * sudo apt-get update
       * sudo apt-get upgrade
       * sudo apt-get install qtcreator gcc qtbase5-dev
