@@ -13,6 +13,18 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
     A 64 bits is built. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
     The actual pro file creates a static library.
+	
+  - MacOS Several users have built QtUPnP from the actual source code.
+  
+  - Raspbian QtUPnP can be built using QT5.7 available in standard packages.
+    To build QtUPnP install QT5.7 and QtCreator on your Raspberry PI3.
+	  * sudo apt-get install qt5-default
+      * sudo apt-get install qtcreator
+	For me it worked but another solution is possible.
+	  * sudo apt-get update
+      * sudo apt-get upgrade
+      * sudo apt-get install qtcreator gcc qtbase5-dev
+    It has been tested under Raspbian Stretch with desktop on a Raspberry PI3.
 
 The framework use only QT API, no other system dependent API.
 
@@ -46,13 +58,17 @@ The main fonctionnalities are:
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
   - Windows 7 to 10: Download install-AIVCtrl-1.1.2.exe and double click on it to install.
     Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
+	
   - Kubuntu and Ubuntu x86: Download aivctrl-1.1.2.deb double click on it to install.
     Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
+	
   - All Linux x86: Download aivctrl-1.1.2.zip for a manual installation.
-    Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).)
+    Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
+	
   - Raspbian: Download aivctrl-pi3-1.1.2.deb. See raspberry-pi3-installation-notes.txt at the same https address.
-    Tested on Raspberry PI3 with Raspbian Stretch.
+      Tested on Raspberry PI3 with Raspbian Stretch.
     You can also install manually using aivctrl-pi3-1.1.2.zip. Just unpack in a folder after install qt5. 
+	
   - Documentation in English and French.
   
 Some hardware or software devices are tested :
