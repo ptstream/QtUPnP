@@ -29,10 +29,10 @@ public:
   inline CStatus& operator = (unsigned st);
 
   /*! Equality operator. */
-  inline bool operator == (CStatus const & other);
+  inline bool operator == (CStatus const & other) const;
 
   /*! Inequality operator. */
-  inline bool operator != (CStatus const & other);
+  inline bool operator != (CStatus const & other) const;
 
   /*! Adds a set of bits. */
   inline void addStatus (unsigned st);
@@ -98,12 +98,12 @@ unsigned CStatus::status () const
   return m_status;
 }
 
-bool CStatus::operator == (CStatus const & other)
+bool CStatus::operator == (CStatus const & other) const
 {
   return m_status == other.m_status;
 }
 
-bool CStatus::operator != (CStatus const & other)
+bool CStatus::operator != (CStatus const & other) const
 {
   return m_status != other.m_status;
 }
@@ -111,13 +111,13 @@ bool CStatus::operator != (CStatus const & other)
 /*! \brief Related non-members equal operator. */
 inline bool operator == (CStatus const & s1, CStatus const & s2)
 {
-  return s1 == s2;
+  return s1.status () == s2.status ();
 }
 
 /*! \brief Related non-members not equal operator. */
 inline bool operator != (CStatus const & s1, CStatus const & s2)
 {
-  return s1 != s2;
+  return s1.status () != s2.status ();
 }
 
 } // Namespace
