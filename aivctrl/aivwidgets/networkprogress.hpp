@@ -61,7 +61,7 @@ private :
   int m_lastPosition = 0; //!< Last pulsation position.
   int m_timerInteval = 150; //!< Interval betwwen two pulsation. */
   int m_waveWidth = 12; //!< Pulsation width en pixels.
-  int m_inc = m_invalidInc; //!< Increment the pusation position.
+  int m_inc = 100000; //!< Increment the pulsation position. See the constant m_invalidInc. (m_inc=m_invalidInc generates a warning with clank).
   bool m_inverted = false; //!< Forward or reverse flag.
   EType m_type = Default; //!< The pattern type.
   int m_binaryValue = 32; //*! The max binray value. */
