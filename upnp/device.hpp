@@ -354,6 +354,11 @@ public:
   /*! Returns the list of services which support eventing. */
   QStringList eventedServices () const;
 
+  /*! Replaces all subdevices by the content of devices.
+   * Normally you never need to call this function.
+   */
+  void replaceSubDevices (QList<CDevice> const & devices);
+
 private:
   QSharedDataPointer<SDeviceData> m_d; //!< Shared data pointer.
 };

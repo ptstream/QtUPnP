@@ -114,7 +114,9 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
   bool success = device.extractServiceComponents (m_naMgr, timeout);
   if (success && m_expandEmbeddedDevices)
   {
-    QList<CDevice>& subDevices = device.subDevices ();
+    QList<CDevice> subDevices = device.subDevices ();
+    QList<CDevice> subDevicesWithServices;
+    subDevicesWithServices.reserve (subDevices.size ());
     for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
     {
       CDevice& subDevice = *it;
@@ -122,9 +124,12 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
       if (success)
       {
         device.setType ();
+        subDevicesWithServices.push_back (subDevice);
         insertDevice (subDevice); // Insert embended device in the map.
       }
     }
+
+    device.replaceSubDevices (subDevicesWithServices);
   }
 
   return success;

@@ -743,3 +743,9 @@ QStringList CDevice::eventedServices () const
 
   return ids;
 }
+
+void CDevice::replaceSubDevices (QList<CDevice> const & devices)
+{
+  m_d->m_subDevices = devices;
+}
+
