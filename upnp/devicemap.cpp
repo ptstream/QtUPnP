@@ -114,22 +114,28 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
   bool success = device.extractServiceComponents (m_naMgr, timeout);
   if (success && m_expandEmbeddedDevices)
   {
-    QList<CDevice> subDevices = device.subDevices ();
-    QList<CDevice> subDevicesWithServices;
-    subDevicesWithServices.reserve (subDevices.size ());
-    for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
+    QString         parentUUID = device.uuid ();
+    QList<CDevice>& subDevices = device.subDevices ();
+    for (QList<CDevice>::iterator it = subDevices.begin (), begin = it, end = subDevices.end (); it != end; ++it)
     {
       CDevice& subDevice = *it;
-      success           &= extractServiceComponents (subDevice, timeout);
+      QString  uuid      = subDevice.uuid ();
+      if (uuid == parentUUID)
+      { // Case of subdevice where uuid is equal at parent uuid. Add the index of subdevice.
+        // The form will be uuid&0, uuid&0&0... Other forms are not possible because at the same level
+        // uuid must be different. The case append with InternetGatewayDevice device. Each device and subdevice
+        // have only one subdevice.
+        uuid = parentUUID + QString ("&%1").arg (it - begin);
+      }
+
+      subDevice.setUUID (uuid);
+      success &= extractServiceComponents (subDevice, timeout);
       if (success)
       {
         device.setType ();
-        subDevicesWithServices.push_back (subDevice);
         insertDevice (subDevice); // Insert embended device in the map.
       }
     }
-
-    device.replaceSubDevices (subDevicesWithServices);
   }
 
   return success;
