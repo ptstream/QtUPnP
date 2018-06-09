@@ -995,7 +995,10 @@ QList<QPair<QString, QUrl>> CControlPoint::devicesFinding () const
   for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
   {
     CDevice const & device = *it;
-    pairs.append (QPair<QString, QUrl> (device.uuid (), device.url ()));
+    if (!device.isSubDevice ())
+    { // Only root devices because subdevices will be detected from root devices.
+      pairs.append (QPair<QString, QUrl> (device.uuid (), device.url ()));
+    }
   }
 
   return pairs;
