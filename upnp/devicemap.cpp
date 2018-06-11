@@ -120,7 +120,7 @@ bool CDeviceMap::extractServiceComponents (CDevice& device, int timeout)
     {
       CDevice& subDevice = *it;
       QString  uuid      = subDevice.uuid ();
-      if (uuid == parentUUID)
+      if (contains (uuid))
       { // Case of subdevice where uuid is equal at parent uuid. Add the index of subdevice.
         // The form will be uuid&0, uuid&0&0... Other forms are not possible because at the same level
         // uuid must be different. The case append with InternetGatewayDevice device. Each device and subdevice
