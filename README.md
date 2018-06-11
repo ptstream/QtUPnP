@@ -78,11 +78,11 @@ Some hardware or software devices are tested :
   
  Hardware servers
 
-    - NAS Synology (DSM 6).
-    - NAS Western Digital My Cloud.
+    - NAS Synology DS214 (DSM 6).
+    - NAS Western Digital My Cloud. (1)
     - Cabasse Stream 1 v17.01.5.
     - La Box Numericable.
-    - FreeBox Révolution.
+    - FreeBox Révolution. (1)
  
  Software servers
 
@@ -90,13 +90,16 @@ Some hardware or software devices are tested :
     - Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49(Windows).
     - StriimServer Awox v1.2.0.0 (Windows).
     - MediaMonkey Windows v4.1.19 (Windows).
-    - MediaTomb v0.12.2 (Linux).	
+    - MediaTomb v0.12.2 (Linux).
+	- MiniDLNA on a Raspberry Pi 2 (1).
 
  Harware renderers
 
     Cabasse Stream 1 v17.01.5.
     La Box Numericable.
-    Some televisions Samsung and Sony.
+    Some televisions Samsung, Sony, LG.(1)
+    Denon AVR-X2100W Amplifier.(1)
+
 
  Software renderers
 
@@ -105,13 +108,21 @@ Some hardware or software devices are tested :
     Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49 (Windows).
     Windows Media Player v12.015063.608 (Windows)
 	
- Over devices
+ Router	detected
+ 	TPLink N600 Router (1).
+	Box Numericable.
+	SuperHub 3 router from Virgin ISP (1).
+	
+ Over devices detected
 
-    Wemo Wi-Fi Smart Light Switch F7C030fc
-	Wemo Switch Smart Plug F7C027fc
+    Wemo Wi-Fi Smart Light Switch F7C030fc (1).
+	Wemo Switch Smart Plug F7C027fc (1).
+	Synology DS213 NAS (1).
+	
+  (1) Tested by users. Many thanks for your contribution and your help.
 
-If you have some free time to test or use AIVCtrl, please use the issues and pull requests tabs for your remarks, malfunctions
-and also to report if your servers and renderers are working or not working properly.
+If you have some free time to test or use AIVCtrl and chupnp, please use the issues and pull requests tabs for your remarks, malfunctions
+and also to report if your servers, renderers and other devices are working or not working properly.
 
 Good luck to all
 
