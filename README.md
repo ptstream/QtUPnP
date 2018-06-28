@@ -47,7 +47,6 @@ The main functionalities are:
   - ...
   
   
-
 *************** AIVCtrl *******************
 
 aivctrl is a control point for users to drive media servers and media renderers. The user documentation it in /QtUPnP/aivctrl/doc
@@ -125,8 +124,6 @@ Some hardware or software devices are tested :
 
 If you have some free time to test or use AIVCtrl and chupnp, please use the issues and pull requests tabs for your remarks, malfunctions
 and also to report if your servers, renderers and other devices are working or not working properly.
-
-Good luck to all
 
 
 
