@@ -13,6 +13,7 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
     A 64 bits is built. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
     The actual pro file creates a static library.
+	To build QtUPnP without QtCreator, see linux-build folder.
 	
   - MacOS Several users have built QtUPnP from the actual source code.
   
@@ -28,10 +29,11 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
       * sudo apt-get install qtcreator gcc qtbase5-dev
 	  
     It has been tested under Raspbian Stretch with desktop on a Raspberry PI3.
+	To build QtUPnP without QtCreator, see linux-build folder.
 
 The framework use only QT API, no other system dependent API.
 
-upnp is the framework to encapsulate the UPnP protocol.
+The folder upnp contains the framework to encapsulate the UPnP protocol.
 
 
 *************** chupnp *******************
