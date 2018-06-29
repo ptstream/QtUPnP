@@ -1,9 +1,11 @@
-This folder contains two bash files to build chupnp and aivctrl on linux machines without use QtCreator.
+This folder contains two bash files to build chupnp and aivctrl on linux machines without using QtCreator.
 The bash files:
  - Create the file Makefile form qmake utility.
- - Build chupnp or aivctrl with make linux command
+ - Build chupnp and/or aivctrl with make linux command
  - Launch chupnp or aivctrl.
  
  Please see the comments in these bash files to set the environment variable for qmake utility.
  
- 
+aivctrl.sh builds only the English version and use Qt libraries files installed on the computer.
+To build a full version without Qt intallation, you can take inspiration from the file QtUPnP/aivctrl/install/linux64/build.sh.
+This bash file creates a folder with all necessary files and folders. It creates also a Debian package and a zip file.
