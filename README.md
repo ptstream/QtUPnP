@@ -122,7 +122,7 @@ Some hardware or software devices are tested :
 	
   (1) Tested by users. Many thanks for your contribution and your help.
 
-If you have some free time to test or use AIVCtrl and chupnp, please use the issues and pull requests tabs for your remarks, malfunctions
+If you have some free time to test or use AIVCtrl and chupnp, please use the issues tab for your remarks, malfunctions
 and also to report if your servers, renderers and other devices are working or not working properly.
 
 
