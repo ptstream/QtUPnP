@@ -109,6 +109,7 @@ Some hardware or software devices are tested :
     Windows Media Player v12.015063.608 (Windows)
 	
  Router	detected
+ 
  	TPLink N600 Router (1).
 	Box Numericable.
 	SuperHub 3 router from Virgin ISP (1).
