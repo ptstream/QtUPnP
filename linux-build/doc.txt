@@ -7,5 +7,8 @@ The bash files:
  Please see the comments in these bash files to set the environment variable for qmake utility.
  
 aivctrl.sh builds only the English version and use Qt libraries files installed on the computer.
-To build a full version without Qt intallation, you can take inspiration from the file QtUPnP/aivctrl/install/linux64/build.sh.
+To run a full version without Qt intallation, you can take inspiration from the file QtUPnP/aivctrl/install/linux64/build.sh.
 This bash file creates a folder with all necessary files and folders. It creates also a Debian package and a zip file.
+
+Launch these bash files in this folder or in any folder that is not the parent of linux-build.
+
