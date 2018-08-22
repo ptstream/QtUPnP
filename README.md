@@ -36,6 +36,7 @@ The folder upnp contains the framework to encapsulate the UPnP protocol.
 
 
 *************** chupnp *******************
+!(readme-images/chupnp.png)
 
 chupnp is an application for developers to test the framework. You can see the documentation at /QtUPnP/chupnp/docs/Test QtUPnP with chupnp.pdf
 The main functionalities are:
@@ -47,6 +48,7 @@ The main functionalities are:
   
   
 *************** AIVCtrl *******************
+!(readme-images/aivctrl.png)
 
 aivctrl is a control point for users to drive media servers and media renderers. The user documentation it in /QtUPnP/aivctrl/doc
 The main fonctionnalities are:
