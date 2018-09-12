@@ -844,11 +844,11 @@ unsigned CDidlItem::nrAudioChannels (int index) const
   return index >= 0 && index < size ? elems[index].props ().value ("nrAudioChannels").toUInt () : 0;
 }
 
-unsigned CDidlItem::size (int index) const
+unsigned long long CDidlItem::size (int index) const
 {
   QList<CDidlElem> elems = m_d->m_elems.values ("res");
   int              size  = elems.size ();
-  return index >= 0 && index < size ? elems[index].props ().value ("size").toUInt () : 0;
+  return index >= 0 && index < size ? elems[index].props ().value ("size").toULongLong () : 0;
 }
 
 unsigned CDidlItem::sampleFrequency (int index) const

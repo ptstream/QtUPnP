@@ -48,6 +48,11 @@ QString tooltipField (QString const & title, QString const & value, bool first)
 
 QString tooltipField (QString const & title, unsigned value, bool first)
 {
+  return tooltipField (title, static_cast<unsigned long long>(value), first);
+}
+
+QString tooltipField (QString const & title, unsigned long long value, bool first)
+{
   QString string;
   if (value != 0)
   {

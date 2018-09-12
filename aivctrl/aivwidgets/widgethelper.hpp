@@ -34,8 +34,11 @@ void removeWindowContextHelpButton (QDialog* dialog);
  */
 QString tooltipField (QString const & title, QString const & value, bool first = false);
 
-/*! Same as above with integer value. */
+/*! Same as above with unsigned integer value. */
 QString tooltipField (QString const & title, unsigned value, bool first = false);
+
+/*! Same as above with unsigned long long integer value. */
+QString tooltipField (QString const & title, unsigned long long value, bool first = false);
 
 /*! Same as above with double value. */
 QString tooltipField (QString const & title, double value, bool first = false);

@@ -402,7 +402,7 @@ public:
   unsigned nrAudioChannels (int index = 0) const;
 
   /*! Returns the size. */
-  unsigned size (int index = 0) const;
+  unsigned long long size(int index = 0) const;
 
   /*! Returns the sampleFrequency. */
   unsigned sampleFrequency (int index = 0) const;
