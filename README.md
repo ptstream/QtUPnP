@@ -81,10 +81,11 @@ Some hardware or software devices are tested :
  Hardware servers
 
     - NAS Synology DS214 (DSM 6).
+	- NAS Synology DS213  (1).
     - NAS Western Digital My Cloud. (1)
     - Cabasse Stream 1 v17.01.5.
     - La Box Numericable.
-    - FreeBox Révolution. (1)
+    - FreeBox Revolution. (1)
  
  Software servers
 
@@ -94,6 +95,7 @@ Some hardware or software devices are tested :
     - MediaMonkey Windows v4.1.19 (Windows).
     - MediaTomb v0.12.2 (Linux).
 	- MiniDLNA on a Raspberry Pi 2 (1).
+	- MiniDLNA on LEDE/OpenWRT (1).
 
  Harware renderers
 
@@ -101,6 +103,7 @@ Some hardware or software devices are tested :
     La Box Numericable.
     Some televisions Samsung, Sony, LG.(1)
     Denon AVR-X2100W Amplifier.(1)
+	GGMM E5 (es-100). (1)
 
 
  Software renderers
@@ -120,7 +123,6 @@ Some hardware or software devices are tested :
 
     Wemo Wi-Fi Smart Light Switch F7C030fc (1).
 	Wemo Switch Smart Plug F7C027fc (1).
-	Synology DS213 NAS (1).
 	
   (1) Tested by users. Many thanks for your contribution and your help.
 
