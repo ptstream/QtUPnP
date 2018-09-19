@@ -81,7 +81,7 @@ Some hardware or software devices are tested :
  Hardware servers
 
     - NAS Synology DS214 (DSM 6).
-	- NAS Synology DS213  (1).
+	- NAS Synology DS213. (1)
     - NAS Western Digital My Cloud. (1)
     - Cabasse Stream 1 v17.01.5.
     - La Box Numericable.
@@ -94,16 +94,16 @@ Some hardware or software devices are tested :
     - StriimServer Awox v1.2.0.0 (Windows).
     - MediaMonkey Windows v4.1.19 (Windows).
     - MediaTomb v0.12.2 (Linux).
-	- MiniDLNA on a Raspberry Pi 2 (1).
-	- MiniDLNA on LEDE/OpenWRT (1).
+	- MiniDLNA  on Raspberry Pi 2, LEDE/OpenWRT, Linux (1).
 
  Harware renderers
 
     Cabasse Stream 1 v17.01.5.
     La Box Numericable.
-    Some televisions Samsung, Sony, LG.(1)
-    Denon AVR-X2100W Amplifier.(1)
-	GGMM E5 (es-100). (1)
+    Some televisions Samsung, Sony, LG. (1)
+    Denon AVR-X2100W Amplifier. (1)
+	GGMM E5 (es-100). (1) (2)
+	Naim NAC-N 272. (1) (3)
 
 
  Software renderers
@@ -115,16 +115,18 @@ Some hardware or software devices are tested :
 	
  Router	detected
  
- 	TPLink N600 Router (1).
+ 	TPLink N600 Router. (1)
 	Box Numericable.
-	SuperHub 3 router from Virgin ISP (1).
+	SuperHub 3 router from Virgin ISP. (1)
 	
  Over devices detected
 
-    Wemo Wi-Fi Smart Light Switch F7C030fc (1).
-	Wemo Switch Smart Plug F7C027fc (1).
+    Wemo Wi-Fi Smart Light Switch F7C030fc. (1)
+	Wemo Switch Smart Plug F7C027fc. (1)
 	
   (1) Tested by users. Many thanks for your contribution and your help.
+  (2) AIVCtrl. The next track is not automatically started.
+  (3) AIVCtrl. Mute is OK but Unmute fails.
 
 If you have some free time to test or use AIVCtrl and chupnp, please use the issues tab for your remarks, malfunctions
 and also to report if your servers, renderers and other devices are working or not working properly.
