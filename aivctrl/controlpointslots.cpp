@@ -125,11 +125,6 @@ void CMainWindow::eventReady (QStringList const & emitter)
         {
           QString state = variant.toString ();
           // Asume PLAYING follow TRANSITIONING because some renderers send only TRANSITIONING.
-//          if (state == "STOPPED")
-//          {
-//            m_cp->abortStreaming ();
-//          }
-
           bool playing = state == "PLAYING" || state == "TRANSITIONING";
           playingIcon (playing);
           togglePositionTimer (playing);
@@ -141,9 +136,8 @@ void CMainWindow::eventReady (QStringList const & emitter)
         }
         else if (name == "CurrentTrackDuration")
         {
-          int ms = static_cast<int>(timeToMS (variant.toString ()));
           ui->m_position->blockSignals (true);
-          ui->m_position->setMaximum (ms);
+          ui->m_position->setMaximum (timeToS (variant.toString ()));
           ui->m_position->blockSignals (false);
         }
         else if (/*name == "AVTransportURI" || */name == "CurrentTrackURI")
