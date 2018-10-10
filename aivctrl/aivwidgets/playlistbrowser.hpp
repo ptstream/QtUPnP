@@ -32,6 +32,9 @@ public:
   /*! Disable/Enable the use of UPnP playlist. */
   void setDisableUPnPPlaylist (bool disable) { m_disableUPnPPlaylist = disable; }
 
+  /*! Returns true the use of UPnP playlist is disable. */
+  bool isUPnPPlaylistDisabled () const { return m_disableUPnPPlaylist; }
+
   /*! Enable/Disable HTTP conversion for HTTPS protocol for streaming. */
   void setDirectStreamHTTPS (bool set) { m_directStreamHTTPS = set; }
 
