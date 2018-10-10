@@ -56,9 +56,15 @@ QString UPNP_API buildSystemHeader ();
 
 /*! \brief Convert a string time to milliseconds.
  *
- * The time must be in form: h:mn:s.ms. The minimum value must be a value for the seconds.
+ * The time must be in form: h:mn:s.ms.
  */
 long long UPNP_API timeToMS (QString const & time);
+
+/*! \brief Convert a string time to seconds.
+ *
+ * The time must be in form: h:mn:s.
+ */
+int UPNP_API timeToS (QString const & time);
 
 /*! \brief Remove diacritics.
  *

@@ -21,7 +21,7 @@ QByteArray CDidlItem::m3u (QList<TPlaylistElem> const & playlistElems)
       CDidlElem const & resElem  = resElems[index];
       content                   += resElem.value ().toLatin1 ();
       QString           duration = resElem.props ().value ("duration");
-      unsigned          s        = timeToMS (duration) / 1000;
+      unsigned          s        = timeToS (duration);
       QString const &   title    = playlistElem.first.value ("dc:title").value ();
       content                   += "\r\n#EXTINF:" + QByteArray::number (s) + ',' + title.toLatin1 () + "\r\n";
     }
@@ -48,7 +48,7 @@ QByteArray CDidlItem::m3u8 (QList<TPlaylistElem> const & playlistElems)
       CDidlElem const & resElem  = resElems[index];
       content                   += resElem.value ().toUtf8 ();
       QString           duration = resElem.props ().value ("duration");
-      unsigned          s        = timeToMS (duration) / 1000;
+      unsigned          s        = timeToS (duration);
       QString const &   title    = playlistElem.first.value ("dc:title").value ();
       content                   += "\r\n#EXTINF:" + QByteArray::number (s) + ',' + title.toUtf8 () + "\r\n";
     }

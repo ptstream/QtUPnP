@@ -3,6 +3,8 @@
 #include "aivwidgets/networkprogress.hpp"
 #include "aivwidgets/widgethelper.hpp"
 #include "../upnp/renderingcontrol.hpp"
+#include "../upnp/avtransport.hpp"
+
 
 USING_UPNP_NAMESPACE
 
@@ -93,28 +95,28 @@ void CMainWindow::updatePosition ()
     QString const & trackURI = positionInfo.trackURI ();
     if (!trackURI.isEmpty ())
     {
-      int relTimeMS = ui->m_position->value ();
-      int absTimeMS = ui->m_position->maximum ();
+      int relTimeS = ui->m_position->value ();
+      int absTimeS = ui->m_position->maximum ();
 
       // Update absTime and relTime widgets.
-      bool enable    = absTimeMS >= 0 && absTimeMS <= maxAbsTime;
+      bool enable    = absTimeS >= 0 && absTimeS <= maxAbsTime;
       ui->m_relTime->setEnabled (enable);
       ui->m_absTime->setEnabled (enable);
       if (!enable)
       {
-        relTimeMS = absTimeMS = 0;
+        relTimeS = absTimeS = 0;
       }
 
       if (ui->m_absTime->isChecked ())
       {
-        absTimeMS -= relTimeMS;
+        absTimeS -= relTimeS;
       }
 
-      QTime         absTime   = QTime (0, 0).addMSecs (absTimeMS);
+      QTime         absTime   = QTime (0, 0).addSecs (absTimeS);
       QString const formatOut = absTime.hour () == 0 ? "mm:ss" : "hh:mm:ss";
       ui->m_absTime->setText (absTime.toString (formatOut));
 
-      QTime relTime = QTime (0, 0).addMSecs (relTimeMS);
+      QTime relTime = QTime (0, 0).addSecs (relTimeS);
       ui->m_relTime->setText (relTime.toString (formatOut));
 
       // Update rank widget.
@@ -138,6 +140,22 @@ void CMainWindow::updatePosition ()
 
       // Set bold the current playing item.
       setItemBold (trackURI);
+
+      // The part of code is needed for renderers that:
+      //   - Don't handle playlist or playlist disable.
+      //   - Have no SetNextAVTransportURI.
+      //   - Don't send event stop at the end of the track.
+      int const deltaAbsRel = 2;
+      if (std::abs (absTimeS - relTimeS) < deltaAbsRel && ui->m_queue->count () != 0)
+      {
+        CDevice const & device = m_cp->device (m_renderer);
+        if ((ui->m_queue->isUPnPPlaylistDisabled () ||
+             device.playlistStatus () != CDevice::PlaylistHandler) &&
+            !device.hasAction (QString::null, "setNextTransportURI"))
+        {
+          nextItem (true);
+        }
+      }
     }
   }
 }

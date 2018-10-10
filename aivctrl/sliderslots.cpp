@@ -28,7 +28,7 @@ void CMainWindow::on_m_position_valueChanged (int position)
   if (!ui->m_position->signalsBlocked ())
   {
     searchAction (false);
-    QTime   time         = QTime (0, 0).addMSecs (position);
+    QTime   time         = QTime (0, 0).addSecs (position);
     QString timePosition = time.toString ("hh:mm:ss");
 
     bool restart = false;

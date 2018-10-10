@@ -14,7 +14,7 @@
 
 char const * QtUPnP::libraryVersion ()
 {
-  return "1.1.2";
+  return "1.1.3";
 }
 
 char const * QtUPnP::libraryName ()
@@ -178,6 +178,13 @@ long long QtUPnP::timeToMS (QString const & time)
   }
 
   return duration;
+}
+
+int QtUPnP::timeToS (QString const & time)
+{
+  long long ms  = timeToMS (time);
+  double    msd = static_cast<double>(ms);
+  return static_cast<int>(qRound64 (msd / 1000.0));
 }
 
 /*! \brief Internal structure used by determineMatchesAndTransposes static function. */
