@@ -484,15 +484,20 @@ CActionInfo CControlPoint::invokeAction (QString const & deviceUUID,
   CActionInfo actionInfo;
   if (!deviceUUID.isEmpty () && m_devices.contains (deviceUUID))
   {
-    CDevice&    device   = m_devices[deviceUUID];
-    TMServices& services = device.services ();
-    for (TMServices::iterator its = services.begin (), end = services.end (); its != end && !actionInfo.succeeded (); ++its)
+    CDevice&             device   = m_devices[deviceUUID];
+    TMServices&          services = device.services ();
+    TMServices::iterator its      = services.begin (), end = services.end ();
+    while (its != end && !actionInfo.succeeded ())
     {
       CService& service = *its;
       actionInfo        = invokeAction (device, service, actionName, args, timeout);
       if (!m_devices.contains (deviceUUID))
       {
         break; // Must be deleted during event loop.
+      }
+      else
+      {
+        ++its;
       }
     }
   }
