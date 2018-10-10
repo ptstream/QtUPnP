@@ -154,6 +154,14 @@ void CMainWindow::togglePositionTimer (bool playing)
   }
 }
 
+void CMainWindow::rendererStopped ()
+{
+  ui->m_play->setEnabled (true);
+  ui->m_play2->setEnabled (true);
+  playingIcon (false);
+  togglePositionTimer (false);
+}
+
 void CMainWindow::setItemBold (QString const & uri)
 {
   if (!uri.isEmpty ())
@@ -184,15 +192,19 @@ void CMainWindow::setAVTransport (CContentDirectoryBrowserItem const * item)
   updateCurrentPlayling (item, true, true);
 }
 
-void CMainWindow::nextItem (bool forward)
+bool CMainWindow::nextItem (bool forward)
 {
+  bool next = false;
   int index = ui->m_queue->nextIndex (forward, m_playMode == RepeatAll,
                                       m_playMode == Shuffle || m_playMode == Random);
   if (index != -1)
   {
     QListWidgetItem* item = ui->m_queue->item (index);
     on_m_queue_itemDoubleClicked (item);
+    next = true;
   }
+
+  return next;
 }
 
 void CMainWindow::applyPlayMode ()
@@ -440,7 +452,7 @@ void CMainWindow::currentQueueChanged ()
         CPositionInfo    position = CAVTransport (m_cp).getPositionInfo (m_renderer);
         on_m_queue_itemDoubleClicked (item);
         QString relTime = position.relTime ();
-        on_m_position_valueChanged (::timeToMS (relTime));
+        on_m_position_valueChanged (::timeToS (relTime));
       }
     }
     else

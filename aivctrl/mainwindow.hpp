@@ -324,6 +324,9 @@ private :
   /*! Stops the position timer. */
   void stopPositionTimer ();
 
+  /*! Renderer stopped. Update the buttons */
+  void rendererStopped ();
+
   /*! Toggles the position timer. */
   void togglePositionTimer (bool playing);
 
@@ -383,7 +386,7 @@ private :
   void setAVTransport (CContentDirectoryBrowserItem const * item);
 
   /*! Sets the next or previous transport. */
-  void nextItem (bool forward);
+  bool nextItem (bool forward);
 
   /*! Network communications. */
   CNetworkProgress* networkProgress (QtUPnP::CDevice::EType type);

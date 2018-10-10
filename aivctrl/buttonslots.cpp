@@ -80,10 +80,7 @@ void CMainWindow::on_m_play_clicked ()
 
     if (success)
     { // No error occurs
-      ui->m_play->setEnabled (true);
-      ui->m_play2->setEnabled (true);
-      playingIcon (playing);
-      togglePositionTimer (playing);
+      rendererStopped ();
     }
   }
 }
