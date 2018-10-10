@@ -284,7 +284,7 @@ void CContentDirectoryBrowser::setBold (QString const & uri)
       CContentDirectoryBrowserItem* item   = static_cast<CContentDirectoryBrowserItem*>(this->item (iItem));
       CDidlItem const &             didl   = item->didlItem ();
       QFont                         font   = item->font ();
-      QString                       didURI = didl.uri (0);
+      QString                       didURI = replace127_0_0_1 (didl.uri (0));
       if (!didURI.isEmpty () && uri.endsWith (didURI)) // endsWith for plugins.
       {
         if (!font.bold ())
