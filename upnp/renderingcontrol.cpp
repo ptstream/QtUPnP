@@ -307,14 +307,14 @@ bool CRenderingControl::setBoolChannel (QString const & rendererUUID, QString co
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   args << CControlPoint::TArgValue ("Channel", channel);
-  args << CControlPoint::TArgValue (arg, value ? "true" : "false");
+  args << CControlPoint::TArgValue (arg, value ? "1" : "0");
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, action, args);
   return actionInfo.succeeded ();
 }
 
 bool CRenderingControl::getBoolChannel (QString const & rendererUUID, QString const & action, QString const & arg, QString const & channel, unsigned instanceID)
 {
- Q_ASSERT (m_cp != nullptr);
+  Q_ASSERT (m_cp != nullptr);
   QList<CControlPoint::TArgValue> args;
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
