@@ -147,7 +147,6 @@ void CMainWindow::updatePosition ()
       //   - Have no SetNextAVTransportURI.
       //   - Don't send event stop at the end of the track.
       int const relTimeCountMax = 5;
-      qDebug () << m_relTimeCurrent << ' ' << relTimeS << ' ' << relTimeCount;
       if (m_relTimeCurrent == relTimeS)
       {
         CDevice const & device = m_cp->device (m_renderer);
