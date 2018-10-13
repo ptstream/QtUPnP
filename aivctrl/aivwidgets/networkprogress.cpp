@@ -81,10 +81,11 @@ void CNetworkProgress::paintEvent (QPaintEvent*)
         QString value = QString::number (qrand () % m_binaryValue, 2);
         QFont   font  = this->font ();
         QFontMetrics fm (font);
-        int          w = fm.width (value) / 2;
-        path.lineTo (position - w, y);
-        path.addText (position - w, y, font, value);
-        path.moveTo (position + w, y);
+        int          xOffset = fm.width (value) / 2;
+        int          yOffset = fm.height () / 4;
+        path.lineTo (position - xOffset, y);
+        path.addText (position - xOffset, y + yOffset, font, value);
+        path.moveTo (position + xOffset, y);
         break;
       }
 
