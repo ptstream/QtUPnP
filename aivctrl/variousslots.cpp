@@ -5,7 +5,6 @@
 #include "../upnp/renderingcontrol.hpp"
 #include "../upnp/avtransport.hpp"
 
-
 USING_UPNP_NAMESPACE
 
 void CMainWindow::changeFolder (int index)
@@ -83,6 +82,8 @@ void CMainWindow::on_m_stackedWidget_currentChanged (int index)
 
 void CMainWindow::updatePosition ()
 {
+  static int relTimeCount = 0;
+
   if (!ui->m_position->mousePressed ())
   {
     int const maxAbsTime  = ui->m_position->maxAbsTime ();
@@ -145,16 +146,31 @@ void CMainWindow::updatePosition ()
       //   - Don't handle playlist or playlist disable.
       //   - Have no SetNextAVTransportURI.
       //   - Don't send event stop at the end of the track.
-      int const deltaAbsRel = 2;
-      if (std::abs (absTimeS - relTimeS) < deltaAbsRel && ui->m_queue->count () != 0)
+      int const relTimeCountMax = 5;
+      qDebug () << m_relTimeCurrent << ' ' << relTimeS << ' ' << relTimeCount;
+      if (m_relTimeCurrent == relTimeS)
       {
         CDevice const & device = m_cp->device (m_renderer);
-        if ((ui->m_queue->isUPnPPlaylistDisabled () ||
-             device.playlistStatus () != CDevice::PlaylistHandler) &&
+        if ((ui->m_queue->isUPnPPlaylistDisabled () || device.playlistStatus () != CDevice::PlaylistHandler) &&
             !device.hasAction (QString::null, "setNextTransportURI"))
-        {
-          nextItem (true);
+        { // The device has no setNextTransportURI action.
+          ++relTimeCount;
+          if (relTimeCount == relTimeCountMax)
+          {
+            CTransportInfo info = CAVTransport (m_cp).getTransportInfo (m_renderer);
+            if (info.currentTransportState () != "PAUSED_PLAYBACK")
+            {
+              nextItem (true);
+            }
+
+            m_relTimeCurrent = relTimeCount = 0;
+          }
         }
+      }
+      else
+      {
+        m_relTimeCurrent = relTimeS;
+        relTimeCount = 0;
       }
     }
   }

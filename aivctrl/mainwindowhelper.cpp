@@ -130,6 +130,7 @@ void CMainWindow::startPositionTimer ()
 {
   if (!m_positionTimer.isActive ())
   {
+    m_relTimeCurrent = 0;
     m_positionTimer.start ();
   }
 }
@@ -138,6 +139,7 @@ void CMainWindow::stopPositionTimer ()
 {
   if (m_positionTimer.isActive ())
   {
+    m_relTimeCurrent = 0;
     m_positionTimer.stop ();
   }
 }
@@ -154,12 +156,12 @@ void CMainWindow::togglePositionTimer (bool playing)
   }
 }
 
-void CMainWindow::rendererStopped ()
+void CMainWindow::updatePP (bool playing)
 {
   ui->m_play->setEnabled (true);
   ui->m_play2->setEnabled (true);
-  playingIcon (false);
-  togglePositionTimer (false);
+  togglePositionTimer (playing);
+  playingIcon (playing);
 }
 
 void CMainWindow::setItemBold (QString const & uri)
@@ -315,6 +317,8 @@ void CMainWindow::applyLastSession ()
     m_renderer = session.renderer ();
     m_language  = session.language ();
     m_status.setStatus (session.status ());
+    int size = session.iconSize ();
+    m_iconSize = QSize (size, size);
   }
   else
   {
@@ -377,6 +381,11 @@ void CMainWindow::applyLastSession ()
     CPlugin* plugin = m_cp->plugin (uuid);
     QString  fileName = dir.absoluteFilePath (plugin->name () + ".ids");
     plugin->restoreAuth (fileName);
+  }
+
+  if (!m_status.hasStatus (ShowCloudServers))
+  {
+    setCloudServersHidden (true);
   }
 }
 
@@ -583,5 +592,13 @@ void CMainWindow::loadPlugins ()
     CPlugin const * plugin = m_cp->plugin (*it);
     ui->m_cloud->addItem (plugin);
   }
+}
+
+void CMainWindow::setCloudServersHidden (bool hide)
+{
+  ui->m_cloud->setHidden (hide);
+  ui->m_cloudLabel->setHidden (hide);
+  ui->m_cloudLine1->setHidden (hide);
+  ui->m_cloudLine2->setHidden (hide);
 }
 

@@ -80,7 +80,7 @@ void CMainWindow::on_m_play_clicked ()
 
     if (success)
     { // No error occurs
-      rendererStopped ();
+      updatePP (playing);
     }
   }
 }

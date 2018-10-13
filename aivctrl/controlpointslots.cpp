@@ -123,11 +123,23 @@ void CMainWindow::eventReady (QStringList const & emitter)
         }
         else if (name == "TransportState")
         {
-          QString state = variant.toString ();
+          QString state      = variant.toString ();
+          bool    playing    = state == "PLAYING" || state == "TRANSITIONING";
+          bool    startTimer = playing;
+          if (!playing)
+          {
+            CDevice const & device = m_cp->device (m_renderer);
+            if ((ui->m_queue->isUPnPPlaylistDisabled () ||
+                 device.playlistStatus () != CDevice::PlaylistHandler) &&
+                !device.hasAction (QString::null, "setNextTransportURI"))
+            {
+              startTimer = true;
+            }
+          }
+
           // Asume PLAYING follow TRANSITIONING because some renderers send only TRANSITIONING.
-          bool playing = state == "PLAYING" || state == "TRANSITIONING";
           playingIcon (playing);
-          togglePositionTimer (playing);
+          togglePositionTimer (startTimer);
         }
         else if (name == "CurrentPlayMode")
         {

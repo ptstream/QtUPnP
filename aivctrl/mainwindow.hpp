@@ -43,6 +43,7 @@ public:
                  CollapseImagePlaylist     = 0x00000020, //!< Collapse or expang image playlist.
                  CollapseVideoPlaylist     = 0x00000040, //!< Collapse or expang video playlist.
                  UPnPPlaylistDisabled      = 0x00000080, //!< The UPnP playlists are disable. Use SetAVTransportURI.
+                 ShowCloudServers          = 0x00000100, //!< Show or hide the cloud servers.
                };
 
   /*! Stacked widget index. */
@@ -272,9 +273,6 @@ private :
   /*! Returns the content directory icon list. Use for default icon. */
   QStringList contentDirectoryIcons ();
 
-  /*! Sets the icon size for all QListWidget. */
-  void setIconSize ();
-
   /*! Update the content directory widget. */
   void updateContentDirectory (CFolderItem const & item, bool parentID);
 
@@ -325,7 +323,7 @@ private :
   void stopPositionTimer ();
 
   /*! Renderer stopped. Update the buttons */
-  void rendererStopped ();
+  void updatePP (bool playing = true);
 
   /*! Toggles the position timer. */
   void togglePositionTimer (bool playing);
@@ -391,18 +389,21 @@ private :
   /*! Network communications. */
   CNetworkProgress* networkProgress (QtUPnP::CDevice::EType type);
 
+  /*! Hides the cloud servers area. */
+  void setCloudServersHidden (bool hide);
+
 private : // UPnP
   Ui::CMainWindow* ui = nullptr; // The ui of the main windows.
   QtUPnP::CControlPoint* m_cp = nullptr; // The control point.
   int m_idDicoveryTimer = -1; // The discovery timer ID.
   int m_iconAngle = 0; // The current angle of the red settings icon.
   QtUPnP::CPixmapCache* m_pixmapCache = nullptr; // The pixmap cache.
-  QString m_server; //!< Current server. // The current server.
-  QString m_renderer; //!< Current renderer. // The current renderer.
+  QString m_server; // Current server. // The current server.
+  QString m_renderer; // Current renderer. // The current renderer.
   QtUPnP::CStatus m_status; // The status of the application.
   QTimer m_positionTimer; // The position timer.
-  int m_positionTimerInterval = 1000; //!< 1s. The position timer interval.
-  int m_discoverWaitInterval = 1000; //!< 1s. The wait interval during dicovery.
+  int m_positionTimerInterval = 1000; // 1s. The position timer interval.
+  int m_discoverWaitInterval = 1000; // 1s. The wait interval during dicovery.
   int m_cDiscoverWaits = 0; // The current number of discovery retries.
   int m_cDiscoverMaxWaits = 20; // The max number of discovery retries.
   bool m_discoveryGuard = false; // The guard has been started.
@@ -412,6 +413,7 @@ private : // UPnP
   QTranslator* m_translator = nullptr; // The current translator.
   QString m_language; // The current language.
   QString m_providerText; // The curent text of provider QLineEdit (use to store and restore).
+  int m_relTimeCurrent = 0; // Use in case of renderer stop at the end of the tack with signal.
 
 private : // UI
   QSize m_iconSize = QSize (32, 32); // Icon size of the application.
