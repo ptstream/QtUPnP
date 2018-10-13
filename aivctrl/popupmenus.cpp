@@ -11,6 +11,7 @@
 #include "../upnp/connectionmanager.hpp"
 #include "../upnp/renderingcontrol.hpp"
 #include "../upnp/avtransport.hpp"
+#include "../upnp/pixmapcache.hpp"
 #include <QMenu>
 #include <QProgressDialog>
 #include <QProgressBar>
@@ -568,6 +569,7 @@ void CMainWindow::homeAction (QAction* action)
                            UseSearchForCheckPlaylist,
                            UPnPEventsOnly,
                            UPnPPlaylistDisabled,
+                           ShowCloudServers,
                          };
 
       bool flags[CSettings::LastIndex];
@@ -576,7 +578,8 @@ void CMainWindow::homeAction (QAction* action)
         flags[index] = m_status.hasStatus (status[index]);
       }
 
-      CSettings settings (flags, this);
+      QSize     iconSize = m_iconSize;
+      CSettings settings (flags, m_iconSize, this);
       if (settings.exec () == QDialog::Accepted)
       {
         for (int index = CSettings::ShowNetworkCom; index < CSettings::LastIndex; ++index)
@@ -594,6 +597,19 @@ void CMainWindow::homeAction (QAction* action)
         ui->m_queue->setDisableUPnPPlaylist (m_status.hasStatus (UPnPPlaylistDisabled));
         ui->m_networkProgress->setHidden (!m_status.hasStatus (ShowNetworkCom));
       }
+
+      if (m_iconSize != iconSize)
+      {
+        CContentDirectoryBrowser* cds[] = { ui->m_contentDirectory, ui->m_queue, ui->m_playlistContent };
+        m_pixmapCache->clear ();
+        for (CContentDirectoryBrowser* cd : cds)
+        {
+          cd->setIconType (CContentDirectoryBrowserItem::IconNotdefined);
+        }
+
+        cds[0]->startIconUpdateTimer ();
+      }
+
       break;
     }
 

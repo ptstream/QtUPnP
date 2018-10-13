@@ -39,6 +39,9 @@ public :
   /*! Returns the type of icon. */
   EIconType iconType () const { return m_iconType; }
 
+  /*! Sets the type of icon. */
+  void setIconType (EIconType type) { m_iconType = type; }
+
   /*! Returns the CDidlItem. */
   QtUPnP::CDidlItem const & didlItem () const { return m_didlItem; }
 
@@ -152,6 +155,9 @@ public:
 
   /*! Returns the status blocked or not of the icons. */
   bool iconUpdateBlocked () const { return m_blockIconUpdate; }
+
+  /*! Sets icon type at all items. */
+  void setIconType (CContentDirectoryBrowserItem::EIconType type);
 
   /*! Stops the update of the icons. */
   static void stopIconUpdateTimer ();

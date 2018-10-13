@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>447</height>
+    <width>368</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,19 +16,19 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <property name="spacing">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>2</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QFrame" name="m_header">
@@ -40,19 +40,19 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
-        <number>2</number>
+        <number>6</number>
        </property>
        <property name="leftMargin">
         <number>2</number>
        </property>
        <property name="topMargin">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
         <number>2</number>
        </property>
        <property name="bottomMargin">
-        <number>2</number>
+        <number>0</number>
        </property>
        <item>
         <widget class="QToolButton" name="m_home">
@@ -62,12 +62,6 @@
          <property name="icon">
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/home.png</normaloff>:/icons/home.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
          </property>
          <property name="autoRaise">
           <bool>true</bool>
@@ -116,12 +110,6 @@
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/previous_folder.png</normaloff>:/icons/previous_folder.png</iconset>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
          <property name="autoRaise">
           <bool>true</bool>
          </property>
@@ -136,12 +124,6 @@
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/queue.png</normaloff>:/icons/queue.png</iconset>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
          <property name="autoRaise">
           <bool>true</bool>
          </property>
@@ -155,12 +137,6 @@
          <property name="icon">
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/contextual_actions.png</normaloff>:/icons/contextual_actions.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
          </property>
          <property name="popupMode">
           <enum>QToolButton::InstantPopup</enum>
@@ -345,18 +321,6 @@
           <property name="editTriggers">
            <set>QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
           </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="spacing">
-           <number>1</number>
-          </property>
-          <property name="uniformItemSizes">
-           <bool>true</bool>
-          </property>
           <property name="sortingEnabled">
            <bool>false</bool>
           </property>
@@ -419,27 +383,18 @@
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
-          <property name="gridSize">
-           <size>
-            <width>0</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="uniformItemSizes">
-           <bool>false</bool>
-          </property>
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <layout class="QHBoxLayout" name="m_cloudLayout">
           <property name="spacing">
            <number>6</number>
           </property>
           <item>
-           <widget class="Line" name="line_6">
+           <widget class="Line" name="m_cloudLine1">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -462,7 +417,7 @@
            </widget>
           </item>
           <item>
-           <widget class="Line" name="line_7">
+           <widget class="Line" name="m_cloudLine2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -489,15 +444,6 @@
           </property>
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="gridSize">
-           <size>
-            <width>0</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="uniformItemSizes">
-           <bool>false</bool>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>
@@ -537,12 +483,6 @@
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
-          <property name="gridSize">
-           <size>
-            <width>0</width>
-            <height>32</height>
-           </size>
-          </property>
          </widget>
         </item>
        </layout>
@@ -580,12 +520,6 @@
           </property>
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="gridSize">
-           <size>
-            <width>0</width>
-            <height>32</height>
-           </size>
           </property>
          </widget>
         </item>
@@ -657,12 +591,6 @@
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/speaker_on.png</normaloff>:/icons/speaker_on.png</iconset>
             </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
             <property name="autoRaise">
              <bool>true</bool>
             </property>
@@ -690,12 +618,6 @@
             <property name="icon">
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/favorite.png</normaloff>:/icons/favorite.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
             </property>
             <property name="autoRaise">
              <bool>true</bool>
@@ -824,12 +746,6 @@
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/repeat_off.png</normaloff>:/icons/repeat_off.png</iconset>
             </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
             <property name="autoRaise">
              <bool>true</bool>
             </property>
@@ -843,12 +759,6 @@
             <property name="icon">
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/previous.png</normaloff>:/icons/previous.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
             </property>
             <property name="autoRaise">
              <bool>true</bool>
@@ -864,12 +774,6 @@
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/playing_off.png</normaloff>:/icons/playing_off.png</iconset>
             </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
             <property name="autoRaise">
              <bool>true</bool>
             </property>
@@ -884,12 +788,6 @@
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
             </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
             <property name="autoRaise">
              <bool>true</bool>
             </property>
@@ -903,12 +801,6 @@
             <property name="icon">
              <iconset resource="aivctrl.qrc">
               <normaloff>:/icons/shuffle_off.png</normaloff>:/icons/shuffle_off.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
             </property>
             <property name="autoRaise">
              <bool>true</bool>
@@ -957,19 +849,19 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="spacing">
-        <number>2</number>
+        <number>6</number>
        </property>
        <property name="leftMargin">
         <number>2</number>
        </property>
        <property name="topMargin">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="rightMargin">
         <number>2</number>
        </property>
        <property name="bottomMargin">
-        <number>2</number>
+        <number>0</number>
        </property>
        <item>
         <widget class="QToolButton" name="m_currentPlayingIcon">
@@ -979,12 +871,6 @@
          <property name="icon">
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/no_album_art.png</normaloff>:/icons/no_album_art.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
          </property>
          <property name="autoRaise">
           <bool>true</bool>
@@ -1049,12 +935,6 @@
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/speaker_on.png</normaloff>:/icons/speaker_on.png</iconset>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
          <property name="autoRaise">
           <bool>true</bool>
          </property>
@@ -1079,12 +959,6 @@
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/previous.png</normaloff>:/icons/previous.png</iconset>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
          <property name="autoRaise">
           <bool>true</bool>
          </property>
@@ -1098,12 +972,6 @@
          <property name="icon">
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/playing_off.png</normaloff>:/icons/playing_off.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
          </property>
          <property name="autoRaise">
           <bool>true</bool>
@@ -1119,12 +987,6 @@
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
          </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
          <property name="autoRaise">
           <bool>true</bool>
          </property>
@@ -1138,12 +1000,6 @@
          <property name="icon">
           <iconset resource="aivctrl.qrc">
            <normaloff>:/icons/renderer.png</normaloff>:/icons/renderer.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
          </property>
          <property name="popupMode">
           <enum>QToolButton::InstantPopup</enum>

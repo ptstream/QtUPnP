@@ -43,16 +43,3 @@ QStringList CMainWindow::contentDirectoryIcons ()
            "genre",       //!< object.container.genre.movieGenre
          };
 }
-
-void CMainWindow::setIconSize ()
-{
-  QList<QListWidget*> listWidgets = findChildren<QListWidget*> ();
-  for (QListWidget* listWidget : listWidgets)
-  {
-    QSize iconSize = listWidget->iconSize ();
-    if (iconSize.isEmpty ())
-    {
-      listWidget->setIconSize (m_iconSize);
-    }
-  }
-}

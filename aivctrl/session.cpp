@@ -7,11 +7,11 @@
 
 
 CSession::CSession (QString const & renderer, int volume, int playMode,
-                    bool remainingTime, QRect const & rect, Qt::WindowStates windowStates,
+                    bool remainingTime, QRect const & rect, Qt::WindowStates windowStates, int iconSize,
                     QString const & language, unsigned status) : CXmlH (), m_renderer (renderer),
                     m_volume (volume), m_playMode (playMode),
                     m_remainingTime (remainingTime), m_rect (rect),
-                    m_windowStates (windowStates), m_language (language), m_status (status)
+                    m_windowStates (windowStates), m_iconSize (iconSize), m_language (language), m_status (status)
 {
 }
 
@@ -62,6 +62,18 @@ bool CSession::characters (QString const & name)
   else if (tag == "height")
   {
     m_rect.setHeight (name.toInt ());
+  }
+  else if (tag == "iconSize")
+  {
+    m_iconSize = name.toInt ();
+    if (m_iconSize < 16)
+    {
+      m_iconSize = 16;
+    }
+    else if (m_iconSize > 128)
+    {
+      m_iconSize = 128;
+    }
   }
   else if (tag == "states")
   {
@@ -140,6 +152,13 @@ void CSession::save (QString fileName)
         stream.writeStartElement ("states");
         stream.writeCharacters (QString::number (m_windowStates, 16));
         stream.writeEndElement ();
+
+        if (m_iconSize != 32)
+        {
+          stream.writeStartElement ("iconSize");
+          stream.writeCharacters (QString::number (m_iconSize));
+          stream.writeEndElement ();
+        }
 
         stream.writeEndElement (); // ui
 

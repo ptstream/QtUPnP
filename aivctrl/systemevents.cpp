@@ -118,7 +118,7 @@ void CMainWindow::closeEvent (QCloseEvent* event)
   {
     CSession session (m_renderer, ui->m_volume->value (), m_playMode,
                       ui->m_absTime->isChecked (), normalGeometry (), windowState (),
-                      m_language, m_status.status ());
+                      m_iconSize.width (), m_language, m_status.status ());
     session.save ();
 
     QDir        dir (::appDataDirectory ());

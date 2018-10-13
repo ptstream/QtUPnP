@@ -11,7 +11,7 @@ public :
   CSession () {}
   CSession (QString const & renderer, int volume, int playMode,
             bool remainingTime, QRect const & rect, Qt::WindowStates windowStates,
-            QString const & language, unsigned status);
+            int iconSize, QString const & language, unsigned status);
 
   virtual bool characters (QString const & name);
 
@@ -26,6 +26,7 @@ public :
   bool remainingTime () const { return m_remainingTime; }
   QRect const & geometry () const { return m_rect; }
   Qt::WindowStates windowStates () const { return m_windowStates; }
+  int iconSize () const { return m_iconSize; }
   QString const & language () const { return m_language; }
   unsigned status () const { return m_status; }
 
@@ -38,6 +39,7 @@ protected :
   bool m_remainingTime = false;
   QRect m_rect;
   Qt::WindowStates m_windowStates = Qt::WindowNoState;
+  int m_iconSize = 32;
   QString m_language;
   unsigned m_status = 0;
   QString const m_fileName = "session.xml";

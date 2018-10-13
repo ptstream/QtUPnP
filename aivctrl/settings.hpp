@@ -15,20 +15,26 @@ public:
                 UseSearchForCheckPlaylist,
                 UPnPEventsOnly,
                 DontUsePlaylists,
+                ShowCloudServers,
                 LastIndex,
               };
 
-  explicit CSettings (bool* flags, QWidget* parent = 0);
+  explicit CSettings (bool* flags, QSize& iconSize,  QWidget* parent = nullptr);
   ~CSettings ();
+
+  static void setIconSize (QWidget* w, QSize const & size);
 
 private slots :
   void on_m_reset_clicked ();
   void on_m_ok_clicked ();
   void on_m_cancel_clicked ();
+  void on_m_iconSize_valueChanged (int value);
 
 private:
   Ui::CSettings* ui;
   bool* m_flags;
+  QSize& m_iconSize;
+  QSize m_iconSizeBackup;
 };
 
 #endif // SETTINGS_HPP

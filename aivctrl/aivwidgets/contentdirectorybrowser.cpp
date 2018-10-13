@@ -202,12 +202,13 @@ void CContentDirectoryBrowser::updateIcon ()
     int cItems = count ();
     if (cItems != 0)
     {
-      bool        update    = false;
-      QRect       itemsRect = viewport ()->rect ();
-      QSize       offset    = iconSize () / 2;
-      int         xOffset   = offset.width ();
-      int         yOffset   = offset.height ();
-      QModelIndex top       = indexAt (itemsRect.topLeft () + QPoint (xOffset, yOffset));
+      QRect itemsRect = viewport ()->rect ();
+      itemsRect.adjust (-2, -2, 10, 10);
+      bool        update  = false;
+      QSize       offset  = iconSize () / 2;
+      int         xOffset = offset.width ();
+      int         yOffset = offset.height ();
+      QModelIndex top     = indexAt (itemsRect.topLeft () + QPoint (xOffset, yOffset));
       if (top.isValid ())
       {
         int         firstRow = top.row ();
@@ -374,4 +375,12 @@ void CContentDirectoryBrowser::startStream ()
   }
 }
 
+void CContentDirectoryBrowser::setIconType (CContentDirectoryBrowserItem::EIconType type)
+{
+  for (int iItem = 0, cItems = count (); iItem < cItems; ++iItem)
+  {
+    CContentDirectoryBrowserItem* item = static_cast<CContentDirectoryBrowserItem*>(this->item (iItem));
+    item->setIconType (type);
+  }
+}
 
