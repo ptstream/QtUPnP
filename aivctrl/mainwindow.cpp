@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "settings.hpp"
 #include "helper.hpp"
 #include "ui_mainwindow.h"
 #include "aivwidgets/widgethelper.hpp"
@@ -50,7 +51,7 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
 
   m_pixmapCache = new CPixmapCache;
   initWidgets ();
-  removeDumpError ();
+  ::removeDumpError ();
   if (m_status.hasStatus (CreateDumpErrorFile))
   {
     CXmlH::setDumpErrorFileName (errorFilePath ());
@@ -58,6 +59,7 @@ CMainWindow::CMainWindow (QWidget *parent) : QMainWindow (parent), ui (new Ui::C
 
   ui->m_myDevice->createDefaultPlaylists ();
   applyLastSession ();
+  CSettings::setIconSize (this, m_iconSize);
   addRendererPopupMenu ();
   addHomePopupMenu ();
   ui->m_stackedWidget->setCurrentIndex (Home);
@@ -104,15 +106,21 @@ void CMainWindow::initWidgets ()
 
   defIcons = serverIcons ();
   ui->m_servers->setDefaultIcons (defIcons);
-  QRect rec = QApplication::desktop()->screenGeometry ();
-  if (rec.height () < 800)
+  QRect desktopRect    = QApplication::desktop ()->screenGeometry ();
+  QRect mainWindowRect = geometry();
+  if (mainWindowRect.height () > desktopRect.height ())
   {
+    mainWindowRect.setHeight (desktopRect.height ());
+    ui->m_cover->setMaximumHeight (128);
+  }
+
+  if (mainWindowRect.width () > desktopRect.width ())
+  {
+    mainWindowRect.setWidth (desktopRect.width ());
     ui->m_cover->setMaximumHeight (128);
   }
 
   ui->m_cover->setDefaultPixmapName ("audio_file_big");
-  setIconSize ();
-
   m_positionTimer.setInterval (m_positionTimerInterval);
 
   QMenu* menu = new QMenu (this);
