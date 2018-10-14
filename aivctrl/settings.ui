@@ -146,6 +146,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLabel" name="m_size">
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string>32</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

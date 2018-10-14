@@ -17,6 +17,7 @@ CSettings::CSettings (bool* flags, QSize& iconSize, QWidget* parent) : QDialog (
   ui->m_cloudServers->setChecked (flags[ShowCloudServers]);
   ui->m_iconSize->setValue (iconSize.width ());
   m_iconSizeBackup = iconSize;
+  ui->m_size->setText (QString::number (iconSize.width ()));
 }
 
 CSettings::~CSettings ()
@@ -28,6 +29,7 @@ void CSettings::on_m_iconSize_valueChanged (int value)
 {
   QWidget* mw = static_cast<QWidget*>(parent ());
   m_iconSize  = QSize (value, value);
+  ui->m_size->setText (QString::number (value));
   setIconSize (mw, m_iconSize);
 }
 
