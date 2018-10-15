@@ -598,6 +598,11 @@ void CMainWindow::homeAction (QAction* action)
         ui->m_networkProgress->setHidden (!m_status.hasStatus (ShowNetworkCom));
       }
 
+      if (settings.resetState ())
+      {
+        resize (m_startSize);
+      }
+
       if (m_iconSize != iconSize)
       {
         CContentDirectoryBrowser* cds[] = { ui->m_contentDirectory, ui->m_queue, ui->m_playlistContent };

@@ -156,3 +156,11 @@ void CMainWindow::changeEvent (QEvent* event)
 
   QWidget::changeEvent (event); // remember to call base class implementation
 }
+
+void CMainWindow::resizeEvent (QResizeEvent *event)
+{
+  if (m_startSize.isNull ())
+  {
+    m_startSize = event->size ();
+  }
+}

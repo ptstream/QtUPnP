@@ -265,6 +265,9 @@ protected :
   /*! Change event. Used for translation. */
   virtual void changeEvent (QEvent* event);
 
+  /*! Resize event. */
+  virtual void resizeEvent (QResizeEvent *event);
+
 private :
   // ListWidget icons.
   /*! Returns the servers icon list. Use for default icon. */
@@ -414,6 +417,7 @@ private : // UPnP
   QString m_language; // The current language.
   QString m_providerText; // The curent text of provider QLineEdit (use to store and restore).
   int m_relTimeCurrent = 0; // Use in case of renderer stop at the end of the tack with signal.
+  QSize m_startSize; // Size at startup.
 
 private : // UI
   QSize m_iconSize = QSize (32, 32); // Icon size of the application.

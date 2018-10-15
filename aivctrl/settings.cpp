@@ -31,6 +31,7 @@ void CSettings::on_m_iconSize_valueChanged (int value)
   m_iconSize  = QSize (value, value);
   ui->m_size->setText (QString::number (value));
   setIconSize (mw, m_iconSize);
+  m_reset = false;
 }
 
 void CSettings::setIconSize (QWidget* w, QSize const & size)
@@ -57,6 +58,7 @@ void CSettings::on_m_reset_clicked ()
   ui->m_playlists->setChecked (false);
   ui->m_cloudServers->setChecked (false);
   ui->m_iconSize->setValue (32);
+  m_reset = true;
 }
 
 void CSettings::on_m_ok_clicked ()
@@ -72,5 +74,6 @@ void CSettings::on_m_ok_clicked ()
 void CSettings::on_m_cancel_clicked ()
 {
   on_m_iconSize_valueChanged (m_iconSizeBackup.width ());
+  m_reset = false;
   reject ();
 }
