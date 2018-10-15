@@ -203,7 +203,7 @@ void CContentDirectoryBrowser::updateIcon ()
     if (cItems != 0)
     {
       QRect itemsRect = viewport ()->rect ();
-      itemsRect.adjust (-2, -2, 10, 10);
+      itemsRect.adjust (-10, -10, 10, 10);
       bool        update  = false;
       QSize       offset  = iconSize () / 2;
       int         xOffset = offset.width ();
@@ -211,7 +211,12 @@ void CContentDirectoryBrowser::updateIcon ()
       QModelIndex top     = indexAt (itemsRect.topLeft () + QPoint (xOffset, yOffset));
       if (top.isValid ())
       {
-        int         firstRow = top.row ();
+        int firstRow = top.row ();
+        if (firstRow > 0)
+        {
+          --firstRow;
+        }
+
         QModelIndex bottom   = indexAt (itemsRect.bottomLeft () + QPoint (xOffset, -yOffset));
         int         lastRow  = bottom.isValid () ? bottom.row () : cItems - 1;
         QSize       iconSize = this->iconSize ();
