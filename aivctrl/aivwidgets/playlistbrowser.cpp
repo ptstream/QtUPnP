@@ -18,7 +18,7 @@ CPlaylistBrowser::CPlaylistBrowser (QWidget* parent) : CContentDirectoryBrowser 
 void CPlaylistBrowser::setAVTransportURI (CControlPoint* cp, QString const & renderer, int itemRow)
 {
   CAVTransport avt (cp);
-//  avt.stop (renderer); // Some renderers return wrong values if the function is called in mode "PLAYING".
+  avt.stop (renderer); // Some renderers return wrong values if the function is not called in mode "PLAYING".
   CDevice const & device = cp->device (renderer);
 
   CContentDirectoryBrowserItem* cdItem   = static_cast<CContentDirectoryBrowserItem*>(item (itemRow));
