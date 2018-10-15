@@ -10,7 +10,7 @@ DEVEL=/home/$USER/Documents/Development/QtUPnP
 OUTPUT=$DEVEL/$PRODUCT/install/linux64/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
 BINARIES=/home/$USER/Documents/Development/build-$PRODUCT-Desktop_Qt_5_8_0_GCC_64bit-Release
-VERSION=1.1.2
+VERSION=1.1.3
 
 if [ -d $TARGET ]
 then
@@ -37,7 +37,7 @@ mkdir "$TARGET"
 echo Copy binary files
 cp $BINARIES/$PRODUCT/$PRODUCT $TARGET/$PRODUCT
 cp ../../icons/*48.png $TARGET
-cp $DEVEL/$PRODUCT/install/linux64/$PRODUCT $TARGET/$PRODUCT.run
+cp $PRODUCT $TARGET/$PRODUCT.run
 
 echo Copy plugins files
 mkdir $TARGET/plugins
@@ -85,7 +85,9 @@ dpkg-deb --build debian $PRODUCT-$VERSION.deb
 cd ..
 
 echo Build zip file
-zip -q -r -9 $OUTPUT/$PRODUCT-$VERSION.zip $TARGET
+cp aivctrlzip $TARGET/$PRODUCT.run
+cd $TARGET
+zip -q -r -9 $OUTPUT/$PRODUCT-$VERSION.zip ../$PRODUCT
 echo "********************** End build *************************"
 
 
