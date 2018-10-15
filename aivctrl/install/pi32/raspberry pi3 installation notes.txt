@@ -8,8 +8,6 @@
 
 An entry is created in your multimedia sub-menu.
 
-Your can install manually in any folder by using the aivctrl-pi3-<version>.zip file.
-
 To uninstall the package
   sudo apt-get remove aivctrl
   
