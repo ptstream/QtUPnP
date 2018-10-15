@@ -10,7 +10,7 @@ DEVEL=/home/$USER/Devel/QtUPnP
 OUTPUT=$DEVEL/$PRODUCT/install/pi32/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
 BINARIES=/home/$USER/Devel/build-$PRODUCT-Desktop-Release
-VERSION=1.1.2
+VERSION=1.1.3
 
 echo $TARGET
 
@@ -74,9 +74,5 @@ chmod 755 debian/DEBIAN/post*
 chmod 755 debian/DEBIAN/pre*
 dpkg-deb --build debian $PRODUCT-pi3-$VERSION.deb
 cd ..
-
-echo Build zip file
-zip -q -r -9 $OUTPUT/$PRODUCT-pi3-$VERSION.zip $TARGET
-echo "********************** End build *************************"
 
 
