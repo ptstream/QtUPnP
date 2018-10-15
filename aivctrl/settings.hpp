@@ -22,6 +22,8 @@ public:
   explicit CSettings (bool* flags, QSize& iconSize,  QWidget* parent = nullptr);
   ~CSettings ();
 
+  bool resetState () const { return m_reset; }
+
   static void setIconSize (QWidget* w, QSize const & size);
 
 private slots :
@@ -35,6 +37,7 @@ private:
   bool* m_flags;
   QSize& m_iconSize;
   QSize m_iconSizeBackup;
+  bool m_reset = false;
 };
 
 #endif // SETTINGS_HPP
