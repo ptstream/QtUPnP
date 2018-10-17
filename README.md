@@ -11,9 +11,9 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
   - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
-    A 64 bits is built. It has been tested on Kubuntu under VirtualBox and Ubuntu native.
+    A 64 bits is built. It has been tested on Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
     The actual pro file creates a static library.
-	To build QtUPnP without QtCreator, see linux-build folder (including Raspbian build).
+	To build QtUPnP without QtCreator, see linux-build folder.
 	
   - MacOS Several users have built QtUPnP from the actual source code.
   
@@ -61,19 +61,18 @@ The main fonctionnalities are:
   - And a lot of another things.
   
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
-  - Windows 7 to 10: Download install-AIVCtrl-1.1.2.exe and double click on it to install.
-    Tested with Windows 10. To use Vista the application must be rebuilt with Qt 5.6.
+  - Windows 7 to 10: Download install-AIVCtrl-1.1.3.exe and double click on it to install.
+    Tested with Windows 10.
 	
-  - Kubuntu and Ubuntu x86: Download aivctrl-1.1.2.deb double click on it to install.
-    Tested with Kubuntu 17.10, and Ubuntu 16.04 LTS (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
+  - Kubuntu and Ubuntu x86: Download aivctrl-1.1.3.deb double click on it to install.
+    Tested with Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox, and Ubuntu 18.04 native.
 	
-  - All Linux x86: Download aivctrl-1.1.2.zip for a manual installation.
+  - All Linux x86: Download aivctrl-1.1.3.zip for a manual installation.
     Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
 	
-  - Raspbian: Download aivctrl-pi3-1.1.2.deb. See raspberry-pi3-installation-notes.txt at the same https address.
+  - Raspbian: Download aivctrl-pi3-1.1.3.deb.
       Tested on Raspberry PI3 with Raspbian Stretch.
-    You can also install manually using aivctrl-pi3-1.1.2.zip. Just unpack in a folder after install qt5. 
-	
+    	
   - Documentation in English and French.
   
 Some hardware or software devices are tested :
@@ -83,22 +82,22 @@ Some hardware or software devices are tested :
     - NAS Synology DS214 (DSM 6).
 	- NAS Synology DS213. (1)
     - NAS Western Digital My Cloud. (1)
-    - Cabasse Stream 1 v17.01.5.
+    - Cabasse Stream 1.
     - La Box Numericable.
     - FreeBox Revolution. (1)
  
  Software servers
 
-    - Windows Media Player v12.015063.608 (Windows).
-    - Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49(Windows).
-    - StriimServer Awox v1.2.0.0 (Windows).
-    - MediaMonkey Windows v4.1.19 (Windows).
-    - MediaTomb v0.12.2 (Linux).
-	- MiniDLNA  on Raspberry Pi 2, LEDE/OpenWRT, Linux (1).
+    - Windows Media Player (Windows).
+    - Foobar 2000 with UPnP/DLNA Renderer, Server, Control Point plugin (Windows).
+    - StriimServer Awox (Windows).
+    - MediaMonkey Windows (Windows).
+    - MediaTomb(Linux).
+	- MiniDLNA on Raspberry Pi 2, LEDE/OpenWRT, Linux (1).
 
  Harware renderers
 
-    Cabasse Stream 1 v17.01.5.
+    Cabasse Stream 1.
     La Box Numericable.
     Some televisions Samsung, Sony, LG. (1)
     Denon AVR-X2100W Amplifier. (1)
@@ -108,10 +107,9 @@ Some hardware or software devices are tested :
 
  Software renderers
 
-    Renderer Android Awox v2.3.0 (Android).
-    BubbleUPnP v2.8.14 (Android).
-    Foobar 2000 v1.3.16 with UPnP/DLNA Renderer, Server, Control Point plugin v0.99.49 (Windows).
-    Windows Media Player v12.015063.608 (Windows)
+    BubbleUPnP (Android).
+    Foobar 2000 with UPnP/DLNA Renderer, Server, Control Point plugin (Windows).
+    Windows Media Player (Windows)
 	
  Router	detected
  
