@@ -102,8 +102,8 @@ Some hardware or software devices are tested :
     La Box Numericable.
     Some televisions Samsung, Sony, LG. (1)
     Denon AVR-X2100W Amplifier. (1)
-	GGMM E5 (es-100). (1) (2)
-	Naim NAC-N 272. (1) (3)
+	GGMM E5 (es-100). (1)
+	Naim NAC-N 272. (1)
 
 
  Software renderers
@@ -125,8 +125,6 @@ Some hardware or software devices are tested :
 	Wemo Switch Smart Plug F7C027fc. (1)
 	
   (1) Tested by users. Many thanks for your contribution and your help.
-  (2) AIVCtrl. The next track is not automatically started.
-  (3) AIVCtrl. Mute is OK but Unmute fails.
 
 If you have some free time to test or use AIVCtrl and chupnp, please use the issues tab for your remarks, malfunctions
 and also to report if your servers, renderers and other devices are working or not working properly.
