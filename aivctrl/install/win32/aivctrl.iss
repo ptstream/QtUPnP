@@ -43,8 +43,8 @@ Type: filesandordirs; Name: "{userappdata}\{#MyAppName}"
 Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
-[Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent; AfterInstall: SetFirewallException;
+;[Run]
+;Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent; AfterInstall: SetFirewallException;
 
 [CustomMessages]
 RBI=AIVCtrl is running. Close it before install.
