@@ -10,7 +10,7 @@ DEVEL=/home/$USER/Devel/QtUPnP
 OUTPUT=$DEVEL/$PRODUCT/install/pi32/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
 BINARIES=/home/$USER/Devel/build-$PRODUCT-Desktop-Release
-VERSION=1.1.3
+VERSION=1.1.4
 
 echo $TARGET
 
