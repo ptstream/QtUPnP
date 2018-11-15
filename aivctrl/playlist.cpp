@@ -453,9 +453,10 @@ bool CPlaylist::contains (QtUPnP::CDidlItem const & didlItem) const
 {
   bool            contain = false;
   QString const & id      = didlItem.id ();
+  QString const & uri     = didlItem.uri (0);
   for (CDidlItem const & item : m_d->m_items)
   {
-    if (item.id () == id)
+    if (item.id () == id || item.uri (0) == uri)
     {
       contain = true;
       break;
