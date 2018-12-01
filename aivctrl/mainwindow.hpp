@@ -27,6 +27,7 @@ class CNetworkProgress;
 class QListWidget;
 class QListWidgetItem;
 class QTranslator;
+class QAction;
 
 /*! The QMainWindow. */
 class CMainWindow : public QMainWindow

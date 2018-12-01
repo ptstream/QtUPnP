@@ -4,6 +4,7 @@
 #include "aivwidgets/widgethelper.hpp"
 #include "../upnp/renderingcontrol.hpp"
 #include "../upnp/avtransport.hpp"
+#include <QAction>
 
 USING_UPNP_NAMESPACE
 
