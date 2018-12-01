@@ -1,4 +1,3 @@
-#include <QAction>
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 #include "aivwidgets/networkprogress.hpp"
