@@ -103,7 +103,8 @@ Some hardware or software devices are tested :
     Denon AVR-X2100W Amplifier. (1)
 	GGMM E5 (es-100). (1)
 	Naim NAC-N 272. (1)
-
+	Denon DRA-100. (1)
+    LG TV webOS based 55B7V. (1)
 
  Software renderers
 
@@ -122,7 +123,7 @@ Some hardware or software devices are tested :
     Wemo Wi-Fi Smart Light Switch F7C030fc. (1)
 	Wemo Switch Smart Plug F7C027fc. (1)
 	
-  (1) Tested by users. Many thanks for your contribution and your help.
+  (1) Tested by users and contributors. Many thanks for your contribution and your help.
 
 If you have some free time to test or use AIVCtrl and chupnp, please use the issues tab for your remarks, malfunctions
 and also to report if your servers, renderers and other devices are working or not working properly.
