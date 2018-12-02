@@ -29,6 +29,8 @@ Build the framework and the test program need to install QT5. QtUPnP has been co
       * sudo apt-get install qtcreator gcc qtbase5-dev
 	  
     It has been tested under Raspbian Stretch with desktop on a Raspberry PI3.
+	
+The folder QtUPnP/linux-build/ contains also some Linux scripts to build simply chupnp and AIVCtrl.
 
 The framework use only QT API, no other system dependent API.
 

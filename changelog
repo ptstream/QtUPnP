@@ -4,9 +4,11 @@ version 1.1.3
   * Automatic track advance without SetNextAVTransportURI action and unimplemented playlist format.
   * Hide cloud servers.
   * New icons.
+  * Add scripts to build chupnp and AIVCtrl on Fedora systems. Thank's to Przemo Firszt for his contribution.
 
 - Bugs
   * Boolean UPnP parameters send "0" or "1" in place of "false" or "true" (not really a bug).
+  * Add QAction include file in variousslots.cpp to prevent build fails with different Qt version. Thank again to Przemo Firszt for his contribution.
   
 
 Version 1.1.2
