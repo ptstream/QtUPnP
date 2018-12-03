@@ -92,7 +92,7 @@ CXmlH::~CXmlH ()
 
 QString CXmlH::tag (int level) const
 {
-  return m_stack.size () > level ? *(m_stack.end () - level - 1) : 0;
+  return m_stack.size () > level ? *(m_stack.end () - level - 1) : QString ();
 }
 
 bool CXmlH::parse (QByteArray response)
