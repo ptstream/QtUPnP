@@ -4,13 +4,13 @@
 #        For my Raspberry PI 3, the folder is /usr/bin
 
 # Create the qmake folder environmen variable
-QMAKEFOLDER=$HOME/Qt5.8.0/5.8/gcc_64/bin 
+QMAKE=$HOME/Qt5.8.0/5.8/gcc_64/bin/qmake
 
 # Create the Linux Makefile
-$QMAKEFOLDER/qmake ../QtUPnP.pro
+$QMAKE ../QtUPnP.pro
 
 # Build chupnp 
-make     
+make -j
 
 # Launch chupnp
 chupnp/chupnp                           
