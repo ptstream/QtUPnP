@@ -60,3 +60,9 @@ PLUGINDESTDIR=$$DESTDIR
 PLUGINDIR=$$PWD
 QMAKE_POST_LINK = $$_PRO_FILE_PWD_/dep.sh $$PLUGINDIR $$PLUGINDESTDIR
 }
+
+DISTFILES += \
+    dep.sh \
+    googledrive.ids \
+    googledrive.png \
+    dep.cmd
