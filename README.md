@@ -87,6 +87,7 @@ Some hardware or software devices are tested :
     - Cabasse Stream 1.
     - La Box Numericable.
     - FreeBox Revolution. (1)
+	- CocktailAudio X40. (1)
  
  Software servers
 
@@ -96,7 +97,6 @@ Some hardware or software devices are tested :
     - MediaMonkey Windows (Windows).
     - MediaTomb(Linux).
 	- MiniDLNA on Raspberry Pi 2, LEDE/OpenWRT, Linux (1).
-	- CocktailAudio X40. (1)
 	- Plex Media Server (detected). (1)
 	- MinimServer (detected). (1)
 
