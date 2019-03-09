@@ -96,17 +96,21 @@ Some hardware or software devices are tested :
     - MediaMonkey Windows (Windows).
     - MediaTomb(Linux).
 	- MiniDLNA on Raspberry Pi 2, LEDE/OpenWRT, Linux (1).
+	- CocktailAudio X40. (1)
+	- Plex Media Server (detected). (1)
+	- MinimServer (detected). (1)
 
  Harware renderers
 
-    Cabasse Stream 1.
-    La Box Numericable.
-    Some televisions Samsung, Sony, LG. (1)
-    Denon AVR-X2100W Amplifier. (1)
-	GGMM E5 (es-100). (1)
-	Naim NAC-N 272. (1)
-	Denon DRA-100. (1)
-    LG TV webOS based 55B7V. (1)
+   - Cabasse Stream 1.
+   - La Box Numericable.
+   - Some televisions Samsung, Sony, LG. (1)
+   - Denon AVR-X2100W Amplifier. (1)
+   - GGMM E5 (es-100). (1)
+   - Naim NAC-N 272. (1)
+   - Denon DRA-100. (1)
+   - LG TV webOS based 55B7V. (1)
+   - CocktailAudio X40. (1)
 
  Software renderers
 
