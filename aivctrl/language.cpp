@@ -6,6 +6,7 @@
 #include <QTranslator>
 #include <QPair>
 #include <QAbstractButton>
+#include <array>
 
 CLanguage::CLanguage (QWidget* parent) : QDialog (parent), ui (new Ui::CLanguage)
 {

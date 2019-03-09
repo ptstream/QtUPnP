@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       = gui network
+QT       = gui network xml
 
 TARGET = googledrive
 TEMPLATE = lib
