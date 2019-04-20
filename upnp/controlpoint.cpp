@@ -44,7 +44,7 @@ CControlPoint::~CControlPoint ()
 
 CMulticastSocket* CControlPoint::initializeMulticast (QHostAddress const & host, QHostAddress const & group, char const * name)
 {
-  CMulticastSocket* socket = new CMulticastSocket (this);
+  auto socket = new CMulticastSocket (this);
   if (socket->initialize (host, group))
   {
     socket->setName (name);
@@ -61,7 +61,7 @@ CMulticastSocket* CControlPoint::initializeMulticast (QHostAddress const & host,
 
 CUnicastSocket* CControlPoint::initializeUnicast (QHostAddress const & host, char const * name)
 {
-  CUnicastSocket* socket = new CUnicastSocket (this);
+  auto socket = new CUnicastSocket (this);
   if (socket->bind (host))
   {
     socket->setName (name);
@@ -180,7 +180,7 @@ bool CControlPoint::discover (char const * nt)
 
 void CControlPoint::readDatagrams ()
 {
-  CUpnpSocket*       socket    = static_cast<CUpnpSocket*>(sender ());
+  auto               socket    = static_cast<CUpnpSocket*>(sender ());
   QByteArray const & datagrams = socket->readDatagrams ();
   if (!datagrams.isEmpty () && datagrams.endsWith ("\r\n\r\n"))
   {
@@ -237,8 +237,8 @@ void CControlPoint::newDevicesDetected ()
 
 void CControlPoint::renewalTimeout ()
 {
-  QTimer* timer = static_cast<QTimer*>(sender ());
-  for (QMap<QString, TSubscriptionTimer>::const_iterator it = m_subcriptionTimers.begin (), end = m_subcriptionTimers.end (); it != end; ++it)
+  auto timer = static_cast<QTimer*>(sender ());
+  for (QMap<QString, TSubscriptionTimer>::const_iterator it = m_subcriptionTimers.cbegin (), end = m_subcriptionTimers.cend (); it != end; ++it)
   {
     TSubscriptionTimer const & stimer = it.value ();
     if (timer == stimer.first)
@@ -339,10 +339,10 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
   CActionInfo    actionInfo;
   if (!m_closing)
   {
-    QString        uuid       = device.uuid (); // Save device uuid because it can be deleted during event loop.
-    CDevice::EType deviceType = device.type ();
-    CActionManager actionManager (m_devices.networkAccessManager ());
-    connect (&actionManager, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const &)),
+    QString const & uuid       = device.uuid (); // Save device uuid because it can be deleted during event loop.
+    CDevice::EType  deviceType = device.type ();
+    CActionManager  actionManager (m_devices.networkAccessManager ());
+    connect (&actionManager, SIGNAL(networkError(QString const &, QNetworkReply::NetworkError, QString const & )),
              this, SLOT(networkAccessManager(QString const &, QNetworkReply::NetworkError, QString const &)));
 
     TMActions const & actions = service.actions (); // Action list of service
@@ -407,9 +407,8 @@ CActionInfo CControlPoint::invokeAction (CDevice& device, CService& service,
           {
             TMArguments const & arguments = action.arguments ();
             // Update the out arguments value.
-            for (QList<TArgValue>::iterator it = args.begin (), end = args.end (); it != end; ++it)
+            for (TArgValue& arg : args)
             {
-              TArgValue& arg = *it;
               if (arguments.contains (arg.first))
               { // Known argument.
                 CArgument const & argument                 = arguments.value (arg.first);
@@ -495,10 +494,8 @@ CActionInfo CControlPoint::invokeAction (QString const & deviceUUID,
       {
         break; // Must be deleted during event loop.
       }
-      else
-      {
-        ++its;
-      }
+
+      ++its;
     }
   }
   else
@@ -533,7 +530,7 @@ bool CControlPoint::subscribe (QString const & deviceUUID, int renewalDelay, int
     success = m_devices.subscribe (device, renewalDelay, requestTimeout);
     if (success)
     {
-      QTimer* timer = new QTimer;
+      auto timer = new QTimer;
       timer->setInterval ((renewalDelay - m_renewalGard) * 1000);
       timer->setSingleShot (true);
       timer->start ();
@@ -583,9 +580,8 @@ void CControlPoint::renewSubscribe (QString const & deviceUUID, int requestTimeo
 QStringList CControlPoint::devices (CDevice::EType type) const
 {
   QStringList deviceUUIDs;
-  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  for (CDevice const & device : m_devices)
   {
-    CDevice const & device = *it;
     if (device.type () == type)
     {
       deviceUUIDs << device.uuid ();
@@ -598,9 +594,8 @@ QStringList CControlPoint::devices (CDevice::EType type) const
 int CControlPoint::devicesCount (CDevice::EType type) const
 {
   int count = 0;
-  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  for (CDevice const & device : m_devices)
   {
-    CDevice const & device = *it;
     if (device.type () == type)
     {
       ++count;
@@ -613,9 +608,8 @@ int CControlPoint::devicesCount (CDevice::EType type) const
 bool CControlPoint::hasDevice (CDevice::EType type) const
 {
   bool success = false;
-  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  for (CDevice const & device : m_devices)
   {
-    CDevice const & device = *it;
     if (device.type () == type)
     {
       success = true;
@@ -762,7 +756,7 @@ void CControlPoint::unknownAction (QString const & action, CDevice const & devic
   initActionError (action,  device, service);
   m_lastActionError.setString (ErrorActionString,
                                QString ("Unknown action: %1 for device : %2 and service: %3")
-                                        .arg (action).arg (device.uuid ()).arg (service.serviceType ()));
+                                        .arg (action, device.uuid (), service.serviceType ()));
 }
 
 void CControlPoint::unknownArg (QString const & action, QString const & arg, CDevice const & device, CService const & service)
@@ -770,7 +764,7 @@ void CControlPoint::unknownArg (QString const & action, QString const & arg, CDe
   initArgError (action, arg, device, service);
   m_lastActionError.setString (ErrorActionString,
                                QString ("Unknown argument: %1 for action: %2 for device : %3 and service: %4")
-                               .arg (arg).arg (action).arg (device.uuid ()).arg (service.serviceType ()));
+                               .arg (arg, action, device.uuid (), service.serviceType ()));
 }
 
 void CControlPoint::argStateVarRelationship (QString const & arg, QString const & stateVar, QString const & action,
@@ -780,7 +774,7 @@ void CControlPoint::argStateVarRelationship (QString const & arg, QString const 
   m_lastActionError.setString (ErrorRelatedStateVar, stateVar);
   m_lastActionError.setString (ErrorActionString,
                                QString ("Wrong relationship between argument and state variable: %1 for action: %2 for device : %3 and service: %4")
-                                        .arg (arg).arg (action).arg (device.uuid ()).arg (service.serviceType ()));
+                                        .arg (arg, action, device.uuid (), service.serviceType ()));
 }
 
 void CControlPoint::unknownService (QString const & uuid, QString const & id)
@@ -788,7 +782,7 @@ void CControlPoint::unknownService (QString const & uuid, QString const & id)
   m_lastActionError.setString (ErrorDeviceUUID, uuid);
   m_lastActionError.setString (ErrorServiceTypeOrID, id);
   m_lastActionError.setString (ErrorActionString,
-                               QString ("Wrong service identifier: %1 for device: %2").arg (uuid).arg (id));
+                               QString ("Wrong service identifier: %1 for device: %2").arg (uuid, id));
 
 }
 
@@ -862,8 +856,8 @@ void CControlPoint::loadPlugins ()
           QFunctionPointer fct = QLibrary::resolve (filePath, "pluginObject");
           if (fct != nullptr)
           {
-            CPlugin::TFctPluginObject pluginObject = reinterpret_cast<CPlugin::TFctPluginObject>(fct);
-            CPlugin*                  plugin       = (*pluginObject) ();
+            auto     pluginObject = reinterpret_cast<CPlugin::TFctPluginObject>(fct);
+            CPlugin* plugin       = (*pluginObject) ();
             if (plugin != nullptr)
             {
               plugin->setName (fi.baseName ());
@@ -997,9 +991,8 @@ QList<QPair<QString, QUrl>> CControlPoint::devicesFinding () const
 {
   QList<QPair<QString, QUrl>> pairs;
   pairs.reserve (m_devices.size ());
-  for (TMDevices::const_iterator it = m_devices.begin (); it != m_devices.end (); ++it)
+  for (CDevice const & device : m_devices)
   {
-    CDevice const & device = *it;
     if (!device.isSubDevice ())
     { // Only root devices because subdevices will be detected from root devices.
       pairs.append (QPair<QString, QUrl> (device.uuid (), device.url ()));

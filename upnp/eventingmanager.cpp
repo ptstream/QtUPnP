@@ -33,8 +33,8 @@ void CEventingManager::finished ()
 
 void CEventingManager::error (QNetworkReply::NetworkError err)
 {
-  QNetworkReply* replySender = dynamic_cast<QNetworkReply*>(sender ());
-  QString        errorString = replySender->errorString ();
+  auto    replySender = dynamic_cast<QNetworkReply*>(sender ());
+  QString errorString = replySender->errorString ();
   qDebug () << "CEventingManager::error: " << err << " (" << errorString << ")";
   exit (err);
 }

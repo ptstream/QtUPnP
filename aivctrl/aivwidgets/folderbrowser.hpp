@@ -18,7 +18,7 @@ public:
 
   /*! Constructor. */
   CFolderItem (int folderIndex, QString const & name,
-               QString const & parentID = QString::null, QString const & id = QString::null,
+               QString const & parentID =  QString (), QString const & id =  QString (),
                CListWidgetBase* listWidget = nullptr);
   /*! Copy constructor. */
   CFolderItem (CFolderItem const & rhs);
@@ -91,8 +91,8 @@ public:
    * \param id: UPnP identifier.
    * \param listWidget: The current QListWidget.
    */
-  void push (int index, QString name = QString::null, QString const & parentID = nullptr,
-             QString const & id = QString::null, CListWidgetBase* listWidget = nullptr);
+  void push (int index, QString name =  QString (), QString const & parentID = nullptr,
+             QString const & id =  QString (), CListWidgetBase* listWidget = nullptr);
 
   /*! Pop a CFolderItem on the stack. */
   CFolderItem pop ();

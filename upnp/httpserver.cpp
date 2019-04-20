@@ -476,13 +476,14 @@ QByteArray CHTTPServer::streamingHeaderResponse (QNetworkReply const * reply, QL
   QByteArray const crlf = "\r\n";
 
   // Header tags to preseve.
-  std::array<QByteArray, 10> const tags = { "DATE",
-                                            "SERVER",
-                                            "CONTENT-TYPE",
-                                            "CONTENT-LENGTH",
-                                            "CONTENT-RANGE",
-                                            "CONTENT-ENCODING",
-                                          };
+  typedef std::array<QByteArray, 6> TTags;
+  TTags const tags = { "DATE",
+                       "SERVER",
+                       "CONTENT-TYPE",
+                       "CONTENT-LENGTH",
+                       "CONTENT-RANGE",
+                       "CONTENT-ENCODING",
+                     };
   QByteArray header;
   header.reserve (1024);
   QVariant httpStatusCode   = reply->attribute (QNetworkRequest::HttpStatusCodeAttribute);
@@ -494,8 +495,8 @@ QByteArray CHTTPServer::streamingHeaderResponse (QNetworkReply const * reply, QL
   QList<QNetworkReply::RawHeaderPair> const & headerPairs = reply->rawHeaderPairs ();
   for (QNetworkReply::RawHeaderPair const & headerPair : headerPairs)
   {
-    QByteArray                                name = headerPair.first.toUpper ();
-    std::array<QByteArray, 7>::const_iterator end  = tags.cend ();
+    QByteArray            name = headerPair.first.toUpper ();
+    TTags::const_iterator end  = tags.cend ();
     if (std::find (tags.cbegin (), end, name) != end && !hasHeader (name))
     { // Header is in tags and not in mandatory.
       QByteArray value = headerPair.second;

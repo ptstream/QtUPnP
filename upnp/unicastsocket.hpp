@@ -19,7 +19,7 @@ public :
    * \param addr: The host address.
    * \return The port or 0 in case of failure.
   */
-  quint16 bind (QHostAddress addr);
+  quint16 bind (QHostAddress const & addr);
 };
 
 } // End namespace

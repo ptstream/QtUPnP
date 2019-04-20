@@ -87,14 +87,14 @@ QHostAddress CUpnpSocket::localHostAddress (bool ipv6)
       int const fKO = QNetworkInterface::IsLoopBack;
 
       QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces ();
-      for (QList<QNetworkInterface>::const_iterator itFace = interfaces.begin (); itFace != interfaces.end () && m_localHostAddress.isNull (); ++itFace)
+      for (QList<QNetworkInterface>::const_iterator itFace = interfaces.cbegin (); itFace != interfaces.cend () && m_localHostAddress.isNull (); ++itFace)
       {
         QNetworkInterface                 iFace = *itFace;
         QNetworkInterface::InterfaceFlags flags = iFace.flags ();
         if ((flags & fOK) == fOK && (flags & fKO) == 0)
         {
           QList<QNetworkAddressEntry> entries = iFace.addressEntries ();
-          for (QList<QNetworkAddressEntry>::const_iterator itEnt = entries.begin (); itEnt != entries.end () && m_localHostAddress.isNull (); ++itEnt)
+          for (QList<QNetworkAddressEntry>::const_iterator itEnt = entries.cbegin (); itEnt != entries.cend () && m_localHostAddress.isNull (); ++itEnt)
           {
             QHostAddress addr = (*itEnt).ip ();
             if (!ipv6 && addr.protocol () == QAbstractSocket::IPv4Protocol)
@@ -103,7 +103,8 @@ QHostAddress CUpnpSocket::localHostAddress (bool ipv6)
               m_localHostAddress = addr;
               break;
             }
-            else if (ipv6 && addr.protocol () == QAbstractSocket::IPv6Protocol)
+
+            if (ipv6 && addr.protocol () == QAbstractSocket::IPv6Protocol)
             {
               m_localHostAddress6 = addr;
               break;
@@ -152,7 +153,7 @@ void CUpnpSocket::decodeDatagram ()
   m_datagram.clear ();
 }
 
-CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
+CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray const &  datagram)
 {
   CHTTPParser parser (datagram);
   parser.parseMessage ();
@@ -223,9 +224,9 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
     {
       QString uuidTemp = uuid.toLower ();
       QString urlTemp  = url.toLower ();
-      for (QList<QByteArray>::const_iterator it = m_skippedUUIDs.cbegin (), end = m_skippedUUIDs.cend (); it != end; ++it)
+      for (QByteArray const & uuid : m_skippedUUIDs)
       {
-        if (uuidTemp.contains (*it) || urlTemp.contains (*it))
+        if (uuidTemp.contains (uuid) || urlTemp.contains (uuid))
         {
           type = SNDevice::Unknown;
           break;
@@ -240,9 +241,9 @@ CUpnpSocket::SNDevice CUpnpSocket::createDevice (QByteArray datagram)
   }
   else
   {
-    for (QList<QByteArray>::const_iterator it = m_skippedAddresses.cbegin (), end = m_skippedAddresses.cend (); it != end; ++it)
+    for (QByteArray const & addr : m_skippedAddresses)
     {
-      if (url.contains (*it))
+      if (url.contains (addr))
       {
         type = SNDevice::Unknown;
         break;
@@ -270,7 +271,7 @@ QByteArray CUpnpSocket::userAgent ()
   return ua;
 }
 
-bool CUpnpSocket::discover (QHostAddress hostAddress, quint16 port, quint16 mx, const char* uuid)
+bool CUpnpSocket::discover (QHostAddress const & hostAddress, quint16 port, quint16 mx, const char* uuid)
 {
   QByteArray datagram = "M-SEARCH * HTTP/1.1\r\nHOST: %1:1900\r\nMAN: \"ssdp:discover\"\r\nMX: %2\r\nST: %3\r\nCONTENT-LENGTH: 0\r\n\r\n";
   datagram.replace ("%1", hostAddress.toString ().toLatin1 ().constData ());

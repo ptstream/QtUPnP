@@ -26,9 +26,8 @@ bool CDeviceMap::subscribe (CDevice& device, int renewDelay, int requestTimeout)
   bool        success;
   int         cServices = 0, cEventings = 0;
   TMServices& services  = device.services ();
-  for (TMServices::iterator it = services.begin (), end = services.end (); it != end; ++it)
+  for (CService& service : services)
   {
-    CService& service = *it;
     if (service.isEvented ())
     {
       ++cEventings;
@@ -52,9 +51,8 @@ void CDeviceMap::renewSubscribe (CDevice& device, int requestTimeout)
 {
   QUrl const & url      = device.url ();
   TMServices & services = device.services ();
-  for (TMServices::iterator it = services.begin (), end = services.end (); it != end; ++it)
+  for (CService& service : services)
   {
-    CService& service = *it;
     if (service.isEvented ())
     {
       QString const & sid = service.subscribeSID ();
@@ -74,10 +72,9 @@ void CDeviceMap::unsubscribe (CDevice& device, int requestTimeout)
 {
   QUrl const & url      = device.url ();
   TMServices & services = device.services ();
-  for (TMServices::iterator it = services.begin (), end = services.end (); it != end; ++it)
+  for (CService& service : services)
   {
-    CService&       service = *it;
-    QString const & sid     = service.subscribeSID ();
+    QString const & sid = service.subscribeSID ();
     if (!sid.isEmpty ())
     {
       CEventingManager em (m_naMgr);
@@ -98,9 +95,9 @@ void CDeviceMap::insertDevice (CDevice& device)
 {
   insert (device.uuid (), device); // Insert in the map.
   QList<CDevice>& subDevices = device.subDevices ();
-  for (QList<CDevice>::iterator it = subDevices.begin (), end = subDevices.end (); it != end; ++it)
+  for (CDevice& device : subDevices)
   {
-    insertDevice (*it);
+    insertDevice (device);
   }
 }
 

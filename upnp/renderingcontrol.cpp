@@ -11,7 +11,7 @@ QStringList CRenderingControl::getListPresets (QString const & rendererUUID, uns
   QList<CControlPoint::TArgValue> args;
   args.reserve (2);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("CurrentPresetNameList", QString::null);
+  args << CControlPoint::TArgValue ("CurrentPresetNameList",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "ListPresets", args);
   if (actionInfo.succeeded ())
   {
@@ -130,8 +130,8 @@ QPair<int, int> CRenderingControl::getVolumeDBRange (QString const & rendererUUI
   args.reserve (2);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   args << CControlPoint::TArgValue ("Channel", channel);
-  args << CControlPoint::TArgValue ("MinValue", QString::null);
-  args << CControlPoint::TArgValue ("MaxValue", QString::null);
+  args << CControlPoint::TArgValue ("MinValue",  QString ());
+  args << CControlPoint::TArgValue ("MaxValue",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetVolumeDBRange", args);
   QPair<int, int> values;
   if (actionInfo.succeeded ())
@@ -219,7 +219,7 @@ unsigned CRenderingControl::getUInt1 (QString const & rendererUUID, QString cons
   QList<CControlPoint::TArgValue> args;
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue (arg, QString::null);
+  args << CControlPoint::TArgValue (arg,  QString ());
   unsigned    value      = 0;
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, action, args);
   if (actionInfo.succeeded ())
@@ -236,7 +236,7 @@ int CRenderingControl::getInt1 (QString const & rendererUUID, QString const & ac
   QList<CControlPoint::TArgValue> args;
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue (arg, QString::null);
+  args << CControlPoint::TArgValue (arg,  QString ());
   int         value      = 0;
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, action, args);
   if (actionInfo.succeeded ())
@@ -289,7 +289,7 @@ int CRenderingControl::getVolume (QString const & rendererUUID, QString const & 
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   args << CControlPoint::TArgValue ("Channel", channel);
-  args << CControlPoint::TArgValue ("CurrentVolume", QString::null);
+  args << CControlPoint::TArgValue ("CurrentVolume",  QString ());
   int         volume     = 0;
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, action, args);
   if (actionInfo.succeeded ())
@@ -319,7 +319,7 @@ bool CRenderingControl::getBoolChannel (QString const & rendererUUID, QString co
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
   args << CControlPoint::TArgValue ("Channel", channel);
-  args << CControlPoint::TArgValue (arg, QString::null);
+  args << CControlPoint::TArgValue (arg,  QString ());
   bool        value      = false;
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, action, args);
   if (actionInfo.succeeded ())

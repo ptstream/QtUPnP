@@ -109,7 +109,7 @@ public :
    * \param returned: Max number of CDidlItem return. If returned <= 0 or > items size, returnd whill be items size.
    * \return The list of sorted CDidlItem.
    */
-  QList<CDidlItem> search (QString text, int returned = -1, int commonPrefixLength = -1) const;
+  QList<CDidlItem> search (QString const & text, int returned = -1, int commonPrefixLength = -1) const;
 
   /*! Returns the CDidlItem list that match exactly or approximately text.
    * This function search the best corresponds between a text and a title list and returns

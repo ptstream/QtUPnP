@@ -19,7 +19,7 @@ public:
   ~CXmlH ();
 
   /*! Parse the XML response. */
-  virtual bool parse (QByteArray response);
+  virtual bool parse (QByteArray const & response);
 
   /*! Parse the XML response. */
   virtual bool parse (QString const & response);

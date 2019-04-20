@@ -20,7 +20,7 @@ CLanguage::CLanguage (QWidget* parent) : QDialog (parent), ui (new Ui::CLanguage
   qmDir.cd ("languages");
 
   tr ("French");
-  TLanguage   language = { tr ("English"), "en", QString::null };
+  TLanguage   language = { tr ("English"), "en",  QString () };
   m_availableLanguages << language;
 
   QStringList qmFiles  = qmDir.entryList (QStringList ("*.qm"));
@@ -53,7 +53,7 @@ CLanguage::~CLanguage ()
 
 QString CLanguage::qmFileSelected () const
 {
-  return m_slectedLanguageIndex > 0 ? m_availableLanguages[m_slectedLanguageIndex][tyQmFile] : QString::null;
+  return m_slectedLanguageIndex > 0 ? m_availableLanguages[m_slectedLanguageIndex][tyQmFile] :  QString ();
 }
 
 QString CLanguage::shortNameSelected () const

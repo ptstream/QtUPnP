@@ -101,20 +101,20 @@ QByteArray COAuth2::htmlConnectionResponse (QString const & text, bool ok)
 <p style=\"text-align:center\"><a href=\"#\" onClick=\"self.close();\">%4<SUP>*</SUP></a></p>\
 <p style=\"text-align:center\"><sup>*</sup>%5</p>\
 </body>\
-</html>").arg (tr ("Connection"))
-         .arg (ok ? "green" : "red")
-         .arg (text)
-         .arg (tr ("You can close your browser"))
-         .arg (tr ("Due to the browser security policy, this button may not work. Use standard close application."));
+</html>").arg (tr ("Connection"),
+          (ok ? "green" : "red"),
+          text,
+          tr ("You can close your browser"),
+          tr ("Due to the browser security policy, this button may not work. Use standard close application."));
 
   return content.toUtf8 ();
 }
 
 void COAuth2::readyRead ()
 {
-  bool        done   = false;
-  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
-  QByteArray  data   = socket->readAll ();
+  bool       done   = false;
+  auto       socket = static_cast<QTcpSocket*>(sender ());
+  QByteArray data   = socket->readAll ();
   if (data.startsWith ("GET /aivctrl-oauth-callback"))
   {
     int index = data.indexOf ("\r\n");
@@ -130,13 +130,13 @@ void COAuth2::readyRead ()
           elems[0] = elem0s[1];
         }
 
-        for (QList<QByteArray>::const_iterator it = elems.cbegin (), end = elems.cend (); it != end; ++it)
+        for (QByteArray const & elem : elems)
         {
-          QList<QByteArray> elem = (*it).split ('=');
-          if (elem.size () == 2)
+          QList<QByteArray> varval = elem.split ('=');
+          if (varval.size () == 2)
           {
-            QString var = QString::fromUtf8 (elem[0]);
-            QString val = QString::fromUtf8 (elem[1]);
+            QString var = QString::fromUtf8 (varval[0]);
+            QString val = QString::fromUtf8 (varval[1]);
             if (var == "state" && m_data.contains (var))
             {
               if (val != m_data.value (var))
@@ -175,7 +175,7 @@ void COAuth2::readyRead ()
 
 void COAuth2::disconnected ()
 {
-  QTcpSocket* socket = static_cast<QTcpSocket*>(sender ());
+  auto socket = static_cast<QTcpSocket*>(sender ());
   socket->deleteLater ();
 }
 

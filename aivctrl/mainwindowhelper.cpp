@@ -112,9 +112,9 @@ void CMainWindow::updateCurrentPlayling (CDidlItem const & didl,
 void CMainWindow::clearCurrentPlayling ()
 {
   ui->m_title->clear ();
-  ui->m_title->setToolTip (QString::null);
+  ui->m_title->setToolTip ( QString ());
 
-  ui->m_cover->setImage (QString::null);
+  ui->m_cover->setImage ( QString ());
   ui->m_currentPlayingIcon->setIcon (QIcon (ui->m_cover->image ()));
   ui->m_trackMetadata->clear ();
 }
@@ -246,7 +246,7 @@ QString CMainWindow::playModeString ()
                            };
 
   CDevice const &             device          = m_cp->device (m_renderer);
-  CStateVariable const &      currentPlayMode = device.stateVariable ("CurrentPlayMode", QString::null);
+  CStateVariable const &      currentPlayMode = device.stateVariable ("CurrentPlayMode",  QString ());
   QStringList const &         playModes       = currentPlayMode.allowedValues ();
   QStringList::const_iterator begin           = playModes.cbegin ();
   QStringList::const_iterator end             = playModes.cend ();

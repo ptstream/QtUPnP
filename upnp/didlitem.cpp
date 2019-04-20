@@ -332,7 +332,7 @@ CDidlItem::EType CDidlItem::type () const
   CDidlElem elem = m_d->m_elems.value ("upnp:class");
   if (!elem.isEmpty ())
   {
-    QString value = elem.value ();
+    QString const & value = elem.value ();
     for (unsigned iTag = 0; iTag < sizeof (s_typeTags) / sizeof (char const *); ++iTag)
     {
       if (value == s_typeTags[iTag])
@@ -511,8 +511,8 @@ QString CDidlItem::didl (bool percentEncodeing) const
     }
   };
 
-  QStringList                 keys = m_d->m_elems.uniqueKeys ();
-  QStringList::const_iterator it   = std::find (keys.begin (), keys.end (), "item");
+  QStringList           keys = m_d->m_elems.uniqueKeys ();
+  QStringList::iterator it   = std::find (keys.begin (), keys.end (), "item");
   if (it != keys.end ())
   {
     writeElements (*it, false);
@@ -815,14 +815,14 @@ QString CDidlItem::protocolInfo (int index) const
 {
   QList<CDidlElem> elems = m_d->m_elems.values ("res");
   int              size  = elems.size ();
-  return index >= 0 && index < size ? elems[index].props ().value ("protocolInfo") : QString::null;
+  return index >= 0 && index < size ? elems[index].props ().value ("protocolInfo") :  QString ();
 }
 
 QString CDidlItem::resolution (int index) const
 {
   QList<CDidlElem> elems = m_d->m_elems.values ("res");
   int              size  = elems.size ();
-  return index >= 0 && index < size ? elems[index].props ().value ("resolution") : QString::null;
+  return index >= 0 && index < size ? elems[index].props ().value ("resolution") :  QString ();
 }
 
 unsigned CDidlItem::originalTrackNumber () const
@@ -924,9 +924,9 @@ CDidlItem CDidlItem::mix (CDidlItem const & item1, CDidlItem const & item2)
     {
       QList<CDidlElem> elems1 = item1.values (name);
       bool             equal  = false;
-      for (QList<CDidlElem>::const_iterator it = elems1.cbegin (), end = elems1.cend (); it != end; ++it)
+      for (CDidlElem const & elem1 : elems1)
       {
-        if (elem2.isEqual (*it))
+        if (elem2.isEqual (elem1))
         {
           equal = true;
           break;

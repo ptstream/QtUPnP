@@ -78,7 +78,7 @@ bool CHTTPParser::parseMessage ()
       rows.reserve (15);
       rows = header.split ('\r');
       QByteArray name, value;
-      for (QByteArray const row : rows)
+      for (QByteArray const & row : rows)
       {
         int index = row.indexOf (':');
         if (index == -1 && m_verb.isEmpty ())

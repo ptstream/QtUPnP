@@ -12,7 +12,7 @@ CUnicastSocket::~CUnicastSocket ()
 {
 }
 
-quint16 CUnicastSocket::bind (QHostAddress addr)
+quint16 CUnicastSocket::bind (QHostAddress const & addr)
 {
   quint16 port;
   // The range is specified by the UDA 1.1 standard

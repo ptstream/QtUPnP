@@ -28,13 +28,11 @@ private :
   QString m_fileName;
 };
 
-CErrorHandler::CErrorHandler (QByteArray const & data, QString const & fileName) : QXmlErrorHandler (),
-  m_data (data), m_fileName (fileName)
+CErrorHandler::CErrorHandler (QByteArray const & data, QString const & fileName) : m_data (data), m_fileName (fileName)
 {
 }
 
-CErrorHandler::CErrorHandler (QString const & data, QString const & fileName) : QXmlErrorHandler (),
-  m_data (data.toUtf8 ()), m_fileName (fileName)
+CErrorHandler::CErrorHandler (QString const & data, QString const & fileName) : m_data (data.toUtf8 ()), m_fileName (fileName)
 {
 }
 
@@ -64,8 +62,8 @@ bool CErrorHandler::warning (QXmlParseException const & exception)
 void CErrorHandler::errorString (QXmlParseException const & exception)
 {
   QString text = QString ("XML error; line: %2; column: %3; message: %4\n%5\n")
-                 .arg (exception.lineNumber ()).arg (exception.columnNumber ())
-                 .arg (exception.message ()).arg (m_data.constData ());
+                 .arg (exception.lineNumber (), exception.columnNumber ())
+                 .arg (exception.message (), m_data.constData ());
   if (!m_fileName.isEmpty())
   {
     QFile file (m_fileName);
@@ -95,7 +93,7 @@ QString CXmlH::tag (int level) const
   return m_stack.size () > level ? *(m_stack.end () - level - 1) : QString ();
 }
 
-bool CXmlH::parse (QByteArray response)
+bool CXmlH::parse (QByteArray const & response)
 {
   bool success = false;
   if (!response.isEmpty ())
@@ -129,8 +127,8 @@ bool CXmlH::parse (QString const & response)
       data.prepend ("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n");
     }
 
-    QBuffer      buffer;
-    char const * constChar = reinterpret_cast<char const *>(data.data ());
+    QBuffer buffer;
+    auto    constChar = reinterpret_cast<char const *>(data.data ());
     buffer.setData (constChar, data.size () * 2);
     QXmlSimpleReader reader;
     QXmlInputSource  source (&buffer);

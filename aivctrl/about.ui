@@ -51,7 +51,7 @@
    <item>
     <widget class="QLabel" name="m_version">
      <property name="text">
-      <string>Version 1.1.5</string>
+      <string>Version 1.1.4</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -99,7 +99,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Based on: Qt 5.8.0</string>
+        <string>Based on: Qt 5</string>
        </property>
       </widget>
      </item>

@@ -103,7 +103,7 @@ QString UPNP_API httpContentType (QString const & dlnaProtocolInfo);
  * \param data: The data to write.*
  * \param folder: The file folder. QStandardPaths::TempLocation is used if folder is empty.
  */
-void UPNP_API xmlDump (QByteArray const & data, QString folder = QString::null);
+void UPNP_API xmlDump (QByteArray const & data, QString folder =  QString ());
 
 } // namespace
 

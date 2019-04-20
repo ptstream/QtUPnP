@@ -28,7 +28,7 @@ QStringList CAVTransport::getCurrentTransportActions (QString const & rendererUU
   QList<CControlPoint::TArgValue> args;
   args.reserve (2);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("Actions", QString::null);
+  args << CControlPoint::TArgValue ("Actions",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetCurrentTransportActions", args);
   if (actionInfo.succeeded ())
   {
@@ -45,9 +45,9 @@ CTransportInfo CAVTransport::getTransportInfo (QString const & rendererUUID, uns
   QList<CControlPoint::TArgValue> args;
   args.reserve (4);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("CurrentTransportState", QString::null);
-  args << CControlPoint::TArgValue ("CurrentTransportStatus", QString::null);
-  args << CControlPoint::TArgValue ("CurrentSpeed", QString::null);
+  args << CControlPoint::TArgValue ("CurrentTransportState",  QString ());
+  args << CControlPoint::TArgValue ("CurrentTransportStatus",  QString ());
+  args << CControlPoint::TArgValue ("CurrentSpeed",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetTransportInfo", args);
   if (actionInfo.succeeded ())
   {
@@ -66,8 +66,8 @@ CTransportSettings CAVTransport::getTransportSettings (QString const & rendererU
   QList<CControlPoint::TArgValue> args;
   args.reserve (3);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("PlayMode", QString::null);
-  args << CControlPoint::TArgValue ("RecQualityMode", QString::null);
+  args << CControlPoint::TArgValue ("PlayMode",  QString ());
+  args << CControlPoint::TArgValue ("RecQualityMode",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetTransportSettings", args);
   if (actionInfo.succeeded ())
   {
@@ -85,9 +85,9 @@ CDeviceCaps CAVTransport::getDeviceCaps (QString const & rendererUUID, unsigned 
   QList<CControlPoint::TArgValue> args;
   args.reserve (4);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("PlayMedia", QString::null);
-  args << CControlPoint::TArgValue ("RecMedia", QString::null);
-  args << CControlPoint::TArgValue ("RecQualityModes", QString::null);
+  args << CControlPoint::TArgValue ("PlayMedia",  QString ());
+  args << CControlPoint::TArgValue ("RecMedia",  QString ());
+  args << CControlPoint::TArgValue ("RecQualityModes",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetDeviceCapabilities", args);
   if (actionInfo.succeeded ())
   {
@@ -106,14 +106,14 @@ CPositionInfo CAVTransport::getPositionInfo (QString const & rendererUUID, unsig
   QList<CControlPoint::TArgValue> args;
   args.reserve (9);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("Track", QString::null);
-  args << CControlPoint::TArgValue ("TrackDuration", QString::null);
-  args << CControlPoint::TArgValue ("TrackMetaData", QString::null);
-  args << CControlPoint::TArgValue ("TrackURI", QString::null);
-  args << CControlPoint::TArgValue ("RelTime", QString::null);
-  args << CControlPoint::TArgValue ("AbsTime", QString::null);
-  args << CControlPoint::TArgValue ("RelCount", QString::null);
-  args << CControlPoint::TArgValue ("AbsCount", QString::null);
+  args << CControlPoint::TArgValue ("Track",  QString ());
+  args << CControlPoint::TArgValue ("TrackDuration",  QString ());
+  args << CControlPoint::TArgValue ("TrackMetaData",  QString ());
+  args << CControlPoint::TArgValue ("TrackURI",  QString ());
+  args << CControlPoint::TArgValue ("RelTime",  QString ());
+  args << CControlPoint::TArgValue ("AbsTime",  QString ());
+  args << CControlPoint::TArgValue ("RelCount",  QString ());
+  args << CControlPoint::TArgValue ("AbsCount",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetPositionInfo", args);
   if (actionInfo.succeeded ())
   {
@@ -137,15 +137,15 @@ CMediaInfo CAVTransport::getMediaInfo (QString const & rendererUUID, unsigned in
   QList<CControlPoint::TArgValue> args;
   args.reserve (10);
   args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
-  args << CControlPoint::TArgValue ("NrTracks", QString::null);
-  args << CControlPoint::TArgValue ("MediaDuration", QString::null);
-  args << CControlPoint::TArgValue ("CurrentURI", QString::null);
-  args << CControlPoint::TArgValue ("CurrentURIMetaData", QString::null);
-  args << CControlPoint::TArgValue ("NextURI", QString::null);
-  args << CControlPoint::TArgValue ("NextURIMetaData", QString::null);
-  args << CControlPoint::TArgValue ("PlayMedium", QString::null);
-  args << CControlPoint::TArgValue ("RecordMedium", QString::null);
-  args << CControlPoint::TArgValue ("WriteStatus", QString::null);
+  args << CControlPoint::TArgValue ("NrTracks",  QString ());
+  args << CControlPoint::TArgValue ("MediaDuration",  QString ());
+  args << CControlPoint::TArgValue ("CurrentURI",  QString ());
+  args << CControlPoint::TArgValue ("CurrentURIMetaData",  QString ());
+  args << CControlPoint::TArgValue ("NextURI",  QString ());
+  args << CControlPoint::TArgValue ("NextURIMetaData",  QString ());
+  args << CControlPoint::TArgValue ("PlayMedium",  QString ());
+  args << CControlPoint::TArgValue ("RecordMedium",  QString ());
+  args << CControlPoint::TArgValue ("WriteStatus",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (rendererUUID, "GetMediaInfo", args);
   if (actionInfo.succeeded ())
   {
@@ -206,7 +206,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
     args.reserve (3);
     args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
     args << CControlPoint::TArgValue ("CurrentURI", uri);
-    args << CControlPoint::TArgValue ("CurrentURIMetaData", QString::null);
+    args << CControlPoint::TArgValue ("CurrentURIMetaData",  QString ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
     success    = actionInfo.succeeded ();
     if (success)
@@ -229,7 +229,7 @@ bool CAVTransport::setAVTransportURI (QString const & rendererUUID, QString cons
     args.reserve (3);
     args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
     args << CControlPoint::TArgValue ("CurrentURI", replace127_0_0_1 (uri));
-    args << CControlPoint::TArgValue ("CurrentURIMetaData", QString::null);
+    args << CControlPoint::TArgValue ("CurrentURIMetaData",  QString ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetAVTransportURI", args);
   }
 
@@ -265,7 +265,7 @@ bool CAVTransport::setNextAVTransportURI (QString const & rendererUUID, QString 
     args.reserve (3);
     args << CControlPoint::TArgValue ("InstanceID", QString::number (instanceID));
     args << CControlPoint::TArgValue ("NextURI", uri);
-    args << CControlPoint::TArgValue ("NextURIMetaData", QString::null);
+    args << CControlPoint::TArgValue ("NextURIMetaData",  QString ());
     actionInfo = m_cp->invokeAction (rendererUUID, "SetNextAVTransportURI", args);
   }
 

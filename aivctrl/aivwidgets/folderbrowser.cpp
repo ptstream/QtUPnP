@@ -6,8 +6,8 @@ struct SFolderItemData : public QSharedData
 {
   SFolderItemData () : QSharedData () {}
   SFolderItemData (int stackedWidgetIndex, QString const & name,
-                   QString const & parentID = QString::null,
-                   QString const & id = QString::null,
+                   QString const & parentID =  QString (),
+                   QString const & id =  QString (),
                    CListWidgetBase* listWidget = nullptr);
   SFolderItemData (SFolderItemData const & other);
 

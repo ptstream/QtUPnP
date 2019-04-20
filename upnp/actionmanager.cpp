@@ -38,9 +38,9 @@ void CActionManager::finished ()
 
 void CActionManager::error (QNetworkReply::NetworkError err)
 {
-  m_error                    = err;
-  QNetworkReply* replySender = static_cast<QNetworkReply*>(sender ());
-  QString        errorString = replySender->errorString ();
+  m_error             = err;
+  auto    replySender = static_cast<QNetworkReply*>(sender ());
+  QString errorString = replySender->errorString ();
   qDebug () << "CActionManager::error: " << static_cast<int>(err) << " (" << errorString << ")";
   emit networkError (m_device, err, errorString);
 }
@@ -62,7 +62,7 @@ bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo
     req.setRawHeader ("Accept-Language", "*");
     req.setRawHeader ("Connection", "Close");
     QString const & actionName    = info.actionName ();
-    QString         soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID ()).arg (actionName);
+    QString         soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID (), actionName);
     req.setRawHeader ("SOAPAction", soapActionHdr.toUtf8 ());
 
     QTime time;

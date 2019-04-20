@@ -5,12 +5,11 @@ Of course UPnP protocol (UPnP/AV use UPnP) is implemented and your can handle ev
 
 For a better description, unzip /upnp/docs/html.zip and choose index.html.
 
-Build the framework and the test program need to install QT5. QtUPnP has been coded from:
-  - Windows "qt-opensource-windows-x86-mingw530-5.8.0.exe" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
-    A 32 bits is built. It runs from Windows 7 to Windows 10 32 or 64 bits. 
+Build this framework and the test program need to install QT5. QtUPnP has been coded from:
+  - Windows: The build has been tested from Qt 5.8.0 (mingw53_32) and Qt 5.12.3 (mingw73_64).
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
-  - Linux "qt-opensource-linux-x64-5.8.0.run" installer download from https://download.qt.io/official_releases/qt/5.8/5.8.0/.
+  - Linux: The build has been tested from Qt 5.8.0 and Qt 5.12.3.
     A 64 bits is built. It has been tested on Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
     The actual pro file creates a static library.
 	To build QtUPnP without QtCreator, see linux-build folder.

@@ -51,7 +51,7 @@ bool CXmlHDidlLite::characters (QString const & name)
   return true;
 }
 
-CDidlItem CXmlHDidlLite::firstItem (QByteArray data)
+CDidlItem CXmlHDidlLite::firstItem (QByteArray const & data)
 {
   CDidlItem item;
   bool      success = parse (data);

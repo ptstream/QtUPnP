@@ -183,7 +183,7 @@ int CContentDirectoryBrowser::addItems (QString const & server,
   int numberReturned = reply.numberReturned ();
   if (numberReturned != 0)
   {
-    if (sortCriteria == QString::null && m_sortCriteria != QString::null)
+    if (sortCriteria ==  QString () && m_sortCriteria !=  QString ())
     {
       reply.sort (m_sortCriteria, m_sortDir);
     }

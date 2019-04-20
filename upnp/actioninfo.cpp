@@ -64,7 +64,7 @@ void CActionInfo::startMessage (QString const & deviceUUID, QString const & serv
   m_d->m_deviceUUID = deviceUUID;
   m_d->serviceID    = serviceID;
   m_d->m_actionName = action;
-  m_d->m_message    = DStartEnvelopeBody + QString (DActionserviceID).arg (action).arg (serviceID);
+  m_d->m_message    = DStartEnvelopeBody + QString (DActionserviceID).arg (action, serviceID);
 }
 
 void CActionInfo::endMessage ()

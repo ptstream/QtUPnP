@@ -120,8 +120,8 @@ public:
   /*! Adds from an id and a server. The arguments are identical at browse action. */
   int addItems (QString const & server, QString const & id,
                 QtUPnP::CContentDirectory::EBrowseType type = QtUPnP::CContentDirectory::BrowseDirectChildren,
-                QString filter = QString::null, int startingIndex = 0, int requestedCount = 0,
-                QString const & sortCriteria = QString::null);
+                QString filter =  QString (), int startingIndex = 0, int requestedCount = 0,
+                QString const & sortCriteria =  QString ());
 
   /*! Starts the timer to update icons. */
   void startIconUpdateTimer ();

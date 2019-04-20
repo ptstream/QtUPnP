@@ -218,7 +218,7 @@ CBrowseReply CPluginObject::browse (QString const & objectID, CContentDirectory:
           }
         }
 
-        int numberReturned = items.size ();
+        unsigned numberReturned = static_cast<unsigned>(items.size ());
         reply.setNumberReturned (numberReturned);
         reply.setTotalMatches (numberReturned);
       }

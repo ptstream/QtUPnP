@@ -3,14 +3,14 @@
 
 QStringList CMainWindow::serverIcons ()
 {
-  return { QString::null,
+  return {  QString (),
            "server",
          };
 }
 
 QStringList CMainWindow::contentDirectoryIcons ()
 {
-  return { QString::null, //!< unknown
+  return {  QString (), //!< unknown
            "image",       //!< object.item.imageItem
            "image",       //!< object.item.imageItem.photo
            "audio",       //!< bject.item.audioItem
@@ -23,7 +23,7 @@ QStringList CMainWindow::contentDirectoryIcons ()
            "video",       //!< object.item.videoItem.musicVideoClip
            "text",        //!< object.item.textItem
            "bookmark",    //!< object.item.bookmarkItem
-           QString::null, //!< object.item.epgItem
+            QString (), //!< object.item.epgItem
            "audio",       //!< object.item.epgItem.audioProgram
            "video",       //!< object.item.epgItem.videoProgram
            "playlist",    //!< object.item.playlistItem

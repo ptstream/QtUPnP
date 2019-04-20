@@ -60,7 +60,7 @@ public :
   virtual void save (QString const &) const {}
 
   /*! Gets values from authentification. For example see COAuth2. */
-  virtual QString value (QString const &) const { return QString::null;  }
+  virtual QString value (QString const &) const { return  QString ();  }
 
   /*! Returns the authentification type. */
   EType type () const { return m_type; }

@@ -2,7 +2,7 @@
 
 USING_UPNP_NAMESPACE
 
-CXmlHEvent::CXmlHEvent (TMEventVars& vars) : CXmlH (), m_vars (vars)
+CXmlHEvent::CXmlHEvent (TMEventVars& vars) : m_vars (vars)
 {
 }
 

@@ -108,7 +108,7 @@ void CMainWindow::rendererAction (QAction* action)
       if (!m_status.hasStatus (UPnPEventsOnly))
       {
         m_cp->clearPlaylist ();
-        CStateVariable const & var     = m_cp->stateVariable (m_renderer, QString::null, "Volume");
+        CStateVariable const & var     = m_cp->stateVariable (m_renderer,  QString (), "Volume");
         int                    maximum = static_cast<int>(var.maximum ());
         if (maximum <= 0)
         {
@@ -540,13 +540,13 @@ void CMainWindow::addHomePopupMenu ()
     ui->m_home->setPopupMode (QToolButton::InstantPopup);
     connect (menu, &QMenu::triggered, this, &CMainWindow::homeAction);
 
-    QAction* action = menu->addAction (::resIcon ("settings"), QString::null);
+    QAction* action = menu->addAction (::resIcon ("settings"),  QString ());
     action->setData (Settings);
 
-    action = menu->addAction (::resIcon ("language"), QString::null);
+    action = menu->addAction (::resIcon ("language"),  QString ());
     action->setData (Language);
 
-    action = menu->addAction (::resIcon ("about"), QString::null);
+    action = menu->addAction (::resIcon ("about"),  QString ());
     action->setData (About);
   }
 

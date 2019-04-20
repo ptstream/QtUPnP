@@ -2,8 +2,7 @@
 
 USING_UPNP_NAMESPACE
 
-CXmlHAction::CXmlHAction (QString const & actionName, QMap<QString, QString>& vars) : CXmlH (),
-      m_actionName (actionName), m_vars (vars)
+CXmlHAction::CXmlHAction (QString const & actionName, QMap<QString, QString>& vars) : m_actionName (actionName), m_vars (vars)
 {
 }
 

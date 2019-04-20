@@ -32,7 +32,7 @@ public:
   CDidlItem firstItem (QString const & didlLite);
 
   /*! Returns the first item of the item list. */
-  CDidlItem firstItem (QByteArray data);
+  CDidlItem firstItem (QByteArray const & data);
 
 private :
   QList<CDidlItem> m_items; //!< item list. See CDidlIem.

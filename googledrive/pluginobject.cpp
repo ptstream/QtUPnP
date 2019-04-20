@@ -16,8 +16,8 @@ CPluginObject::CPluginObject () : CPlugin (CAuth::OAuth2)
   COAuth2* auth = this->oauth2 ();
   auth->addData ("scope", "openid%20profile%20https://www.googleapis.com/auth/drive.readonly");
   auth->addData ("response_type", "code");
-  auth->addData ("state", QString::null);
-  auth->addData ("redirect_uri", QString::null);
+  auth->addData ("state", QString ());
+  auth->addData ("redirect_uri", QString ());
   auth->setEndPoint ("https://accounts.google.com/o/oauth2/v2/auth");
   auth->setQuery (QStringList ({ "scope", "response_type", "state", "redirect_uri", "client_id" }));
 }

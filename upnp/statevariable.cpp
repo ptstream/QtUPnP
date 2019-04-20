@@ -236,9 +236,8 @@ QVariant CStateVariable::convert (QString const & value)
 void CStateVariable::setValue (QString const & value, QList<TConstraint> const & constraints)
 {
   bool update = false;
-  for (QList<TValue>::iterator it = m_d->m_values.begin (), end = m_d->m_values.end (); it != end; ++it)
+  for (TValue& val :m_d->m_values)
   {
-    TValue&             val                = (*it);
     QList<TConstraint>& variableContraints = val.second;
     if (sameConstraints (variableContraints, constraints))
     {
@@ -298,9 +297,8 @@ double CStateVariable::step () const
 QVariant CStateVariable::value (QList<TConstraint> const & constraints) const
 {
   QVariant variant;
-  for (QList<TValue>::const_iterator it = m_d->m_values.cbegin (), end = m_d->m_values.cend (); it != end; ++it)
+  for (TValue const & val : m_d->m_values)
   {
-    TValue const &             val                = (*it);
     QList<TConstraint> const & variableContraints = val.second;
     if (sameConstraints (variableContraints, constraints))
     {

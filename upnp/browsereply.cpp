@@ -190,7 +190,7 @@ QList<CDidlItem> CBrowseReply::search (QList<CDidlItem> const & items, QString t
   return results;
 }
 
-QList<CDidlItem> CBrowseReply::search (QString text, int returned, int commonPrefixLength) const
+QList<CDidlItem> CBrowseReply::search (QString const & text, int returned, int commonPrefixLength) const
 {
   return search (m_d->m_items, text, returned, commonPrefixLength);
 }
@@ -207,7 +207,7 @@ QStringList CBrowseReply::sortCapabilities (CBrowseReply const & reply, bool sam
   {
     for (QMultiMap<QString, CDidlElem>::const_iterator ite = item.elems ().cbegin (), ende = item.elems ().cend (); ite != ende; ++ite)
     {
-      QString const name = ite.key ();
+      QString const & name = ite.key ();
       if (!ite.value ().isEmpty ())
       {
         QStringList::const_iterator end = caps.cend ();
@@ -254,9 +254,9 @@ void CBrowseReply::sort (CBrowseReply& reply, QString const & criteria, ESortDir
   EComparType       type = String;
   QString           value;
   QList<CDidlItem>& items = reply.m_d->m_items;
-  for (int iItem = 0, end = items.size (); iItem < end; ++iItem)
+  for (CDidlItem const & item : items)
   {
-    CDidlElem const & elem = items[iItem].value (elemName);
+    CDidlElem const & elem = item.value (elemName);
     value                  = index != -1 ? elem.props ().value (propName) : elem.value ();
     if (!value.isEmpty ())
     {
@@ -301,7 +301,14 @@ void CBrowseReply::sort (CBrowseReply& reply, QString const & criteria, ESortDir
 
     auto lt = [] (TSortItem const & s1, TSortItem const & s2) -> bool { return s1.first < s2.first; };
     auto gt = [] (TSortItem const & s1, TSortItem const & s2) -> bool { return s1.first > s2.first; };
-    std::sort (itemArray.begin (), itemArray.end (), dir ? gt : lt);
+    if (dir)
+    {
+      std::sort (itemArray.begin (), itemArray.end (), gt);
+    }
+    else
+    {
+      std::sort (itemArray.begin (), itemArray.end (), lt);
+    }
 
     for (int iItem = 0, end = items.size (); iItem < end; ++iItem)
     {

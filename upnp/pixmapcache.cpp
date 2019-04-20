@@ -60,7 +60,7 @@ QPixmap CPixmapCache::add (QString const & albumArtURI, QByteArray const & pxmBy
       {
         QVector<TDate> dates;
         dates.reserve (m_dates.size ());
-        for (QHash<QString, qint64>::const_iterator it = m_dates.begin (), end =  m_dates.end (); it != end; ++it)
+        for (QHash<QString, qint64>::const_iterator it = m_dates.cbegin (), end =  m_dates.cend (); it != end; ++it)
         {
           QString const & uri  = it.key ();
           qint64          date = it.value ();
@@ -112,11 +112,11 @@ QPixmap CPixmapCache::add (QString const & albumArtURI, QByteArray const & pxmBy
 
 QPixmap CPixmapCache::search (QString const & albumArtURI)
 {
-  QPixmap                                 pxm;
-  QHash<QString, QString>::const_iterator it = m_md5s.find (albumArtURI);
+  QPixmap                           pxm;
+  QHash<QString, QString>::iterator it = m_md5s.find (albumArtURI);
   if (it != m_md5s.end ())
   {
-    QString key          = it.value ();
+    QString const & key  = it.value ();
     pxm                  = m_pixmaps.value (key);
     m_dates[albumArtURI] = QDateTime::currentMSecsSinceEpoch ();
     m_changed            = true;

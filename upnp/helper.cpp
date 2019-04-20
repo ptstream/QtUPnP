@@ -14,7 +14,7 @@
 
 char const * QtUPnP::libraryVersion ()
 {
-  return "1.1.3";
+  return "1.1.4";
 }
 
 char const * QtUPnP::libraryName ()
@@ -183,7 +183,7 @@ long long QtUPnP::timeToMS (QString const & time)
 int QtUPnP::timeToS (QString const & time)
 {
   long long ms  = timeToMS (time);
-  double    msd = static_cast<double>(ms);
+  auto      msd = static_cast<double>(ms);
   return static_cast<int>(qRound64 (msd / 1000.0));
 }
 
@@ -296,9 +296,8 @@ QString QtUPnP::removeDiacritics (QString const & s)
 {
   QString normalizedString = s.normalized (QString::NormalizationForm_D);
   QString result;
-  for (int i = 0, len = normalizedString.length (); i < len; i++)
+  for (QChar c : normalizedString)
   {
-    QChar c = normalizedString[i];
     if (c.category () != QChar::Mark_NonSpacing)
     {
       result.append (c);

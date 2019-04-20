@@ -14,7 +14,7 @@ void CMainWindow::on_m_servers_itemClicked (QListWidgetItem* item)
   m_server                   = device.uuid ();
   ui->m_contentDirectory->addItems (m_server, rootID);
   ui->m_stackedWidget->setCurrentIndex (ContentDirectory);
-  ui->m_folders->push (Home, device.name (), QString::null, rootID, ui->m_servers);
+  ui->m_folders->push (Home, device.name (),  QString (), rootID, ui->m_servers);
   ui->m_provider->setText (ui->m_serverLabel->text ());
   if (m_status.hasStatus (ShowNetworkCom))
   {
@@ -34,7 +34,7 @@ void CMainWindow::on_m_cloud_itemClicked (QListWidgetItem* item)
   m_server                  = plugin->uuid ();
   ui->m_contentDirectory->addItems (m_server, rootID);
   ui->m_stackedWidget->setCurrentIndex (ContentDirectory);
-  ui->m_folders->push (Home, plugin->friendlyName (), QString::null, rootID, ui->m_servers);
+  ui->m_folders->push (Home, plugin->friendlyName (),  QString (), rootID, ui->m_servers);
   ui->m_provider->setText (ui->m_serverLabel->text ());
   if (m_status.hasStatus (ShowNetworkCom))
   {

@@ -21,8 +21,8 @@ CPlugin::~CPlugin ()
 
 bool CPlugin::hasAutorisation ()
 {
-  bool     connected = false;
-  COAuth2* auth      = static_cast<COAuth2*>(m_auth);
+  bool connected = false;
+  auto auth      = static_cast<COAuth2*>(m_auth);
   if (auth != nullptr)
   {
     connected = !auth->value ("code").isEmpty ();
@@ -76,8 +76,8 @@ void CPlugin::callDataFinished ()
 
 void CPlugin::callDataError (QNetworkReply::NetworkError err)
 {
-  QNetworkReply* replySender = static_cast<QNetworkReply*>(sender ());
-  QString        errorString = replySender->errorString ();
+  auto    replySender = static_cast<QNetworkReply*>(sender ());
+  QString errorString = replySender->errorString ();
   qDebug () << "callDataError: " << err << " (" << errorString << ")";
   exit (-1);
 }
@@ -148,15 +148,12 @@ QByteArray CPlugin::callData (EMethod method, QString const & request,
         }
         break;
       }
-
-      default :
-        break;
     }
 
     if (reply != nullptr)
     {
-      connect (reply, SIGNAL (error (QNetworkReply::NetworkError)), this, SLOT (callDataError (QNetworkReply::NetworkError)));
-      connect (reply, SIGNAL (finished ()), this, SLOT (callDataFinished ()));
+      connect (reply, SIGNAL (error(QNetworkReply::NetworkError)), this, SLOT (callDataError(QNetworkReply::NetworkError)));
+      connect (reply, SIGNAL (finished()), this, SLOT (callDataFinished()));
       // Launch the waiting event loop. The event loop is stopped by finished signal or timeout
       if (timeout == 0)
       {

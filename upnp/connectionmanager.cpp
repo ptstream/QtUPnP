@@ -9,7 +9,7 @@ QStringList CConnectionManager::getCurrentConnectionIDs (QString const & deviceU
   Q_ASSERT (m_cp != nullptr);
   QStringList ids;
   QList<CControlPoint::TArgValue> args;
-  args << CControlPoint::TArgValue ("ConnectionIDs", QString::null);
+  args << CControlPoint::TArgValue ("ConnectionIDs",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (deviceUUID, "GetCurrentConnectionIDs", args);
   if (actionInfo.succeeded ())
   {
@@ -30,8 +30,8 @@ QVector<QStringList> CConnectionManager::getProtocolInfos (QString const & devic
   QVector<QStringList> protocols (2);
   QList<CControlPoint::TArgValue> args;
   args.reserve (2);
-  args << CControlPoint::TArgValue ("Source", QString::null);
-  args << CControlPoint::TArgValue ("Sink", QString::null);
+  args << CControlPoint::TArgValue ("Source",  QString ());
+  args << CControlPoint::TArgValue ("Sink",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (deviceUUID, "GetProtocolInfo", args);
   if (actionInfo.succeeded ())
   {
@@ -52,13 +52,13 @@ CConnectionInfo CConnectionManager::getCurrentConnectionInfo (QString const & de
   QList<CControlPoint::TArgValue> args;
   args.reserve (8);
   args << CControlPoint::TArgValue ("ConnectionID", id);
-  args << CControlPoint::TArgValue ("RcsID", QString::null);
-  args << CControlPoint::TArgValue ("AVTransportID", QString::null);
-  args << CControlPoint::TArgValue ("ProtocolInfo", QString::null);
-  args << CControlPoint::TArgValue ("PeerConnectionManager", QString::null);
-  args << CControlPoint::TArgValue ("PeerConnectionID", QString::null);
-  args << CControlPoint::TArgValue ("Direction", QString::null);
-  args << CControlPoint::TArgValue ("Status", QString::null);
+  args << CControlPoint::TArgValue ("RcsID",  QString ());
+  args << CControlPoint::TArgValue ("AVTransportID",  QString ());
+  args << CControlPoint::TArgValue ("ProtocolInfo",  QString ());
+  args << CControlPoint::TArgValue ("PeerConnectionManager",  QString ());
+  args << CControlPoint::TArgValue ("PeerConnectionID",  QString ());
+  args << CControlPoint::TArgValue ("Direction",  QString ());
+  args << CControlPoint::TArgValue ("Status",  QString ());
 
   CActionInfo actionInfo = m_cp->invokeAction (deviceUUID, "GetCurrentConnectionInfo", args);
   if (actionInfo.succeeded ())

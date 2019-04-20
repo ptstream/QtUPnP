@@ -70,7 +70,7 @@ public :
   void decodeDatagram ();
 
   /*! Launchs the M-SEARCH udp datagram. */
-  bool discover (QHostAddress hostAddress, quint16 port, quint16 mx = 5, char const * uuid = nullptr);
+  bool discover (QHostAddress const & hostAddress, quint16 port, quint16 mx = 5, char const * uuid = nullptr);
 
   /*! Clear the device list. */
   void resetDevices () { m_devices.clear (); }
@@ -137,7 +137,7 @@ private :
   void addDevice (SNDevice const & device);
 
   /*! Creates a device from a datagram. */
-  SNDevice createDevice (QByteArray datagram);
+  SNDevice createDevice (QByteArray const & datagram);
 
 private :
   static QHostAddress m_localHostAddress; //!< The local host address.

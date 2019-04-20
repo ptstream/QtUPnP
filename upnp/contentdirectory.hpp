@@ -50,7 +50,7 @@ public:
    CBrowseReply browse (QString const & serverUUID, QString const & objectID,
                        EBrowseType type = BrowseDirectChildren, QString const & filter = "*",
                        int startingIndex = 0, int requestedCount = 0,
-                       QString const & sortCriteria = QString::null);
+                       QString const & sortCriteria =  QString ());
 
   /*! Searchs from a container identifier.
    * \param serverUUID: Server uuid.
@@ -68,7 +68,7 @@ public:
   CBrowseReply search (QString const & serverUUID, QString const & containerID,
                        QString const & searchCriteria, QString const & filter = "*",
                        int startingIndex = 0, int requestedCount = 0,
-                       QString const & sortCriteria = QString::null);
+                       QString const & sortCriteria =  QString ());
 
   /*! Returns search capabilities.
    * \param serverUUID: Server uuid.

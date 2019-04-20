@@ -97,7 +97,7 @@ QStringList CContentDirectory::getSearchCaps (QString const & serverUUID)
   Q_ASSERT (m_cp != nullptr);
   QStringList caps;
   QList<CControlPoint::TArgValue> args;
-  args << CControlPoint::TArgValue ("SearchCaps", QString::null);
+  args << CControlPoint::TArgValue ("SearchCaps",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (serverUUID, "GetSearchCapabilities", args);
   if (actionInfo.succeeded ())
   {
@@ -112,7 +112,7 @@ QStringList CContentDirectory::getSortCaps (QString const & serverUUID)
   Q_ASSERT (m_cp != nullptr);
   QStringList                     caps;
   QList<CControlPoint::TArgValue> args;
-  args << CControlPoint::TArgValue ("SortCaps", QString::null);
+  args << CControlPoint::TArgValue ("SortCaps",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (serverUUID, "GetSortCapabilities", args);
   if (actionInfo.succeeded ())
   {
@@ -127,7 +127,7 @@ unsigned CContentDirectory::getSystemUpdateID (QString const & serverUUID)
   Q_ASSERT (m_cp != nullptr);
   unsigned                       id = 0;
   QList<CControlPoint::TArgValue> args;
-  args << CControlPoint::TArgValue ("Id", QString::null);
+  args << CControlPoint::TArgValue ("Id",  QString ());
   CActionInfo actionInfo = m_cp->invokeAction (serverUUID, "GetSystemUpdateID", args);
   if (actionInfo.succeeded ())
   {
@@ -216,10 +216,10 @@ QList<CControlPoint::TArgValue> CContentDirectory::browseArguments (
   args << CControlPoint::TArgValue ("StartingIndex", QString::number (startingIndex));
   args << CControlPoint::TArgValue ("RequestedCount", QString::number (requestedCount));
   args << CControlPoint::TArgValue ("SortCriteria", sortCriteria);
-  args << CControlPoint::TArgValue ("Result", QString::null);
-  args << CControlPoint::TArgValue ("NumberReturned", QString::null);
-  args << CControlPoint::TArgValue ("TotalMatches", QString::null);
-  args << CControlPoint::TArgValue ("UpdateID", QString::null);
+  args << CControlPoint::TArgValue ("Result",  QString ());
+  args << CControlPoint::TArgValue ("NumberReturned",  QString ());
+  args << CControlPoint::TArgValue ("TotalMatches",  QString ());
+  args << CControlPoint::TArgValue ("UpdateID",  QString ());
   return  args;
 }
 
@@ -234,9 +234,9 @@ QList<CControlPoint::TArgValue> CContentDirectory::searchArguments (QString cons
   args << CControlPoint::TArgValue ("StartingIndex", QString::number (startingIndex));
   args << CControlPoint::TArgValue ("RequestedCount", QString::number (requestedCount));
   args << CControlPoint::TArgValue ("SortCriteria", sortCriteria);
-  args << CControlPoint::TArgValue ("Result", QString::null);
-  args << CControlPoint::TArgValue ("NumberReturned", QString::null);
-  args << CControlPoint::TArgValue ("TotalMatches", QString::null);
-  args << CControlPoint::TArgValue ("UpdateID", QString::null);
+  args << CControlPoint::TArgValue ("Result",  QString ());
+  args << CControlPoint::TArgValue ("NumberReturned",  QString ());
+  args << CControlPoint::TArgValue ("TotalMatches",  QString ());
+  args << CControlPoint::TArgValue ("UpdateID",  QString ());
   return args;
 }
