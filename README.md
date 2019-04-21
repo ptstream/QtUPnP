@@ -11,10 +11,9 @@ Build this framework and the test program need to install QT5. QtUPnP has been c
 
   - Linux: The build has been tested from Qt 5.8.0 and Qt 5.12.3.
     A 64 bits is built. It has been tested on Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
-    The actual pro file creates a static library.
 	To build QtUPnP without QtCreator, see linux-build folder.
 	
-  - MacOS Several users have built QtUPnP from the actual source code.
+  - MacOS Mojave 10.14: The build has been tested from Qt 5.12.3 with Clang compiler.
   
   - Raspbian QtUPnP can be built using QT5.7 available in standard packages.
     To build QtUPnP install QT5.7 and QtCreator on your Raspberry PI3.
@@ -28,8 +27,6 @@ Build this framework and the test program need to install QT5. QtUPnP has been c
       * sudo apt-get install qtcreator gcc qtbase5-dev
 	  
     It has been tested under Raspbian Stretch with desktop on a Raspberry PI3.
-	
-The folder QtUPnP/linux-build/ contains also some Linux scripts to build simply chupnp and AIVCtrl.
 
 The framework use only QT API, no other system dependent API.
 
