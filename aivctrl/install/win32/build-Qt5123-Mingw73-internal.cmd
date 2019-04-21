@@ -1,19 +1,10 @@
 @echo off
 
-rem Qt installation folder where find bin (Change to your Qt folder).
-set QTDIR=C:\Qt\Qt5.12.3\5.12.3\mingw73_64
-
-rem The QtUPnP folder (Change to your QtUPnP folder).
-set DEVELDIR=C:\Users\%USERNAME%\Documents\Development
-
 rem All files and folders for InstallShield or to launch AIVCtrl
 set TARGET=build
 
 rem Product name.
 set PRODUCT=aivctrl
-
-rem Compilation results.
-set BINARIES=%DEVELDIR%\build-aivctrl-Desktop_Qt_5_12_3_MinGW_64_bit-Release
 
 if not exist %TARGET% goto nodel
 echo ************* Remove old folder
