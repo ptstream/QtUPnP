@@ -252,7 +252,7 @@ void CPlaylist::saveItem (QXmlStreamWriter& stream, CDidlItem const & item)
     }
   };
 
-  auto xmlWriteInt64 = [xmlWriteString, &stream] (QString const & name, long long value)
+  auto xmlWriteInt64 = [xmlWriteString] (QString const & name, long long value)
   {
     if (value != 0)
     {

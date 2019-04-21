@@ -8,9 +8,6 @@ QHostAddress const CMulticastSocket::upnpMulticastAddr = QHostAddress ("239.255.
 QHostAddress const CMulticastSocket::upnpMulticastAddr6 = QHostAddress ("FF02::C"); //!< Standard multicast IPV5 address.
 quint16 const  CMulticastSocket::upnpMulticastPort = 1900; //!< Standard multicast  port.
 
-int const fOK = QNetworkInterface::CanMulticast | QNetworkInterface::IsUp | QNetworkInterface::IsRunning;
-int const fKO = QNetworkInterface::IsLoopBack;
-
 CMulticastSocket::CMulticastSocket (QObject* parent) : CUpnpSocket (parent)
 {
 }

@@ -6,7 +6,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-class SActionInfoData;
+struct SActionInfoData;
 
 /*! \brief Holds information about send and retrieve data for an action.
  *

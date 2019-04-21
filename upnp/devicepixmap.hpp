@@ -7,7 +7,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-class SDevicePixmapData;
+struct SDevicePixmapData;
 
 /*! \brief The CDevicePixmap class holds information about a device image.
  *

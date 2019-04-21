@@ -16,7 +16,7 @@ START_DEFINE_UPNP_NAMESPACE
 typedef QMap<QString, CService> TMServices;
 
 /*! Forward declaration of service data. */
-class SDeviceData;
+struct SDeviceData;
 
 /*! \brief The CDevice class holds information about a device being advertised or found by a control point.
  *

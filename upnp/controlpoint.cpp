@@ -129,7 +129,7 @@ bool CControlPoint::avDiscover ()
     int               cDiscoveries = cDeviceTypes * 4;
     int               iDiscovery   = 0;
     CInitialDiscovery initDiscovery (nullptr, CMulticastSocket::upnpMulticastAddr, CMulticastSocket::upnpMulticastPort);
-    for (int iDeviceType = 0; iDeviceType < cDeviceTypes; ++iDeviceType)
+    for (int iDeviceType = 0; iDeviceType < cDeviceTypes; iDeviceType += 2)
     {
       int          index = iDeviceType % cDeviceTypes;
       char const * urn   = urns[index];
@@ -145,8 +145,6 @@ bool CControlPoint::avDiscover ()
       emit searched (urn, ++iDiscovery, cDiscoveries);
       success |= initDiscovery.discover (false, urn);
       emit searched (urn, ++iDiscovery, cDiscoveries);
-
-      ++iDeviceType;
     }
   }
 

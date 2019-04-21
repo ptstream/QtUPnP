@@ -21,7 +21,7 @@ typedef QMap<QString, CStateVariable> TMStateVariables;
 typedef QMap<QString, CAction> TMActions;
 
 /*! The forward declaration of CService data. */
-class SServiceData;
+struct SServiceData;
 
 /*! \brief The CService class holds information about a service being advertised or found by a control point.
  *

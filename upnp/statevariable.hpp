@@ -8,7 +8,7 @@
 
 START_DEFINE_UPNP_NAMESPACE
 
-class SStateVariableData;
+struct SStateVariableData;
 
 /*! Defines the constraint type.
  * \param QString: Constraint name.

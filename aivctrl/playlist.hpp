@@ -8,7 +8,7 @@ namespace QtUPnP {
   class CControlPoint;
 }
 
-class SPlaylistData;
+struct SPlaylistData;
 class QXmlStreamWriter;
 
 /*! \brief This class is playlist manager.

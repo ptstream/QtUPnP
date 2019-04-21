@@ -29,7 +29,6 @@ public:
   void setCheckProperty (bool check) { m_checkProperty = check; }
 
 private :
-  bool m_success = false; //!< Parse success.
   bool m_checkProperty = true; //!< true=handle e:property tag, false=handle LastChange evented variable.
   TMEventVars& m_vars; //!< The last modified ariable.
 };
