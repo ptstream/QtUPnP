@@ -14,7 +14,7 @@ CHTTPParser& CHTTPParser::operator = (CHTTPParser const & other)
 {
   m_message     = other.m_message;
   m_verb        = other.m_verb;
-  m_headerElems = m_headerElems;
+  m_headerElems = other.m_headerElems;
   m_queryType   = other.m_queryType;
   return *this;
 }
