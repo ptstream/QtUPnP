@@ -220,9 +220,9 @@ void CFolderBrowser::leaveEvent (QEvent*)
 void CFolderBrowser::updateText ()
 {
   QString text;
-  for (QStack<CFolderItem>::const_iterator it = m_items.begin (), end = m_items.end (); it != end; ++it)
+  for (CFolderItem const & item : m_items)
   {
-    QString name = (*it).name ();
+    QString name = item.name ();
     if (!text.isEmpty ())
     {
       text += m_separator;

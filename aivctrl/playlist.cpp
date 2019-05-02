@@ -510,9 +510,8 @@ void restorePlaylists (QMap<QString, CPlaylist>& playlists)
     CPlaylist::EType type = playlist.type ();
     if (playlist.isFavorite ())
     {
-      for (QMap<QString, CPlaylist>::iterator it = playlists.begin (), end = playlists.end (); it != end; ++it)
+      for (CPlaylist& exitingPlaylist : playlists)
       {
-        CPlaylist& exitingPlaylist = *it;
         if (exitingPlaylist.type () == type)
         {
           exitingPlaylist = playlist;

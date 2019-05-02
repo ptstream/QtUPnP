@@ -85,7 +85,7 @@ public:
   typedef QMap<QString, CPlaylist> TMPlaylists;
 
   /*! Constructor. */
-  explicit CMainWindow(QWidget *parent = 0);
+  explicit CMainWindow(QWidget* parent = nullptr);
 
   /*! Destructor. */
   ~CMainWindow();

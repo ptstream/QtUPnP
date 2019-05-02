@@ -29,7 +29,7 @@ public:
   CAction ();
 
   /*! Copy constructor. */
-  CAction (CAction const & other);
+  CAction (CAction const & rhs);
 
   /*! Equal operator. */
   CAction & operator = (CAction const & other);

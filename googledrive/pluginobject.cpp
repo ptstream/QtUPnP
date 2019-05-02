@@ -44,17 +44,17 @@ CPlugin::TVarVal CPluginObject::accessTokenHeader () const
   return CPlugin::TVarVal ("Authorization", headerValue);
 }
 
-void CPluginObject::addToQuery (QString& query, QString const & var, QString const & value, QChar const separator)
+void CPluginObject::addToQuery (QString& query, QString const & var, QString const & value, QChar const & separator)
 {
   query += separator + var + '=' + value;
 }
 
-void CPluginObject::addToQuery (QString& query, QString const & var, QChar const separator)
+void CPluginObject::addToQuery (QString& query, QString const & var, QChar const & separator)
 {
   addToQuery (query, var, oauth2 ()->value (var), separator);
 }
 
-void CPluginObject::addAccessToken (QString& query, QChar const separator)
+void CPluginObject::addAccessToken (QString& query, QChar const & separator)
 {
   addToQuery (query, "access_token", separator);
 }

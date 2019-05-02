@@ -147,7 +147,7 @@ private :
 
 private :
   QHostAddress m_senderAddr; //!< Host address of the device.
-  quint16  m_senderPort; //!< The port used by the device.
+  quint16  m_senderPort = 0; //!< The port used by the device.
   QByteArray m_datagram; //!< The current datagram.
   QList<SNDevice> m_devices; //!< The list of devices.
   QString m_name; //!< Socket user name.

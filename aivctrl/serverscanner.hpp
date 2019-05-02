@@ -29,7 +29,7 @@ public:
     SContainer (QString const & id, QString const & title) : m_id (id), m_title (title) {}
     SContainer (SContainer const & other) : m_id (other.m_id), m_title (other.m_title) {}
 
-    SContainer operator = (SContainer const & other)
+    SContainer& operator = (SContainer const & other)
     {
       m_id    = other.m_id;
       m_title = other.m_title;

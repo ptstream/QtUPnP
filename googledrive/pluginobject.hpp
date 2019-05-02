@@ -45,18 +45,18 @@ private :
   /*! Adds to http query the variable with its value.
    * The separator must be '?' for the first variable.
    */
-  void addToQuery (QString& query, QString const & var, QString const & value, QChar const separator = QLatin1Char ('&'));
+  void addToQuery (QString& query, QString const & var, QString const & value, QChar const & separator = QLatin1Char ('&'));
 
   /*! Adds to http query the variable with the corresponding oauth2 value.
    * The separator must be '?' for the first variable.
    */
-  void addToQuery (QString& query, QString const & var, QChar const separator = QLatin1Char ('&'));
+  void addToQuery (QString& query, QString const & var, QChar const & separator = QLatin1Char ('&'));
 
   /*! Adds to http query the access token.
    * It is addToQuery (query, "access_token, separator);
    * The separator must be '?' for the first variable.
    */
-  void addAccessToken (QString& query, QChar const separator = QLatin1Char ('&'));
+  void addAccessToken (QString& query, QChar const & separator = QLatin1Char ('&'));
 
   /*! Returns the access token to add at a request. */
   TVarVal accessTokenHeader () const;

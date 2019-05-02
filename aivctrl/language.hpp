@@ -19,7 +19,7 @@ public:
   enum EType { tyLongName, tyShortName, tyQmFile };
   typedef std::array<QString, 3> TLanguage;
 
-  explicit CLanguage (QWidget *parent = 0);
+  explicit CLanguage (QWidget* parent = nullptr);
   ~CLanguage ();
 
   QString qmFileSelected () const;
@@ -35,7 +35,6 @@ private:
   Ui::CLanguage*   ui;
   QList<TLanguage> m_availableLanguages;
   int              m_slectedLanguageIndex = -1;
-  QAbstractButton* m_acceptButton;
 };
 
 #endif // LANGUAGE_HPP

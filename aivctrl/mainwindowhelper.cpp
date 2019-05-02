@@ -475,7 +475,7 @@ void CMainWindow::currentQueueChanged ()
 void CMainWindow::updatePlaylistItemCount ()
 {
   ui->m_myDevice->updateContainerItemCount ();
-  for (TMPlaylists::const_iterator it = m_playlists.begin (), end = m_playlists.end (); it != end; ++it)
+  for (TMPlaylists::const_iterator it = m_playlists.cbegin (), end = m_playlists.cend (); it != end; ++it)
   {
     CPlaylist const & playlist = it.value ();
     CPlaylist::EType  type     = playlist.type ();
@@ -587,9 +587,9 @@ void CMainWindow::setComServerIcon ()
 void CMainWindow::loadPlugins ()
 {
   QStringList uuids = m_cp->plugins ();
-  for (QStringList::const_iterator it = uuids.cbegin (), end = uuids.end (); it != end; ++it)
+  for (QString const & uuid : uuids)
   {
-    CPlugin const * plugin = m_cp->plugin (*it);
+    CPlugin const * plugin = m_cp->plugin (uuid);
     ui->m_cloud->addItem (plugin);
   }
 }

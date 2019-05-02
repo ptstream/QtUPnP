@@ -194,8 +194,8 @@ void CMainWindow::networkError (QString const & device, QNetworkReply::NetworkEr
   {
     QString deviceName = m_cp->device (device).name ();
     QString text       = QString ("%1;Network error;%2;%3;%4")
-                                  .arg (QDateTime::currentDateTime ().toString ())
-                                  .arg (deviceName).arg (error).arg (description);
+                                  .arg (QDateTime::currentDateTime ().toString (), deviceName)
+                                  .arg (error).arg (description);
     dumpError (text);
   }
 }

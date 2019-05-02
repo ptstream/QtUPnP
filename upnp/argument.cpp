@@ -8,7 +8,7 @@ struct SArgumentData : public QSharedData
   SArgumentData () {}
   SArgumentData (SArgumentData const & rhs);
 
-  int m_dir; //!< Argument direction.
+  int m_dir = 0; //!< Argument direction.
   QString m_relatedStateVariable; //!< The related variable name.
 };
 

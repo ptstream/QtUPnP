@@ -204,9 +204,8 @@ CBrowseReply CPluginObject::browse (QString const & objectID, CContentDirectory:
                 addAccessToken (query);
                 res.setValue (query);
 #else
-                QString name = file["name"].toString ();
-                id          += "?Content-Type=" + httpContentType (protocolInfo);
-                id           = QUrl::toPercentEncoding (id);
+                id += "?Content-Type=" + httpContentType (protocolInfo);
+                id  = QUrl::toPercentEncoding (id);
                 res.setValue (id);
                 res.addProp ("protocolInfo", protocolInfo);
 #endif
