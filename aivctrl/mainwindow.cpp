@@ -127,5 +127,11 @@ void CMainWindow::initWidgets ()
   ui->m_contextualActions->setMenu (menu);
   connect (menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowContextualActions()));
   connect (menu, SIGNAL(triggered(QAction*)), this, SLOT(contextualAction(QAction*)));
+
+#ifdef Q_OS_MACOS
+  ui->m_volume->setTickPosition (QSlider::TicksBothSides);
+  ui->m_volume2->setTickPosition (QSlider::TicksBothSides);
+  ui->m_position->setTickPosition (QSlider::TicksBothSides);
+#endif
 }
 

@@ -117,7 +117,10 @@ void CMainWindow::rendererAction (QAction* action)
 
         ui->m_volume->setMaximum (maximum);
         ui->m_volume2->setMaximum (maximum);
-
+#ifdef Q_OS_MACOS
+        ui->m_volume->setTickInterval (maximum / 10);
+        ui->m_volume2->setTickInterval (maximum / 10);
+#endif
         CRenderingControl rc (m_cp);
         int volume = rc.getVolume (m_renderer);
         updateVolumeSlider (volume, true);

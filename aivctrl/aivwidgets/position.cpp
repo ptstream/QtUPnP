@@ -31,6 +31,9 @@ void CPosition::updatePosition (CControlPoint* cp, QString const & renderer)
     setEnabled (true);
     blockSignals (true);
     setMaximum (absTimeMS);
+#ifdef Q_OS_MACOS
+    setTickInterval (absTimeMS / 10);
+#endif
     QString const & relTime   = m_positionInfo.relTime ();
     int             relTimeMS = static_cast<int>(::timeToS (relTime));
     if (relTimeMS < 0)

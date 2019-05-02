@@ -150,6 +150,9 @@ void CMainWindow::eventReady (QStringList const & emitter)
         {
           ui->m_position->blockSignals (true);
           ui->m_position->setMaximum (timeToS (variant.toString ()));
+#ifdef Q_OS_MACOS
+          ui->m_position->setTickInterval (ui->m_position->maximum () / 10);
+#endif
           ui->m_position->blockSignals (false);
         }
         else if (/*name == "AVTransportURI" || */name == "CurrentTrackURI")
