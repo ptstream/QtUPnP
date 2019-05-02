@@ -1,1 +1,13 @@
+echo "Remove configuration files and playlist folders"
+if [ -f /usr/share/applications/aivctrl.desktop ]
+then
 sudo rm /usr/share/applications/aivctrl.desktop
+echo "/usr/share/applications/aivctrl.desktop has been removed"
+fi
+
+if [ -d /home/$SUDO_USER/.local/share/aivctrl ]
+then
+sudo rm -r /home/$SUDO_USER/.local/share/aivctrl
+echo "/home/$SUDO_USER/.local/share/aivctrl has been removed"
+fi
+

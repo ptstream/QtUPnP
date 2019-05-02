@@ -1,1 +1,4 @@
+if [ -f /usr/bin/aivctrl/aivctrl.desktop ];
+then
 sudo cp /usr/bin/aivctrl/aivctrl.desktop /usr/share/applications
+fi
