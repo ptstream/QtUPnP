@@ -1,1 +1,7 @@
 sudo cp /usr/bin/aivctrl/aivctrl.desktop /usr/share/applications
+sudo chmod -R +r /usr/bin/aivctrl
+sudo chmod +rx /usr/share/applications/aivctrl.desktop
+sudo chmod +rx /usr/bin/aivctrl/aivctrl.desktop
+sudo chmod +rx /usr/bin/aivctrl/aivctrl
+sudo chmod +rx /usr/bin/aivctrl/aivctrl.run
+sudo chmod +rx /usr/bin/aivctrl/aivctrl.run.desktop

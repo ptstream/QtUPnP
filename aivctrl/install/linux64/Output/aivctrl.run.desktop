@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Version=1.1.2
+Version=1.1.4
 Name=AIVCtrl
 GenericName=AIVCtrl
-Exec=/usr/bin/aivctrl/aivctrl
+Exec=aivctrl.run
 Comment=AIVCtrl - An UPnP/AV control point
 Icon=/usr/bin/aivctrl/aivctrl48.png
 Terminal=false

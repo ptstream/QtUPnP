@@ -5,11 +5,12 @@ PRODUCT=aivctrl
 echo
 echo "********************** Build $PRODUCT *************************"
 
-QTDIR=/home/$USER/Qt5.8.0/5.8/gcc_64
+QTDIR=/home/$USER/Qt/5.12.3/gcc_64
 DEVEL=/home/$USER/Documents/Development/QtUPnP
+
 OUTPUT=$DEVEL/$PRODUCT/install/linux64/Output
 TARGET=$OUTPUT/debian/usr/bin/$PRODUCT
-BINARIES=/home/$USER/Documents/Development/build-$PRODUCT-Desktop_Qt_5_8_0_GCC_64bit-Release
+BINARIES=/home/$USER/Documents/Development/build-$PRODUCT-Desktop_Qt_5_12_3_GCC_64bit-Release
 VERSION=1.1.4
 
 if [ -d $TARGET ]
@@ -51,6 +52,7 @@ cp ../../languages/*.png $TARGET/languages
 echo Copy .destktop file
 cp $OUTPUT/*.desktop $TARGET
 
+
 echo Copy Qt Images plugins
 mkdir $TARGET/imageformats
 cp $QTDIR/plugins/imageformats/*.* $TARGET/imageformats
@@ -79,8 +81,7 @@ cp $QTDIR/bin/linguist $TARGET
 
 echo Build debian package
 cd Output
-chmod 755 debian/DEBIAN/post*
-chmod 755 debian/DEBIAN/pre*
+chmod -R 755 debian/DEBIAN
 dpkg-deb --build debian $PRODUCT-$VERSION.deb
 cd ..
 
@@ -88,6 +89,7 @@ echo Build zip file
 cp aivctrlzip $TARGET/$PRODUCT.run
 cd $TARGET
 zip -q -r -9 $OUTPUT/$PRODUCT-$VERSION.zip ../$PRODUCT
+cd $OUTPUT
 echo "********************** End build *************************"
 
 

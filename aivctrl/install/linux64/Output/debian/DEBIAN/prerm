@@ -1,5 +1,2 @@
-echo "\n  The user folders /home/*/.local/share/aivctrl containing the aivctrl playlists can be removed."
-echo "  Forder list that can be removed:"
-ls -d /home/*/.local/share/aivctrl
-echo "\n"
+
 
