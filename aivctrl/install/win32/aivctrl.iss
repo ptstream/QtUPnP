@@ -8,6 +8,7 @@
 #define MyAppVersion "1.1.4"
 #define MyAppPublisher "AIVCtrl an UPnP control point"
 #define MyAppExeName "aivctrl.exe"
+#define Plateform 64
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -18,9 +19,9 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={pf{#Plateform}}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=install-{#MyAppName}-64-1.1.4
+OutputBaseFilename=install-{#MyAppName}-{#Plateform}-1.1.4
 Compression=lzma
 SolidCompression=yes
 UninstallDisplayIcon={app}\{#MyAppName}.exe
