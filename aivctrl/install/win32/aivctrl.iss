@@ -8,7 +8,7 @@
 #define MyAppVersion "1.1.4"
 #define MyAppPublisher "AIVCtrl an UPnP control point"
 #define MyAppExeName "aivctrl.exe"
-#define Plateform 64
+#define Plateform 32
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
