@@ -61,8 +61,19 @@ PLUGINDIR=$$PWD
 QMAKE_POST_LINK = $$_PRO_FILE_PWD_/dep.sh $$PLUGINDIR $$PLUGINDESTDIR
 }
 
+# Copy files needed for plugin (e.g. googledrive.ids, googledrive.png, googledrive.dylib)
+# For this depmac.sh is launched after build.
+macx {
+CONFIG(release, release): DESTDIR = $$OUT_PWD/../aivctrl/plugins/
+CONFIG(debug, debug): DESTDIR = $$OUT_PWD/../aivctrl/plugins/
+PLUGINDESTDIR=$$DESTDIR
+PLUGINDIR=$$PWD
+QMAKE_POST_LINK = $$_PRO_FILE_PWD_/depmac.sh $$PLUGINDIR $$PLUGINDESTDIR
+}
+
 DISTFILES += \
     dep.sh \
+    depmac.sh \
     googledrive.ids \
     googledrive.png \
     dep.cmd

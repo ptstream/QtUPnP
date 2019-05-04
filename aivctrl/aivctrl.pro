@@ -94,3 +94,6 @@ unix {
   PRE_TARGETDEPS += $$OUT_PWD/../upnp/libqtupnp.a
 }
 
+macx:ICON=$$PWD/icons/aivctrl64.icns
+
+
