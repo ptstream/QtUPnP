@@ -6,10 +6,10 @@ Of course UPnP protocol (UPnP/AV use UPnP) is implemented and your can handle ev
 For a better description, unzip /upnp/docs/html.zip and choose index.html.
 
 Build this framework and the test program need to install QT5. QtUPnP has been coded from:
-  - Windows: The build has been tested from Qt 5.8.0 (mingw53_32) and Qt 5.12.3 (mingw73_32 and mingw73_64).
+  - Windows: The build has been tested from and Qt 5.12.3 (mingw73_32 and mingw73_64).
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
-  - Linux: The build has been tested from Qt 5.8.0 and Qt 5.12.3.
+  - Linux: The build has been tested Qt 5.12.3.
     A 64 bits is built. It has been tested on Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
 	To build QtUPnP without QtCreator, see linux-build folder.
 	
@@ -59,19 +59,25 @@ The main fonctionnalities are:
   - And a lot of another things.
   
 To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
-  - Windows 7 to 10: Download install-AIVCtrl-1.1.3.exe and double click on it to install.
+
+  - Windows 7 to 10: Download install-AIVCtrl-32-1.1.4.exe and double click on it to install. This version run on Windows 32 and 64 bits.
+    You can use install-AIVCtrl-64-1.1.4.exe to install the 64 bits version.
     Tested with Windows 10.
 	
-  - Kubuntu and Ubuntu x86: Download aivctrl-1.1.3.deb double click on it to install.
-    Tested with Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox, and Ubuntu 18.04 native.
+  - Linux x86 Debian base: Download aivctrl-1.1.4.deb double click on it to install. It is a 64 bits version.
+    Tested Ubuntu 18.04.
 	
-  - All Linux x86: Download aivctrl-1.1.3.zip for a manual installation.
+  - All Linux x86: Download aivctrl-1.1.4.zip for a manual installation. It is a 64 bits version.
     Not tested (for this, use preferably /user/share/aivctrl/aivctrl.run.desktop to launch AIVCtrl).
 	
-  - Raspbian: Download aivctrl-pi3-1.1.3.deb.
+  - MacOS: Download aivctrl-1.1.4.dmg double click on it and drag the aivctrl icon in Applications folder. It is a 64 bits version.
+	
+  - Raspbian: Download aivctrl-pi3-1.1.4.deb. It is a 32 bits version.
       Tested on Raspberry PI3 with Raspbian Stretch.
     	
   - Documentation in English and French.
+  
+  - Remark: If you system run under VirtualBox, choose mode Bridge for the network.
   
 Some hardware or software devices are tested :
   
