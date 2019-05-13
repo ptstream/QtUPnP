@@ -10,7 +10,7 @@ Build this framework and the test program need to install QT5. QtUPnP has been c
     Do not forget to add to the path (global or QtCreator) the access to qtupnp.dll or change qtupnp library by a static library.
 
   - Linux: The build has been tested Qt 5.12.3.
-    A 64 bits is built. It has been tested on Kubuntu 17.10 and Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
+    A 64 bits is built. It has been tested on Ubuntu 18.04 under VirtualBox and Ubuntu 18.04 native.
 	To build QtUPnP without QtCreator, see linux-build folder.
 	
   - MacOS Mojave 10.14: The build has been tested from Qt 5.12.3 with Clang compiler.
