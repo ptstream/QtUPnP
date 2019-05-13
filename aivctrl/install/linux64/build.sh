@@ -52,18 +52,23 @@ cp ../../languages/*.png $TARGET/languages
 echo Copy .destktop file
 cp $OUTPUT/*.desktop $TARGET
 
-
-echo Copy Qt Images plugins
+echo Copy Qt plugins
 mkdir $TARGET/imageformats
-cp $QTDIR/plugins/imageformats/*.* $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqgif.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqtga.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqjpeg.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqwebp.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqicns.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqtiff.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqsvg.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqico.so $TARGET/imageformats
+cp $QTDIR/plugins/imageformats/libqwbmp.so $TARGET/imageformats     
 
-echo Copy Qt Bearer plugins
 mkdir $TARGET/bearer
-cp $QTDIR/plugins/bearer/*.* $TARGET/bearer
+cp $QTDIR/plugins/bearer/libqgenericbearer.so $TARGET/bearer
 
-echo Copy Qt platforms
 mkdir $TARGET/platforms
-cp $QTDIR/plugins/platforms/*.* $TARGET/platforms
+cp $QTDIR/plugins/platforms/libqxcb.so $TARGET/platforms
 
 echo Copy Qt binary files
 mkdir $TARGET/lib
@@ -80,6 +85,7 @@ cp $QTDIR/lib/libQt5Xml.so.5 $TARGET/lib
 cp $QTDIR/bin/linguist $TARGET
 
 echo Build debian package
+rm $TARGET/../dummy
 cd Output
 chmod -R 755 debian/DEBIAN
 dpkg-deb --build debian $PRODUCT-$VERSION.deb
@@ -90,6 +96,7 @@ cp aivctrlzip $TARGET/$PRODUCT.run
 cd $TARGET
 zip -q -r -9 $OUTPUT/$PRODUCT-$VERSION.zip ../$PRODUCT
 cd $OUTPUT
+echo "To simulate an empty directory" >> $TARGET/../dummy
 echo "********************** End build *************************"
 
 
