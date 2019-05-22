@@ -28,9 +28,11 @@ Build this framework and the test program need to install QT5. QtUPnP has been c
 	  
     It has been tested under Raspbian Stretch with desktop on a Raspberry PI3.
 
-The framework use only QT API, no other system dependent API.
-
-The folder upnp contains the framework to encapsulate the UPnP protocol.
+**Remarks**
+- The framework use only QT API.
+- The folder upnp contains the framework to encapsulate the UPnP protocol. By default, it is a dll for Windows and a static library for all other systems.
+- The folder googledrive is optional. With this plugin, you can play files stored in your googledrive space.
+  You can remove it to build aivctrl. If you want to keep this folder, you must enter in a terminal **chmod +x dep.sh** in the folder .../QtUPnP/googledrive.
 
 
 *************** chupnp *******************
