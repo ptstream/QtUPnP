@@ -61,7 +61,7 @@ The main fonctionnalities are:
   - Verify playlist elements.
   - And a lot of another things.
   
-To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1buJLY6XTpp-wZo90_Iixgs8oof-Ij1yu?usp=sharing
+To test easily AIVCtrl, some installers are available at: https://drive.google.com/drive/folders/1_MOe60dsZ-chqqjHpwyHcySzrp0ZyX55?usp=sharing
 
   - Windows 7 to 10: Download install-AIVCtrl-32-1.1.4.exe and double click on it to install. This version run on Windows 32 and 64 bits.
     You can use install-AIVCtrl-64-1.1.4.exe to install the 64 bits version.
