@@ -87,7 +87,9 @@ Some hardware or software devices are tested :
  Hardware servers
 
     - NAS Synology DS214 (DSM 6).
+	- NAS Synology DS215J. (1)
 	- NAS Synology DS213. (1)
+	- NAS Synology DS120. (1)
     - NAS Western Digital My Cloud. (1)
     - Cabasse Stream 1.
     - La Box Numericable.
@@ -116,6 +118,7 @@ Some hardware or software devices are tested :
    - Denon DRA-100. (1)
    - LG TV webOS based 55B7V. (1)
    - CocktailAudio X40. (1)
+   - Pioneer N-50. (1)
 
  Software renderers
 
