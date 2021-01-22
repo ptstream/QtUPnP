@@ -119,6 +119,7 @@ Some hardware or software devices are tested :
    - LG TV webOS based 55B7V. (1)
    - CocktailAudio X40. (1)
    - Pioneer N-50. (1)
+   - Hegel H190 firmware version p5107.28 (1).
 
  Software renderers
 
