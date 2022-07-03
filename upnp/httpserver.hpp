@@ -31,7 +31,7 @@ typedef QPair<QString, TEventCsts> TEventValue; // Variable value & constraint l
  * \param QString: The variable name.
  * \param TEventValue: The value and the constraints.
  */
-typedef QMap<QString, TEventValue> TMEventVars; // Variables and all values. e.g <Volume Channel="Master" val="30"/>
+typedef QMultiMap<QString, TEventValue> TMEventVars; // Variables and all values. e.g <Volume Channel="Master" val="30"/>
 
 /*! Defines type for QNetworkReply::connect function. */
 typedef void (QNetworkReply::*TFctNetworkReplyError) (QNetworkReply::NetworkError);

@@ -2,7 +2,7 @@
 #include "helper.hpp"
 #include "dump.hpp"
 #include <QHostAddress>
-
+#include <QElapsedTimer>
 USING_UPNP_NAMESPACE
 
 int CEventingManager::m_elapsedTime = 0;
@@ -45,11 +45,11 @@ bool CEventingManager::sendRequest (QUrl url, char const * verb, QString const &
   url.setPath (eventSubURL);
   req.setUrl (url);
 
-  QTime time;
+  QElapsedTimer time;
   time.start ();
 
   QNetworkReply* reply = m_naMgr->sendCustomRequest (req, verb);
-  connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+  connect (reply, &QNetworkReply::errorOccurred, this, &CEventingManager::error);
   connect (reply, SIGNAL(finished()), this, SLOT(finished()));
 
   int  idTimer = startTimer (requestTimeout);

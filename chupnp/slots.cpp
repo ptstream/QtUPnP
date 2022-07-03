@@ -7,6 +7,8 @@
 #include <QTreeWidget>
 #include <QProgressBar>
 #include <QClipboard>
+#include <QElapsedTimer>
+#include <QRegularExpression>
 
 void CMainWindow::newDevice (QString const & uuid)
 {
@@ -128,7 +130,7 @@ void CMainWindow::on_m_devices_itemDoubleClicked (QTreeWidgetItem *item, int col
     QString uuid = item->data (column, Qt::UserRole).toString ();
     ui->m_events->clear ();
 
-    QTime ti;
+    QElapsedTimer ti;
     ti.start ();
     loadServices (uuid);
     if (subscription (uuid))
@@ -147,7 +149,7 @@ void CMainWindow::on_m_services_itemDoubleClicked (QTreeWidgetItem* item, int co
   if (type == ActionType)
   {
     QString actionName = item->text (column);
-    actionName.remove (QRegExp (" \\(\\d+ms\\)"));
+    actionName.remove (QRegularExpression (" \\(\\d+ms\\)"));
     if (actionName == "GetMute" ||
         actionName == "GetVolume"  ||
         actionName == "GetMediaInfo" ||

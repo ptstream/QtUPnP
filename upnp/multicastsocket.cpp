@@ -1,6 +1,7 @@
 
 #include "multicastsocket.hpp"
 #include <QNetworkInterface>
+#include <QVariant>
 
 USING_UPNP_NAMESPACE
 
@@ -34,7 +35,7 @@ bool CMulticastSocket::initialize (QHostAddress const & bindAddr, QHostAddress c
     else
     {
       m_group = group;
-      setSocketOption (QAbstractSocket::MulticastTtlOption, 4);
+        setSocketOption (QAbstractSocket::MulticastTtlOption, 4);
     }
   }
   else

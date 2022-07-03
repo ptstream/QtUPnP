@@ -68,7 +68,7 @@ QPixmap CPixmapCache::add (QString const & albumArtURI, QByteArray const & pxmBy
         }
 
         std::sort (dates.begin (), dates.end ());
-        int cEntriesToRemove = std::min (m_cEntryToRemove, dates.size ());
+        int cEntriesToRemove = std::min (m_cEntryToRemove, static_cast<int>(dates.size ()));
         for (int iEntry = 0; iEntry < cEntriesToRemove; ++iEntry)
         {
           QString const & uri = dates[iEntry].second;

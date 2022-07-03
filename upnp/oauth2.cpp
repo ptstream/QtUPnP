@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QXmlStreamWriter>
+#include <QRandomGenerator>
 
 USING_UPNP_NAMESPACE
 
@@ -32,8 +33,8 @@ bool COAuth2::tryConnection ()
       QString         value = m_data.value (var);
       if (var == "state" && value.isEmpty ())
       {
-        qsrand (QDateTime::currentDateTime ().toTime_t ());
-        quint32 state = (static_cast<quint32>(qrand ()) & 0x7fff) | ((static_cast<quint32>(qrand ()) & 0x7fff) << 16);
+        QRandomGenerator gen (static_cast<quint32>(QDateTime::currentDateTime ().toMSecsSinceEpoch ()));
+        quint32 state = (static_cast<quint32>(gen.generate()) & 0x7fff) | ((static_cast<quint32>(gen.generate()) & 0x7fff) << 16);
         value         = QString::number (state);
         m_data[var]   = value;
       }

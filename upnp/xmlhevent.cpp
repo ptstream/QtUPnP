@@ -46,7 +46,7 @@ bool CXmlHEvent::characters (QString const & name)
   {
     TEventValue value;
     value.first                   = name;
-    m_vars[removeNameSpace (tag)] = value;
+    m_vars.insert(removeNameSpace (tag), value);
   }
 
   return true;

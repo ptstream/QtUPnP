@@ -31,7 +31,7 @@ QByteArray CDataCaller::callData (QUrl const & url, int timeout)
       QNetworkRequest nreq (m_request); // Build the network request
       QNetworkReply*  reply = m_naMgr->get (nreq); // Send the get request and store the reply
 
-      connect (reply, SIGNAL (error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+      connect (reply, &QNetworkReply::errorOccurred, this, &CDataCaller::error);
       connect (reply, SIGNAL (finished()), this, SLOT (finished()));
       int  idTimer = startTimer (timeout); // Start the timeout timer to stop the event loop in case of timeout.
       bool success = exec (QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers) == 0 &&
