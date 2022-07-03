@@ -3,6 +3,8 @@
 #include "ui_mainwindow.h"
 #include "../upnp/avcontrol.hpp"
 
+#include <QRegularExpression>
+
 static void addArg (QTreeWidgetItem* item, QString const & name, int value)
 {
   new QTreeWidgetItem (item, QStringList (name + '=' + QString::number (value)));
@@ -42,7 +44,7 @@ void CMainWindow::sendGetAction (QTreeWidgetItem* item)
   clearError (item);
   removeActionArgs (item);
   QString name = item->text (0);
-  name.remove (QRegExp (" \\(\\d+ms\\)"));
+  name.remove (QRegularExpression (" \\(\\d+ms\\)"));
   if (name == "GetMute")
   {
     bool state = m_ctl.renderingControl ().getMute (m_deviceUUID); // Get mute state.

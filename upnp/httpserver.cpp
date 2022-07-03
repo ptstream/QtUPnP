@@ -61,7 +61,7 @@ void CHTTPServer::incomingConnection (qintptr socketDescriptor)
   socket->setSocketDescriptor (socketDescriptor);
   m_eventMessages[socket] = CHTTPParser (); // Add at the current map of sockets.
   connect (socket, &QTcpSocket::readyRead, this, &CHTTPServer::socketReadyRead);
-  connect (socket, static_cast<TFctSocketError>(&QAbstractSocket::error), this, &CHTTPServer::socketError);
+  connect (socket, static_cast<TFctSocketError>(&QAbstractSocket::errorOccurred), this, &CHTTPServer::socketError);
   connect (socket, &QTcpSocket::disconnected, this, &CHTTPServer::socketDisconnected);
   connect (socket, &QTcpSocket::bytesWritten, this, &CHTTPServer::socketBytesWritten);
 }
@@ -421,7 +421,7 @@ bool CHTTPServer::startStreaming (QNetworkRequest const & request, QString const
       m_httpsReply->setReadBufferSize (m_httpsBufferSize);
     }
 
-    connect (m_httpsReply, static_cast<TFctNetworkReplyError>(&QNetworkReply::error), this, &CHTTPServer::httpsError);
+    connect (m_httpsReply, static_cast<TFctNetworkReplyError>(&QNetworkReply::errorOccurred), this, &CHTTPServer::httpsError);
     connect (m_httpsReply, &QNetworkReply::finished, this, &CHTTPServer::httpsFinished);
     connect (m_httpsReply, &QNetworkReply::readyRead, this, &CHTTPServer::httpsReadyRead);
     m_streamingResponseBuffer.clear ();

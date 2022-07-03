@@ -3,6 +3,8 @@
 #include "actioninfo.hpp"
 #include "dump.hpp"
 
+#include <QElapsedTimer>
+
 USING_UPNP_NAMESPACE
 
 int CActionManager::m_elapsedTime = 0;
@@ -65,10 +67,11 @@ bool CActionManager::post (QString const & device, QUrl const & url, CActionInfo
     QString         soapActionHdr = QString ("\"%1#%2\"").arg (info.serviceID (), actionName);
     req.setRawHeader ("SOAPAction", soapActionHdr.toUtf8 ());
 
-    QTime time;
+    QElapsedTimer time;
     time.start ();
 
-    m_naMgr->setNetworkAccessible (QNetworkAccessManager::Accessible);
+    // based on state device now.
+    //m_naMgr->setNetworkAccessible (QNetworkAccessManager::Accessible);
     QNetworkReply* reply = m_naMgr->post (req, info.message ().toUtf8 ());
     connect (reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
     connect (reply, SIGNAL(finished()), this, SLOT(finished()));

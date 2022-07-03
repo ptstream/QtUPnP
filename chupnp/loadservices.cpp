@@ -4,9 +4,11 @@
 #include "ui_mainwindow.h"
 #include "../upnp/controlpoint.hpp"
 
+#include <QElapsedTimer>
+
 void CMainWindow::loadServices (QString const & uuid)
 {
-  QTime ti;
+  QElapsedTimer ti;
   ti.start ();
 
   m_deviceUUID = uuid;

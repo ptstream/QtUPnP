@@ -3,7 +3,7 @@
 
 #include "using_upnp_namespace.hpp"
 #include "upnp_global.hpp"
-#include <QtXml/QXmlDefaultHandler>
+#include <QXmlDefaultHandler>
 #include <QStack>
 
 START_DEFINE_UPNP_NAMESPACE
