@@ -120,6 +120,8 @@ Some hardware or software devices are tested :
    - CocktailAudio X40. (1)
    - Pioneer N-50. (1)
    - Hegel H190 firmware version p5107.28 (1).
+   - Cambridge Audio Evo 150 (1)
+   - IEAST Amp 160. (1)
 
  Software renderers
 
